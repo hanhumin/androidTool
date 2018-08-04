@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="group">
+        <item>SQLite</item>
+        <item>expandableListView</item>
+    </string-array>
+
+    <string-array name="SQLiteItem">
+        <item>CreateOrOpen</item>
+        <item>Insert</item>
+        <item>Update</item>
+    </string-array>
+    <string-array name="ExpandableListView">
+        <item>SimpleExpandableListAdapter</item>
+        <item>SimpleCursorTreeAdapter</item>
+    </string-array>
+
+    <string-array name="RecyclerView">
+        <item>GridLayoutManager</item>
+        <item>StaggeredGridLayoutManager</item>
+        <item>LinearLayoutManager</item>
+    </string-array>
+</resources>

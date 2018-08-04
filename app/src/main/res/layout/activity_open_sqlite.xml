@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.txl.tool.sqlite.OpenSQLiteActivity">
+    <TextView
+        android:id="@+id/open_sqlite_has_sqlite_textview"
+        android:text="已拥有数据库"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ListView
+        android:id="@+id/open_sqlite_contain_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/open_sqlite_has_sqlite_textview"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"/>
+    <EditText
+        android:id="@+id/open_sqlite_edittext"
+        android:hint="输入要创建的数据库名称"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/open_sqlite_contain_listview" />
+    <Button
+        android:id="@+id/open_sqlite_submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="创建"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/open_sqlite_edittext"/>
+
+
+
+</android.support.constraint.ConstraintLayout>
