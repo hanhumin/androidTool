@@ -66,12 +66,12 @@ public class FiLiAdapter extends RecyclerView.Adapter{
     ImageLoader  loader = App.getImageLoader();
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final ViewHolder viewHolder = (ViewHolder) holder;
-        final ImageView imageView = viewHolder.cardView.findViewById( R.id.image_item );
-        if(heightArray == null){
-            heightArray = new SparseArray<>(  );
-        }
         if(mIsRecyclerViewIdle){
+            final ViewHolder viewHolder = (ViewHolder) holder;
+            final ImageView imageView = viewHolder.cardView.findViewById( R.id.image_item );
+            if(heightArray == null){
+                heightArray = new SparseArray<>(  );
+            }
             if(heightArray.get( position ) == null){
                 loader.decodeBitmapSize( results.get( position ).getUrl(), new ImageLoader.SourceReady() {
                     @Override
