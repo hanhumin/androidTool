@@ -46,6 +46,7 @@ public class ImageLoader {
     private static final String TAG = "ImageLoader";
 
     public static final int MESSAGE_POST_RESULT = 1;
+    public static final int MESSAGE_POST_IMAGE_SIZE = 2;
 
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 
@@ -79,15 +80,24 @@ public class ImageLoader {
     private Handler mMainHandler = new Handler( Looper.getMainLooper() ){
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage( msg );
-            LoaderResult result = (LoaderResult) msg.obj;
-            ImageView imageView = result.imageView;
-            String uri = (String) imageView.getTag( TAG_KEY_URI );
-            if(uri.equals( result.uri )){
-                imageView.setImageBitmap( result.bitmap );
-            }else {
-                Log.w( TAG,"set image bitmap, but url has changed, ignored!" );
+            switch (msg.what){
+                case MESSAGE_POST_RESULT:
+                    LoaderResult result = (LoaderResult) msg.obj;
+                    ImageView imageView = result.imageView;
+                    String uri = (String) imageView.getTag( TAG_KEY_URI );
+                    if(uri.equals( result.uri )){
+                        imageView.setImageBitmap( result.bitmap );
+                    }else {
+                        Log.w( TAG,"set image bitmap, but url has changed, ignored!" );
+                    }
+                    return;
+                case MESSAGE_POST_IMAGE_SIZE:
+                    SourceReady ready = (SourceReady) msg.obj;
+                    ready.bitmapSourceReady(msg.arg1, msg.arg2 );
+                    return;
             }
+
+            super.handleMessage( msg );
         }
     };
 
@@ -351,6 +361,30 @@ public class ImageLoader {
         return statFs.getBlockSizeLong() + statFs.getAvailableBlocksLong();
     }
 
+    public void decodeBitmapSize(final String urlString, final SourceReady sourceReady){
+        Runnable ImageSizeTask = new Runnable() {
+            @Override
+            public void run() {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                try {
+                    URL url = new URL( urlString );
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    BitmapFactory.decodeStream( connection.getInputStream(),null,options );
+                    Message message = mMainHandler.obtainMessage( MESSAGE_POST_IMAGE_SIZE,sourceReady);
+                    message.arg1 = options.outWidth;
+                    message.arg2 = options.outHeight;
+                    mMainHandler.sendMessage( message );
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        THREAD_POOL_EXECUTOR.execute( ImageSizeTask );
+    }
+
     private static class LoaderResult{
         public ImageView imageView;
         public String uri;
@@ -361,5 +395,9 @@ public class ImageLoader {
             this.uri = uri;
             this.bitmap = bitmap;
         }
+    }
+
+    public interface SourceReady{
+        void bitmapSourceReady(int bitmapWidth, int bitmapHeight);
     }
 }

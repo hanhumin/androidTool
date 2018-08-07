@@ -66,7 +66,7 @@ public class RecyclerViewActivity extends BaseActivity implements FuLiContract.V
                 mFiLiPresenter.loadMore();
             }
         } );
-        adapter = new FiLiAdapter();
+        adapter = new FiLiAdapter(refreshRecyclerView);
         refreshRecyclerView.setAdapter( adapter );
         mFiLiPresenter = new FuLiPresenter( this );
         mFiLiPresenter.start();
