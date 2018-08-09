@@ -20,4 +20,13 @@
         <item>StaggeredGridLayoutManager</item>
         <item>LinearLayoutManager</item>
     </string-array>
+
+    <string-array name="GestureDetector">
+        <item>GestureDetector</item>
+    </string-array>
+
+    <string-array name="Video">
+        <item>TextureView</item>
+        <item>MoreTextureView</item>
+    </string-array>
 </resources>

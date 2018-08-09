@@ -4,6 +4,8 @@
     <string name="expandableListView">ExpandableListView使用</string>
     <string name="RecyclerView">RecyclerView使用</string>
     <string name="title_activity_recycler_view">RecyclerViewActivity</string>
+    <string name="GestureDetector">手势操作</string>
+    <string name="Video">视频</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

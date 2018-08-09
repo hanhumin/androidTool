@@ -1,4 +1,4 @@
-package com.example.txl.tool.recycler.data;
+package com.example.txl.tool;
 
 import android.os.Environment;
 import android.util.Log;
@@ -23,6 +23,8 @@ public class GankIoApi {
     public static final String URL_GET_IDEL_DATA = "http://gank.io/api/xiandu/data/";
     /**获取福利*/
     public static final String URL_GET_FULI_DATA = "http://gank.io/api/data/福利/";
+    /**获取休息视频*/
+    public static final String URL_GET_VIDEO_DATA = "http://gank.io/api/data/休息视频/";
 
     private static final OkHttpClient client;
 

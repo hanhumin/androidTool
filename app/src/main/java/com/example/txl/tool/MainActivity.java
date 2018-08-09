@@ -11,6 +11,9 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
+import com.example.txl.tool.gank.io.video.MoreTextureActivity;
+import com.example.txl.tool.gank.io.video.VideoActivity;
+import com.example.txl.tool.gesture.GestureActivity;
 import com.example.txl.tool.recycler.RecyclerViewActivity;
 import com.example.txl.tool.sqlite.OpenSQLiteActivity;
 
@@ -82,6 +85,35 @@ public class MainActivity extends BaseActivity{
             recyclerViewList.add( map );
         }
         childData.add(recyclerViewList );
+
+        groupItemsMap = new HashMap<>(  );
+        groupItemsMap.put( "group", getResources().getString( R.string.GestureDetector ) );
+        groupData.add( groupItemsMap );
+        String[] gestureDetectors = getResources().getStringArray( R.array.GestureDetector );
+        List<Map<String,?>> gestureDetectorsList = new ArrayList(  );
+        for(int i=0; i<gestureDetectors.length; i++){
+            HashMap<String, String> map = new HashMap(  );
+            map.put( "item", gestureDetectors[i]);
+            //可以配置action来使，元素被点击读取action
+            map.put( "action",gestureDetectors[i] );
+            gestureDetectorsList.add( map );
+        }
+        childData.add(gestureDetectorsList );
+
+        //视频
+        groupItemsMap = new HashMap<>(  );
+        groupItemsMap.put( "group", getResources().getString( R.string.Video ) );
+        groupData.add( groupItemsMap );
+        String[] videos = getResources().getStringArray( R.array.Video );
+        List<Map<String,?>> videoList = new ArrayList(  );
+        for(int i=0; i<videos.length; i++){
+            HashMap<String, String> map = new HashMap(  );
+            map.put( "item", videos[i]);
+            //可以配置action来使，元素被点击读取action
+            map.put( "action",videos[i] );
+            videoList.add( map );
+        }
+        childData.add(videoList );
         adapter.notifyDataSetChanged();
     }
 
@@ -130,6 +162,15 @@ public class MainActivity extends BaseActivity{
                         ComponentName gridComponentName = new ComponentName( MainActivity.this, RecyclerViewActivity.class);
                         gridIntent.setComponent( gridComponentName );
                         startActivityByIntent( gridIntent );
+                        break;
+                    case "GestureDetector":
+                        startActivity( GestureActivity.class );
+                        break;
+                    case "TextureView":
+                        startActivity( VideoActivity.class);
+                        break;
+                    case "MoreTextureView":
+                        startActivity( MoreTextureActivity.class);
                         break;
 
                 }

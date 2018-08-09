@@ -3,7 +3,7 @@ package com.example.txl.tool.recycler;
 import android.util.Log;
 
 import com.example.txl.tool.recycler.bean.BeautyGirls;
-import com.example.txl.tool.recycler.data.GankIoApi;
+import com.example.txl.tool.GankIoApi;
 import com.example.txl.tool.utils.AppExecutors;
 import com.example.txl.tool.utils.TextUtils;
 import com.google.gson.Gson;

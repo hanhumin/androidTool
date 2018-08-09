@@ -34,4 +34,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:26.+'
     implementation files('libs/gson-2.8.5.jar')
     implementation files('libs/disklrucache-2.0.2.jar')
+    implementation files('libs/jsoup-1.11.3.jar')
 }
