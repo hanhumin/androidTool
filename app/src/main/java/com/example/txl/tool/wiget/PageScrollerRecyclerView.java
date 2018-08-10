@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.txl.tool.player.TextureVideoPlayerView;
+import com.example.txl.tool.utils.AppExecutors;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -47,8 +48,6 @@ public class PageScrollerRecyclerView extends RecyclerView {
                 // TODO 找到对应的Index
                 int targetPos = super.findTargetSnapPosition(layoutManager, velocityX, velocityY);
                 Log.e(TAG, "findTargetSnapPosition targetPos: " + targetPos);
-                PageScrollerRecyclerView.this.targetPos = targetPos;
-                targetView = layoutManager.getChildAt( targetPos );
                 return targetPos;
             }
 
@@ -60,9 +59,17 @@ public class PageScrollerRecyclerView extends RecyclerView {
                 TextureVideoPlayerView view = (TextureVideoPlayerView) super.findSnapView(layoutManager);
                 targetPos = layoutManager.getPosition( view );
                 Log.e(TAG, "findSnapView tag: " +view.getTag());
+                if(view == targetView){
+                    return view;
+                }
                 targetView = view;
                 if(pageScrollListener != null && targetView != null){
-                    pageScrollListener.onPageScroll( targetPos,targetView );
+                    new AppExecutors().mainThread().execute( new Runnable() {
+                        @Override
+                        public void run() {
+                            pageScrollListener.onPageScroll( targetPos,targetView );
+                        }
+                    } );
                 }
                 return view;
             }

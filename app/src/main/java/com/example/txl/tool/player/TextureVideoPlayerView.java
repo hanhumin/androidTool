@@ -1,7 +1,6 @@
 package com.example.txl.tool.player;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -69,9 +68,9 @@ public class TextureVideoPlayerView extends FrameLayout {
             }
         } );
         this.addView(mTextureView, new FrameLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ));
-        mContainer = new FrameLayout( context );
-        mContainer.setBackgroundColor( Color.alpha( 0x00CC00FF ) );
-        this.addView( mContainer, new FrameLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ));
+//        mContainer = new FrameLayout( context );
+//        mContainer.setBackgroundColor( Color.alpha( 0xffCC00FF ) );
+//        this.addView( mContainer, new FrameLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ));
     }
 
     public ImageView getBackImage(){

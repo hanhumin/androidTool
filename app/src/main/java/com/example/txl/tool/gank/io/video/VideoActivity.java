@@ -1,10 +1,15 @@
 package com.example.txl.tool.gank.io.video;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
+
 import com.example.txl.tool.BaseActivity;
 import com.example.txl.tool.R;
 import com.example.txl.tool.player.SimpleAndroidPlayer;
@@ -47,8 +52,8 @@ public class VideoActivity extends BaseActivity implements VideoContract.View{
                 Log.d( TAG,"currentView  "+currentView +"  ");
                 Log.d( TAG,"currentView.getTextureView() "+currentView.getTextureView()+"  ");
                 player.stop();
-                player.setMediaPlaerSurface( new Surface( currentView.getTextureView().getSurfaceTexture() ) );
                 player.open( currentView.getTag().toString() );
+                player.setMediaPlaerSurface( new Surface( currentView.getTextureView().getSurfaceTexture() ) );
                 player.play();
             }
         } );

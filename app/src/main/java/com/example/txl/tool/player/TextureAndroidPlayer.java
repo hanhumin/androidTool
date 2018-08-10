@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference;
  * Copyright (c) 2018, 唐小陆 All rights reserved.
  * author：txl
  * date：2018/8/9
- * description：fixme 测试为TextureView替换不同的父布局，背景设为透明
+ * description：fixme 切换TextureView的parent开始播放的时候有时会先黑屏一下在播放
  */
 public class TextureAndroidPlayer implements IMediaPlayer {
     private static final String TAG = TextureAndroidPlayer.class.getSimpleName();
@@ -290,9 +290,9 @@ public class TextureAndroidPlayer implements IMediaPlayer {
             _mp.start();
         }
 
-        if (_textureView != null) {
-            _textureView.requestLayout();
-        }
+//        if (_textureView != null) {
+//            _textureView.requestLayout();
+//        }
 
         IMediaPlayerEvents listener = _listener;
         if (listener != null) {
