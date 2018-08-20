@@ -30,7 +30,19 @@
             android:name=".gank.io.video.VideoActivity"
             android:hardwareAccelerated="true" />
         <activity android:name=".gesture.GestureActivity" />
-        <activity android:name=".gank.io.video.MoreTextureActivity"></activity>
+        <activity android:name=".gank.io.video.MoreTextureActivity" />
+        <activity
+            android:name=".inter.process.communication.IPCActivity"
+            android:process=":remote" />
+
+        <service
+            android:name=".inter.process.communication.BookManagerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote" />
+
+        <activity android:name=".custom.DragViewActivity" />
+        <activity android:name=".custom.BannerActivity"></activity>
     </application>
 
 </manifest>

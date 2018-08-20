@@ -29,4 +29,18 @@
         <item>TextureView</item>
         <item>MoreTextureView</item>
     </string-array>
+
+    <string-array name="IPC">
+        <item>Bundle</item>
+        <item>File</item>
+        <item>Messenger</item>
+        <item>AIDL</item>
+        <item>ContentProvider</item>
+        <item>Socket</item>
+    </string-array>
+
+    <string-array name="CustomView">
+        <item>DragTextView</item>
+        <item>BannerView</item>
+    </string-array>
 </resources>

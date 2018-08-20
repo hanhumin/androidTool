@@ -2,21 +2,32 @@ package com.example.txl.tool;
 
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
+import com.example.txl.tool.custom.BannerActivity;
+import com.example.txl.tool.custom.DragViewActivity;
 import com.example.txl.tool.gank.io.video.MoreTextureActivity;
 import com.example.txl.tool.gank.io.video.VideoActivity;
 import com.example.txl.tool.gesture.GestureActivity;
+import com.example.txl.tool.inter.process.communication.Book;
+import com.example.txl.tool.inter.process.communication.IPCActivity;
+import com.example.txl.tool.inter.process.communication.User;
 import com.example.txl.tool.recycler.RecyclerViewActivity;
 import com.example.txl.tool.sqlite.OpenSQLiteActivity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,6 +125,37 @@ public class MainActivity extends BaseActivity{
             videoList.add( map );
         }
         childData.add(videoList );
+
+        //跨进程通信
+        groupItemsMap = new HashMap<>(  );
+        groupItemsMap.put( "group", getResources().getString( R.string.IPC ) );
+        groupData.add( groupItemsMap );
+        String[] IPC = getResources().getStringArray( R.array.IPC );
+        List<Map<String,?>> ipcList = new ArrayList(  );
+        for(int i=0; i<IPC.length; i++){
+            HashMap<String, String> map = new HashMap(  );
+            map.put( "item", IPC[i]);
+            //可以配置action来使，元素被点击读取action
+            map.put( "action",IPC[i] );
+            ipcList.add( map );
+        }
+        childData.add(ipcList );
+
+        //自定义view
+        groupItemsMap = new HashMap<>(  );
+        groupItemsMap.put( "group", getResources().getString( R.string.CustomView ) );
+        groupData.add( groupItemsMap );
+        String[] customView = getResources().getStringArray( R.array.CustomView );
+        List<Map<String,?>> customViewList = new ArrayList(  );
+        for(int i=0; i<customView.length; i++){
+            HashMap<String, String> map = new HashMap(  );
+            map.put( "item", customView[i]);
+            //可以配置action来使，元素被点击读取action
+            map.put( "action",customView[i] );
+            customViewList.add( map );
+        }
+        childData.add(customViewList );
+
         adapter.notifyDataSetChanged();
     }
 
@@ -172,10 +214,67 @@ public class MainActivity extends BaseActivity{
                     case "MoreTextureView":
                         startActivity( MoreTextureActivity.class);
                         break;
+                    case "Bundle":
+                        Intent bundleIntent = new Intent( MainActivity.this, IPCActivity.class );
+                        bundleIntent.putExtra( "msg","我是来自Bundle的消息" );
+                        startActivityByIntent( bundleIntent );
+                        break;
+                    case "File":
+                        new Thread( new Runnable() {
+                            @Override
+                            public void run() {
+                                User user = new User( 1,"文件共享",false);
+                                File cacheFileDir = getDiskCacheDir( MainActivity.this,"file_ipc" );
+                                if(!cacheFileDir.exists()){
+                                    cacheFileDir.mkdirs();
+                                }
+                                File cacheFile = new File( cacheFileDir.getPath()+File.separator+"user1" );
+                                ObjectOutputStream objectOutputStream = null;
+                                try {
+                                    objectOutputStream = new ObjectOutputStream( new FileOutputStream( cacheFile ) );
+                                    objectOutputStream.writeObject( user );
+                                    objectOutputStream.close();
+                                    Log.d( TAG,"persist user: "+user );
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }finally {
+                                   runOnUiThread( new Runnable() {
+                                       @Override
+                                       public void run() {
+                                           Intent fileIntent = new Intent( MainActivity.this, IPCActivity.class );
+                                           startActivityByIntent( fileIntent );
+                                       }
+                                   } );
+                                }
+                            }
+                        } ).start();
+                        break;
+                    case "messenger":
+                    case "AIDL":
+                    case "ContentProvider":
+                    case "Socket":
+                        break;
+                    case "DragTextView":
+                        startActivity( DragViewActivity.class );
+                        break;
+                    case "BannerView":
+                        startActivity( BannerActivity.class );
+                        break;
 
                 }
                 return false;
             }
         } );
+    }
+
+    public File getDiskCacheDir(Context context, String uniqueName){
+        boolean externalStorageAvailable = Environment.getExternalStorageState().equals( Environment.MEDIA_MOUNTED );
+        final String cachePath;
+        if(externalStorageAvailable){
+            cachePath = context.getExternalCacheDir().getPath();
+        }else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        return new File( cachePath+File.separator+uniqueName );
     }
 }
