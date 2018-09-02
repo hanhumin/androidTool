@@ -156,6 +156,8 @@ public class MainActivity extends BaseActivity{
         }
         childData.add(customViewList );
 
+        //断点续传
+
         adapter.notifyDataSetChanged();
     }
 

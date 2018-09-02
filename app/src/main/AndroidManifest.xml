@@ -42,7 +42,8 @@
             android:process=":remote" />
 
         <activity android:name=".custom.DragViewActivity" />
-        <activity android:name=".custom.BannerActivity"></activity>
+        <activity android:name=".custom.BannerActivity" />
+        <activity android:name=".constraintLayout.ConstraintLayoutActivity"></activity>
     </application>
 
 </manifest>
