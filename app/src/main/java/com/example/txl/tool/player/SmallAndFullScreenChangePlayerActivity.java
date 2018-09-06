@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -46,8 +47,9 @@ public class SmallAndFullScreenChangePlayerActivity extends BaseActivity {
      * 参照IMediaPlayer接口，设计播放器相关接口,初步设想应该持有一个播放控制器
      * */
     public class PlayerUiController<T> implements View.OnClickListener{
+        Context context;
         ViewGroup parent;
-        ConstraintLayout rootConstraintLayout;
+        ConstraintLayout rootConstraintLayout;//自定义view构造播放控件，需要解决滑动冲突，
         ImageView ivBack, ivMore, ivPlayerController, ivChangeToFull;
         SeekBar playerSeekBar;
 
@@ -55,6 +57,7 @@ public class SmallAndFullScreenChangePlayerActivity extends BaseActivity {
 
         public PlayerUiController(ViewGroup parent, Context context) {
             this.parent = parent;
+            this.context = context;
             initView(context);
         }
 
@@ -85,6 +88,11 @@ public class SmallAndFullScreenChangePlayerActivity extends BaseActivity {
                 case R.id.iv_small_player_ui_play_controller:
                     break;
                 case R.id.iv_small_player_ui_change_to_full:
+                    RotateAnimation rotateAnimation = new RotateAnimation( 0,90 ,100,100);
+
+                    rotateAnimation.setDuration( 300 );
+                    rotateAnimation.setFillAfter( true );
+                    rootConstraintLayout.startAnimation( rotateAnimation );
                     break;
             }
         }
