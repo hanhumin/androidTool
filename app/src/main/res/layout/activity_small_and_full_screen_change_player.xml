@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+
+    tools:context=".player.SmallAndFullScreenChangePlayerActivity">
+
+    <ImageView
+        android:id="@+id/iv_small_player_ui_back"
+        android:src="@drawable/small_screen_player_ui_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="21dp"/>
+
+    <ImageView
+        android:id="@+id/iv_small_player_ui_more"
+        android:src="@drawable/small_screen_player_ui_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="27dp"/>
+
+    <!--三个控件公用一个ui-->
+    <ImageView
+        android:id="@+id/iv_small_player_ui_play_controller"
+        android:src="@drawable/small_screen_player_ui_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_small_player_ui_time"
+        android:layout_marginBottom="19dp"
+        android:layout_marginStart="20dp"/>
+
+    <TextView
+        android:id="@+id/tv_small_player_ui_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#ffffffff"
+        android:text="01:32:30 / 02:35:00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="27dp"
+        android:layout_marginBottom="19dp"
+        app:layout_constraintStart_toEndOf="@id/iv_small_player_ui_play_controller"
+        app:layout_constraintTop_toTopOf="@id/iv_small_player_ui_play_controller"
+        />
+
+    <SeekBar
+        android:id="@+id/sb_small_player_ui_seek"
+        android:layout_width="240dp"
+        android:layout_height="8dp"
+        android:layout_marginBottom="22dp"
+        app:layout_constraintStart_toEndOf="@id/tv_small_player_ui_time"
+        app:layout_constraintEnd_toStartOf="@id/iv_small_player_ui_change_to_full"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_small_player_ui_change_to_full"
+        android:src="@drawable/small_screen_player_ui_change_to_full"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/sb_small_player_ui_seek"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="17dp"
+        android:layout_marginStart="5dp"/>
+
+</android.support.constraint.ConstraintLayout>

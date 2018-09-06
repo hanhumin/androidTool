@@ -15,11 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".sqlite.OpenSQLiteActivity" />
         <activity
@@ -44,7 +40,14 @@
         <activity android:name=".custom.DragViewActivity" />
         <activity android:name=".custom.BannerActivity" />
         <activity android:name=".constraintLayout.ConstraintLayoutActivity" />
-        <activity android:name=".breakpoint.BreakPointDownloadActivity"></activity>
+        <activity android:name=".breakpoint.BreakPointDownloadActivity" />
+        <activity android:name=".player.SmallAndFullScreenChangePlayerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
