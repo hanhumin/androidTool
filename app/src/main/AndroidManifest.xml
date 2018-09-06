@@ -43,7 +43,8 @@
 
         <activity android:name=".custom.DragViewActivity" />
         <activity android:name=".custom.BannerActivity" />
-        <activity android:name=".constraintLayout.ConstraintLayoutActivity"></activity>
+        <activity android:name=".constraintLayout.ConstraintLayoutActivity" />
+        <activity android:name=".breakpoint.BreakPointDownloadActivity"></activity>
     </application>
 
 </manifest>
