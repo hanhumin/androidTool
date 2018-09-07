@@ -134,6 +134,9 @@ public class SmallAndFullScreenChangePlayerActivity extends BaseActivity impleme
     public void setSurface(Surface surface) {
         mediaPlayer.setSurface(surface);
 
+
+
+
     }
 
 
