@@ -1,45 +1,140 @@
-package com.example.txl.tool.player;
+package com.example.txl.tool.huaxiyun.player;
 
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import com.example.txl.tool.BaseActivity;
 import com.example.txl.tool.R;
 
+import java.io.IOException;
+
 /**
  * 播放器可以大小屏幕切换
  * */
 
-public class SmallAndFullScreenChangePlayerActivity extends BaseActivity {
+public class SmallAndFullScreenChangePlayerActivity extends BaseActivity implements IPlayer{
 
     private static final String TAG = SmallAndFullScreenChangePlayerActivity.class.getSimpleName();
+    private MediaPlayer mediaPlayer;
+    CommonPlayerUIController uiController;
+    private TextureView textureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
 
-        FrameLayout frameLayout = new FrameLayout( this ){
+        LinearLayout frameLayout = new LinearLayout( this ){
             @Override
             public void addView(View child) {
                 super.addView( child );
             }
         };
         frameLayout.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
+        frameLayout.setOrientation(LinearLayout.VERTICAL);
+        textureView = new TextureView(this);
+        textureView.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
         setContentView( frameLayout);
-        new PlayerUiController<FrameLayout>( frameLayout,this );
+        mediaPlayer = new MediaPlayer();
+        uiController = new CommonPlayerUIController( this,frameLayout,this );
+        try {
+            mediaPlayer.setDataSource( this, Uri.parse("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff50000bd0p9ur6936mllnbeo40&line=0") );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+//                mediaPlayer.start();
+//                mediaPlayer.setSurface(new Surface(textureView.getSurfaceTexture()));
+            }
+        });
+        frameLayout.addView(textureView);
     }
 
+    @Override
+    public long getDuration() {
+        return 0;
+    }
+
+    @Override
+    public boolean play() {
+        // FIXME: 2018/9/7 应该根据播放器状态来
+        mediaPlayer.prepareAsync();
+        mediaPlayer.setLooping(true);
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                uiController.onPrepared(null);
+                mediaPlayer.start();
+            }
+        });
+        return false;
+    }
+
+    @Override
+    public boolean open(String url) {
+        return false;
+    }
+
+    @Override
+    public boolean pause() {
+        return false;
+    }
+
+    @Override
+    public boolean stop() {
+        return false;
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return false;
+    }
+
+    @Override
+    public boolean seekTo(long pos) {
+        return false;
+    }
+
+    @Override
+    public boolean releasePlayer() {
+        return false;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    @Override
+    public void updateProgress() {
+
+    }
+
+    @Override
+    public void setEventListener(IPlayerEvents listener) {
+
+    }
+
+    @Override
+    public void setSurface(Surface surface) {
+        mediaPlayer.setSurface(surface);
+
+    }
 
 
     /**
