@@ -7,6 +7,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -74,6 +76,19 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
             }
         });
         frameLayout.addView(textureView);
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int width = metric.widthPixels; // 屏幕宽度（像素）
+        int height = metric.heightPixels; // 屏幕高度（像素）
+        float density = metric.density; // 屏幕密度（0.75 / 1.0 / 1.5）
+        int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
+        Log.d( TAG,"width:"+width+" height:"+height+" density:"+density+" densityDpi:"+densityDpi );
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        playerController.stop();
     }
 
     @Override
@@ -83,7 +98,7 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
 
     @Override
     public boolean play() {
-        // FIXME: 2018/9/7 应该根据播放器状态来
+        mediaPlayer.start();
         return false;
     }
 
@@ -99,7 +114,8 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
 
     @Override
     public boolean stop() {
-        return false;
+        mediaPlayer.stop();
+        return true;
     }
 
     @Override

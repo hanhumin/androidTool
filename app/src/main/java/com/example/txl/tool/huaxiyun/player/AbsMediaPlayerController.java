@@ -29,10 +29,11 @@ public abstract class AbsMediaPlayerController implements IMediaPlayer.IPlayerEv
     }
 
     public void stop() {
+        _adapter.getMediaPlayer().stop();
     }
 
     public void pause() {
-
+        _adapter.getMediaPlayer().pause();
     }
 
     public void destroy() {
