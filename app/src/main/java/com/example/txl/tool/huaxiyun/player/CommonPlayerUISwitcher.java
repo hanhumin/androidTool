@@ -19,14 +19,12 @@ import android.widget.SeekBar;
 import com.example.txl.tool.R;
 import com.example.txl.tool.utils.DisplayUtil;
 
-public class CommonPlayerUIController extends AbsBasePlayerUiController implements TextureView.SurfaceTextureListener {
+public class CommonPlayerUISwitcher extends AbsBasePlayerUiSwitcher{
     private ImageView ivBack, ivMore, ivPlayerController, ivChangeToFull;
     private SeekBar playerSeekBar;
-    private FrameLayout rootFrameView;
-    private ConstraintLayout rootConstraintLayout;//自定义view构造播放控件，需要解决滑动冲突，
-    private TextureView playerPresenter;//播放内容的呈现者
-    public CommonPlayerUIController(IPlayer player,ViewGroup parent, Context context) {
-        super(player,parent, context);
+
+    public CommonPlayerUISwitcher(BasePlayerAdapter adapter, ViewGroup parent, Context context) {
+        super(adapter,parent, context);
     }
 
     @Override
@@ -44,15 +42,14 @@ public class CommonPlayerUIController extends AbsBasePlayerUiController implemen
         ivChangeToFull.setOnClickListener( this );
         // TODO: 2018/9/6 playerSeekBar 添加对应的事件
         playerSeekBar = rootConstraintLayout.findViewById( R.id.sb_small_player_ui_seek );
-        // fixme 播放器的内容呈现不应该放在播控ui
         playerPresenter = rootFrameView.findViewById(R.id.texture_view_player_content_presenter);
         playerPresenter.setSurfaceTextureListener(this);
 
     }
 
     @Override
-    void addContent(View view) {
-        rootConstraintLayout.addView(view);
+    public void addUi(View view) {
+        super.addUi( view );
     }
 
     boolean fullScreen = false;
@@ -95,59 +92,24 @@ public class CommonPlayerUIController extends AbsBasePlayerUiController implemen
     }
 
     @Override
-    public boolean onError(IPlayer player, int code, String msg) {
-        return false;
-    }
-
-    @Override
-    public boolean onPrepared(IPlayer player) {
-        return false;
-    }
-
-    @Override
-    public boolean onSeekComplete(IPlayer player, long pos) {
-        return false;
-    }
-
-    @Override
-    public boolean onComplete(IPlayer player) {
-        return false;
-    }
-
-    @Override
-    public boolean onBuffering(IPlayer player, boolean buffering, float percentage) {
-        return false;
-    }
-
-    @Override
-    public boolean onProgress(IPlayer player, long pos) {
-        return false;
-    }
-
-    @Override
-    public void onDestroy(IPlayer player) {
-
-    }
-
-    @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        playerController.setSurface(new Surface(surface));
-        playerController.play();
+        super.onSurfaceTextureAvailable( surface, width, height );
+//        _adapter.onSurfaceTextureAvailable( surface, width, height );
         // TODO: 2018/9/7 播放器内容可播放
     }
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
+        super.onSurfaceTextureSizeChanged( surface,width,height );
     }
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        return false;
+        return super.onSurfaceTextureDestroyed( surface );
     }
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
+        super.onSurfaceTextureUpdated( surface );
     }
 }

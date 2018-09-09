@@ -2,17 +2,18 @@ package com.example.txl.tool.huaxiyun.player;
 
 
 import android.content.Context;
+import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -26,35 +27,45 @@ import java.io.IOException;
  * 播放器可以大小屏幕切换
  * */
 
-public class SmallAndFullScreenChangePlayerActivity extends BaseActivity implements IPlayer{
+public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity implements IMediaPlayer {
 
-    private static final String TAG = SmallAndFullScreenChangePlayerActivity.class.getSimpleName();
+    private static final String TAG = SmallAndFullScreenChangeMediaPlayerActivity.class.getSimpleName();
     private MediaPlayer mediaPlayer;
-    CommonPlayerUIController uiController;
+    CommonPlayerUISwitcher uiSwitcher;
+    CommonPlayerController playerController;
     private TextureView textureView;
+    boolean prepared = false, surfaceTextureAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
 
-        LinearLayout frameLayout = new LinearLayout( this ){
-            @Override
-            public void addView(View child) {
-                super.addView( child );
-            }
-        };
+        LinearLayout frameLayout = new LinearLayout( this );
         frameLayout.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
         frameLayout.setOrientation(LinearLayout.VERTICAL);
+        setContentView( frameLayout);
         textureView = new TextureView(this);
         textureView.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
-        setContentView( frameLayout);
+        PlayerAdapter playerAdapter = new PlayerAdapter();
+        uiSwitcher = new CommonPlayerUISwitcher( playerAdapter,frameLayout,this );
+        uiSwitcher.setSurfaceTextureListener( playerAdapter );
+        playerController = new CommonPlayerController( playerAdapter );
+        setEventListener( playerController );
         mediaPlayer = new MediaPlayer();
-        uiController = new CommonPlayerUIController( this,frameLayout,this );
         try {
             mediaPlayer.setDataSource( this, Uri.parse("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff50000bd0p9ur6936mllnbeo40&line=0") );
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mediaPlayer.setLooping(true);
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                playerController.onPrepared(SmallAndFullScreenChangeMediaPlayerActivity.this);
+                mediaPlayer.start();
+            }
+        });
+        mediaPlayer.prepareAsync();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -67,21 +78,12 @@ public class SmallAndFullScreenChangePlayerActivity extends BaseActivity impleme
 
     @Override
     public long getDuration() {
-        return 0;
+        return mediaPlayer.getDuration();
     }
 
     @Override
     public boolean play() {
         // FIXME: 2018/9/7 应该根据播放器状态来
-        mediaPlayer.prepareAsync();
-        mediaPlayer.setLooping(true);
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                uiController.onPrepared(null);
-                mediaPlayer.start();
-            }
-        });
         return false;
     }
 
@@ -130,15 +132,99 @@ public class SmallAndFullScreenChangePlayerActivity extends BaseActivity impleme
 
     }
 
-    @Override
-    public void setSurface(Surface surface) {
-        mediaPlayer.setSurface(surface);
 
+    class PlayerAdapter extends BasePlayerAdapter{
 
+        @Override
+        public void showUI(String componentId, boolean show) {
 
+        }
 
+        @Override
+        public IMediaPlayer getMediaPlayer() {
+            return SmallAndFullScreenChangeMediaPlayerActivity.this;
+        }
+
+        @Override
+        public Object getDataUtils() {
+            return null;
+        }
+
+        @Override
+        public AbsBasePlayerUiSwitcher getUiSwitcher() {
+            return uiSwitcher;
+        }
+
+        @Override
+        public AbsMediaPlayerController getController() {
+            return playerController;
+        }
+
+        @Override
+        public View getUiComponent(String name) {
+            return null;
+        }
+
+        @Override
+        public void setProgress(float pos) {
+
+        }
+
+        @Override
+        public boolean dispatchSeekControllerEvents(KeyEvent event) {
+            return false;
+        }
+
+        @Override
+        public void onPlayPaused(boolean paused) {
+
+        }
+
+        @Override
+        public void destroy() {
+
+        }
+
+        @Override
+        public String makePlayUrl(String playUrl, Bundle data) {
+            return null;
+        }
+
+        @Override
+        public String getAspectRatio() {
+            return null;
+        }
+
+        @Override
+        public void setAspectRatio(String ratio) {
+
+        }
+
+        @Override
+        public View getPlayerView() {
+            return null;
+        }
+
+        @Override
+        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+            mediaPlayer.setSurface( new Surface( surface ) );
+        }
+
+        @Override
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+
+        }
+
+        @Override
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+            return false;
+        }
+
+        @Override
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+
+        }
     }
-
 
     /**
      * 持有播放器相应的事件回调接口，对应事件进行处理；播放控制器;

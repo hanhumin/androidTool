@@ -38,10 +38,10 @@ public class AppExecutors {
 
     private final Executor networkIO;
 
-    private final Executor mainThread;
+    private final MainThreadExecutor mainThread;
 
     @VisibleForTesting
-    AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
+    AppExecutors(Executor diskIO, Executor networkIO, MainThreadExecutor mainThread) {
         this.diskIO = diskIO;
         this.networkIO = networkIO;
         this.mainThread = mainThread;
@@ -60,16 +60,21 @@ public class AppExecutors {
         return networkIO;
     }
 
-    public Executor mainThread() {
+    public MainThreadExecutor mainThread() {
         return mainThread;
     }
 
-    private static class MainThreadExecutor implements Executor {
+    public static class MainThreadExecutor implements Executor {
         private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
         @Override
         public void execute(@NonNull Runnable command) {
             mainThreadHandler.post(command);
         }
+
+        public void executeDelay(@NonNull Runnable command, long ms){
+            mainThreadHandler.postDelayed( command,ms );
+        }
+
     }
 }

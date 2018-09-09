@@ -8,7 +8,7 @@ import android.view.Surface;
  * date：2018/9/7
  * description：播放控制器抽象
  */
-public interface IPlayer {
+public interface IMediaPlayer {
 
     long getDuration();
 
@@ -32,22 +32,22 @@ public interface IPlayer {
 
     void setEventListener(IPlayerEvents listener);
 
-    void setSurface( Surface surface );
-
-
+    /**
+     * 可以考虑继承mediaPlayer的事件回调接口
+     * */
     interface IPlayerEvents {
-        boolean onError(IPlayer player, int code, String msg);
+        boolean onError(IMediaPlayer player, int code, String msg);
 
-        boolean onPrepared(IPlayer player);
+        boolean onPrepared(IMediaPlayer player);
 
-        boolean onSeekComplete(IPlayer player, long pos);
+        boolean onSeekComplete(IMediaPlayer player, long pos);
 
-        boolean onComplete(IPlayer player);
+        boolean onComplete(IMediaPlayer player);
 
-        boolean onBuffering(IPlayer player, boolean buffering, float percentage);
+        boolean onBuffering(IMediaPlayer player, boolean buffering, float percentage);
 
-        boolean onProgress(IPlayer player, long pos);
+        boolean onProgress(IMediaPlayer player, long pos);
 
-        void onDestroy(IPlayer player);
+        void onDestroy(IMediaPlayer player);
     }
 }
