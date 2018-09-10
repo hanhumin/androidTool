@@ -92,6 +92,11 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
     }
 
     @Override
+    public void init(Context context) {
+
+    }
+
+    @Override
     public long getDuration() {
         return mediaPlayer.getDuration();
     }

@@ -1,5 +1,6 @@
 package com.example.txl.tool.huaxiyun.player;
 
+import android.content.Context;
 import android.view.Surface;
 
 /**
@@ -10,7 +11,11 @@ import android.view.Surface;
  */
 public interface IMediaPlayer {
 
+    void init(Context context);
+
     long getDuration();
+
+    long getCurrentPosition();
 
     boolean play();
 
