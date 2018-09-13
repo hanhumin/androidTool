@@ -2,10 +2,13 @@ package com.example.txl.tool.huaxiyun.player;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.util.Log;
 import android.view.Surface;
 
 import com.example.txl.tool.player.SimpleAndroidPlayer;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 public class HuaXiYunSimplePlayer implements IMediaPlayer {
@@ -309,17 +312,54 @@ public class HuaXiYunSimplePlayer implements IMediaPlayer {
 
     @Override
     public boolean play() {
-        return false;
+        _changeState(PS_STOPPED, PS_PLAYING);
+        if (_hasState(PS_PREPARED)) {
+            _mp.start();
+        }
+        return true;
     }
 
     @Override
     public boolean open(String url) {
+        if (_disposablePlayer && _hasAnyState(PS_PREPARED | PS_PREPARING | PS_ERROR)) {
+            _disposePlayer();
+        }
+
+        if (_hasAnyState(PS_REBUILD | PS_RELEASED)) {
+            _changeState(PS_REBUILD | PS_RELEASED | PS_PREPARED | PS_PREPARING | PS_STOPPED | PS_ERROR, 0);
+            _createMediaPlayer();
+        }
+
+        MediaPlayer mp = _mp;
+        if (mp == null) {
+            return false;
+        }
+        try {
+            _url = url;
+            Log.d(TAG, "playUrl = " + _url);
+            if (_hasAnyState(PS_STOPPED | PS_PREPARED | PS_PREPARING)) {
+                mp.reset();
+            }
+            mp.setDataSource(_ctx, Uri.parse(_url));
+            _changeState(PS_BUFFERING | PS_PREPARED, PS_PREPARING);
+            if (!_hasState(PS_UNINITIALIZED)) {
+                mp.prepareAsync();
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, e.toString());
+        }
         return false;
     }
 
     @Override
     public boolean pause() {
-        return false;
+        _changeState(PS_PLAYING, 0);
+        if (_hasState(PS_PREPARED)) {
+            _mp.pause();
+        }
+        return true;
     }
 
     @Override
@@ -348,7 +388,7 @@ public class HuaXiYunSimplePlayer implements IMediaPlayer {
 
     @Override
     public boolean isPlaying() {
-        return false;
+        return _mp != null && _hasState(PS_PLAYING | PS_PREPARED) && !_hasAnyState(PS_STOPPED | PS_UNINITIALIZED | PS_RELEASED);
     }
 
     @Override
@@ -374,16 +414,40 @@ public class HuaXiYunSimplePlayer implements IMediaPlayer {
 
     @Override
     public void destroy() {
-
+        _changeState(_playerState, PS_UNINITIALIZED);
+        MediaPlayer mp = _mp;
+        _mp = null;
+        if (mp != null) {
+            if (mp.isPlaying()) {
+                mp.reset();
+            }
+            mp.setDisplay(null);
+            mp.release();
+        }
     }
 
     @Override
     public void updateProgress() {
-
+        MediaPlayer player = _mp;
+        IPlayerEvents listener = _listener;
+        if (player == null || listener == null) {
+            return;
+        }
+        if (_hasAnyState(PS_STOPPED | PS_RELEASED | PS_SEEKING | PS_UNINITIALIZED)) {
+            return;
+        }
+        if (!_hasState(PS_PREPARED | PS_PLAYING)) {
+            return;
+        }
+        listener.onProgress(this, getCurrentPosition());
     }
 
     @Override
     public void setEventListener(IPlayerEvents listener) {
+        this._listener = listener;
+    }
 
+    public void setMediaPlayerSurface(Surface surface){
+        _onInitialized( surface );
     }
 }
