@@ -14,9 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".sqlite.OpenSQLiteActivity" />
         <activity
             android:name=".recycler.RecyclerViewActivity"
@@ -41,8 +39,16 @@
         <activity android:name=".custom.BannerActivity" />
         <activity android:name=".constraintLayout.ConstraintLayoutActivity" />
         <activity android:name=".breakpoint.BreakPointDownloadActivity" />
-        <activity android:name=".huaxiyun.player.SmallAndFullScreenChangeMediaPlayerActivity"
+        <activity
+            android:name=".huaxiyun.player.SmallAndFullScreenChangeMediaPlayerActivity"
             android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".hencoder.CanvasDemoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
