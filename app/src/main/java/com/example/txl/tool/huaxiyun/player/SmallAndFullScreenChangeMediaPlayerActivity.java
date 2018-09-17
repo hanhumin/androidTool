@@ -102,6 +102,11 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
     }
 
     @Override
+    public long getCurrentPosition() {
+        return 0;
+    }
+
+    @Override
     public boolean play() {
         mediaPlayer.start();
         return false;
@@ -244,66 +249,6 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
-        }
-    }
-
-    /**
-     * 持有播放器相应的事件回调接口，对应事件进行处理；播放控制器;
-     * 参照IMediaPlayer接口，设计播放器相关接口,初步设想应该持有一个播放控制器
-     * */
-    public class PlayerUiController<T> implements View.OnClickListener{
-        Context context;
-        ViewGroup parent;
-        ConstraintLayout rootConstraintLayout;//自定义view构造播放控件，需要解决滑动冲突，
-        ImageView ivBack, ivMore, ivPlayerController, ivChangeToFull;
-        SeekBar playerSeekBar;
-
-        T playerController;
-
-        public PlayerUiController(ViewGroup parent, Context context) {
-            this.parent = parent;
-            this.context = context;
-            initView(context);
-        }
-
-        private void initView(Context context){
-
-            rootConstraintLayout = (ConstraintLayout) LayoutInflater.from( context ).inflate( R.layout.activity_small_and_full_screen_change_player,parent,false );
-            parent.addView(rootConstraintLayout);
-            ivBack = rootConstraintLayout.findViewById( R.id.iv_small_player_ui_back );
-            ivBack.setOnClickListener( this );
-            ivMore = rootConstraintLayout.findViewById( R.id.iv_small_player_ui_more );
-            ivMore.setOnClickListener( this );
-            ivPlayerController = rootConstraintLayout.findViewById( R.id.iv_small_player_ui_play_controller );
-            ivPlayerController.setOnClickListener( this );
-            ivChangeToFull = rootConstraintLayout.findViewById( R.id.iv_small_player_ui_change_to_full );
-            ivChangeToFull.setOnClickListener( this );
-            playerSeekBar = rootConstraintLayout.findViewById( R.id.sb_small_player_ui_seek );
-            parent.invalidate();
-            // TODO: 2018/9/6 playerSeekBar 添加对应的事件
-        }
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.iv_small_player_ui_back:
-                    break;
-                case R.id.iv_small_player_ui_more:
-                    break;
-                case R.id.iv_small_player_ui_play_controller:
-                    break;
-                case R.id.iv_small_player_ui_change_to_full:
-                    RotateAnimation rotateAnimation = new RotateAnimation( 0,90 ,100,100);
-
-                    rotateAnimation.setDuration( 300 );
-                    rotateAnimation.setFillAfter( true );
-                    rootConstraintLayout.startAnimation( rotateAnimation );
-                    break;
-            }
-        }
-
-        public void setPlayerController(T playerController){
-            this.playerController = playerController;
         }
     }
 }

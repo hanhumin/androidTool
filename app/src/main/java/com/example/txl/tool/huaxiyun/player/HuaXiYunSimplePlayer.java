@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.Surface;
 
-import com.example.txl.tool.player.SimpleAndroidPlayer;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
