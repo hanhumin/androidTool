@@ -248,7 +248,7 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
 
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
+            //test git add
         }
     }
 }
