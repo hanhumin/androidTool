@@ -11,7 +11,7 @@
         android:id="@+id/texture_view_player_content_presenter"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <!--播放器控制ui-->
+    <!--小屏播放器控制ui-->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_small_player_ui_content"
         android:layout_width="match_parent"
@@ -102,6 +102,7 @@
 
         <!--广告-->
         <ImageView
+            android:visibility="gone"
             android:background="@color/colorAccent"
             android:clickable="true"
             android:focusable="true"
@@ -114,8 +115,8 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <!--用代码计算半径-->
         <ImageView
+            android:visibility="gone"
             android:clickable="true"
             android:focusable="true"
             android:id="@+id/iv_small_player_ui_close_ad_image"
