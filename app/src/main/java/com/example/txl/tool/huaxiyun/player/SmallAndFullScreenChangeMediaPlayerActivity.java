@@ -2,8 +2,11 @@ package com.example.txl.tool.huaxiyun.player;
 
 
 import android.content.Context;
+import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -32,10 +35,14 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
         setContentView( frameLayout);
 
         huaXiYunSimplePlayer = new HuaXiYunSimplePlayer(true,true);
+        huaXiYunSimplePlayer.init(this);
+        // FIXME: 2018/9/18 设计有问题 PlayerAdapter 会和播放器相互持有
         PlayerAdapter playerAdapter = new PlayerAdapter(huaXiYunSimplePlayer);
-        uiSwitcher = new CommonPlayerUISwitcher( playerAdapter,frameLayout,this );
-        playerController = new CommonPlayerController( playerAdapter );
         huaXiYunSimplePlayer.setEventListener(playerAdapter);
+        uiSwitcher = new CommonPlayerUISwitcher( playerAdapter );
+        uiSwitcher.addSurfaceTextureListener(playerAdapter);
+        uiSwitcher.initView(frameLayout,this);
+        playerController = new CommonPlayerController( playerAdapter );
         playerController.init(null);
     }
 
@@ -50,7 +57,9 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
      想要的效果是：逻辑控制和ui控制本身并不知道播放器是一个什么样子的对象。也不需要知道播放器对
      象的具体实现，只需要通过Adapter来实现一系列的交互操作即可
      */
-    class PlayerAdapter extends BasePlayerAdapter<HuaXiYunSimplePlayer> implements IMediaPlayer.IPlayerEvents<HuaXiYunSimplePlayer> {
+    class PlayerAdapter extends BasePlayerAdapter<HuaXiYunSimplePlayer> implements IMediaPlayer.IPlayerEvents<HuaXiYunSimplePlayer>,TextureView.SurfaceTextureListener {
+
+        private boolean prepared, surfaceAvailable;
 
         public PlayerAdapter(HuaXiYunSimplePlayer player) {
             super(player);
@@ -62,18 +71,23 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
         }
 
         @Override
+        public HuaXiYunSimplePlayer getPlayer() {
+            return super.getPlayer();
+        }
+
+        @Override
         public Object getDataUtils() {
             return null;
         }
 
         @Override
         public AbsBasePlayerUiSwitcher getUiSwitcher() {
-            return null;
+            return uiSwitcher;
         }
 
         @Override
         public AbsMediaPlayerController getController() {
-            return null;
+            return playerController;
         }
 
         @Override
@@ -113,11 +127,13 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
 
         @Override
         public boolean play() {
+            huaXiYunSimplePlayer.play();
             return false;
         }
 
         @Override
         public boolean open(String url) {
+            prepared = surfaceAvailable =  false;
             huaXiYunSimplePlayer.open(url);
             return true;
         }
@@ -190,8 +206,11 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
 
         @Override
         public boolean onPrepared(HuaXiYunSimplePlayer player) {
-            playerController.onPrepared(player);
-            return false;
+            prepared = true;
+            if(surfaceAvailable){
+                playerController.onPrepared(player);
+            }
+            return true;
         }
 
         @Override
@@ -216,6 +235,30 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
 
         @Override
         public void onDestroy(HuaXiYunSimplePlayer player) {
+
+        }
+
+        @Override
+        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+            surfaceAvailable = true;
+            huaXiYunSimplePlayer.setMediaPlayerSurface(new Surface(surface));
+            if(prepared){
+                playerController.onPrepared(player);
+            }
+        }
+
+        @Override
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+
+        }
+
+        @Override
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+            return false;
+        }
+
+        @Override
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
         }
     }

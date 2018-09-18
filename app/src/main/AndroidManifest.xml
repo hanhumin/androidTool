@@ -42,7 +42,8 @@
         <activity android:name=".constraintLayout.ConstraintLayoutActivity" />
         <activity android:name=".breakpoint.BreakPointDownloadActivity" />
         <activity android:name=".huaxiyun.player.SmallAndFullScreenChangeMediaPlayerActivity"
-            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize">
+            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

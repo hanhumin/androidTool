@@ -73,6 +73,7 @@ public class CommonPlayerController extends AbsMediaPlayerController<HuaXiYunSim
 
     @Override
     public boolean onPrepared(HuaXiYunSimplePlayer player) {
+        _adapter.play();
         return super.onPrepared(player);
     }
 

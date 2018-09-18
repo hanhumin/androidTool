@@ -3,31 +3,37 @@ package com.example.txl.tool.huaxiyun.player;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public abstract class AbsBasePlayerUiSwitcher implements View.OnClickListener,TextureView.SurfaceTextureListener{
+    private final String TAG = getClass().getSimpleName();
+
     protected Context context;
     protected ViewGroup parent;
 
     BasePlayerAdapter _adapter;
 
-    protected FrameLayout rootFrameView;
-    protected ConstraintLayout rootConstraintLayout;//自定义view构造播放控件，需要解决滑动冲突，
+    protected FrameLayout rootFrameView;//自定义view构造播放控件，需要解决滑动冲突，
+    protected ConstraintLayout rootConstraintLayout;
     protected TextureView playerPresenter;//播放内容的呈现者
-    private TextureView.SurfaceTextureListener surfaceTextureListener;
+    private List<TextureView.SurfaceTextureListener> surfaceTextureListeners;
 
-    public AbsBasePlayerUiSwitcher(BasePlayerAdapter adapter, ViewGroup parent, Context context) {
-        this.parent = parent;
-        this.context = context;
-        initView(context);
+    public AbsBasePlayerUiSwitcher(BasePlayerAdapter adapter) {
         _adapter = adapter;
     }
 
-    abstract void initView(Context context);
+    public void initView(ViewGroup parent, Context context){
+        this.context = context;
+        this.parent = parent;
+    }
 
     /**
      * Add child elements to the player ui
@@ -59,36 +65,51 @@ public abstract class AbsBasePlayerUiSwitcher implements View.OnClickListener,Te
         this.parent = parent;
     }
 
-    public void setSurfaceTextureListener(TextureView.SurfaceTextureListener listener){
-        this.surfaceTextureListener = listener;
+    public void addSurfaceTextureListener(TextureView.SurfaceTextureListener listener){
+        if(surfaceTextureListeners == null){
+            surfaceTextureListeners = new ArrayList<>();
+        }
+        surfaceTextureListeners.add(listener);
     }
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        if(surfaceTextureListener != null){
-            surfaceTextureListener.onSurfaceTextureAvailable( surface,width,height );
+        Log.d(TAG,"onSurfaceTextureAvailable");
+        if(surfaceTextureListeners != null){
+            for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
+                listener.onSurfaceTextureAvailable(surface,width,height);
+            }
         }
     }
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-        if(surfaceTextureListener != null){
-            surfaceTextureListener.onSurfaceTextureSizeChanged( surface,width,height );
+        Log.d(TAG,"onSurfaceTextureSizeChanged");
+        if(surfaceTextureListeners != null){
+            for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
+                listener.onSurfaceTextureSizeChanged( surface,width,height );
+            }
         }
     }
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        if(surfaceTextureListener != null){
-            return surfaceTextureListener.onSurfaceTextureDestroyed( surface );
+        Log.d(TAG,"onSurfaceTextureDestroyed");
+        if(surfaceTextureListeners != null){
+            for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
+                listener.onSurfaceTextureDestroyed( surface );
+            }
+            return true;
         }
         return false;
     }
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-        if(surfaceTextureListener != null){
-            surfaceTextureListener.onSurfaceTextureUpdated( surface );
+        if(surfaceTextureListeners != null){
+            for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
+                listener.onSurfaceTextureUpdated( surface );
+            }
         }
     }
 }

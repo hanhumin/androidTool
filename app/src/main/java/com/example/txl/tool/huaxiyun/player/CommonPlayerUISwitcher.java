@@ -30,14 +30,15 @@ public class CommonPlayerUISwitcher extends AbsBasePlayerUiSwitcher{
      * */
     private int smallUiHeight, fullUiHeight;
 
-    public CommonPlayerUISwitcher(BasePlayerAdapter adapter, ViewGroup parent, Context context) {
-        super(adapter,parent, context);
+    public CommonPlayerUISwitcher(BasePlayerAdapter adapter) {
+        super(adapter);
     }
 
     @Override
-    void initView(Context context) {
+    public void initView(ViewGroup parent, Context context) {
+        super.initView(parent,context);
         rootFrameView = (FrameLayout) LayoutInflater.from( context ).inflate( resLayoutId,parent,false );
-        parent.addView(rootFrameView);
+
         rootConstraintLayout = rootFrameView.findViewById(R.id.cl_small_player_ui_content);
         ivBack = rootConstraintLayout.findViewById( R.id.iv_small_player_ui_back );
         ivBack.setOnClickListener( this );
@@ -51,7 +52,7 @@ public class CommonPlayerUISwitcher extends AbsBasePlayerUiSwitcher{
         playerSeekBar = rootConstraintLayout.findViewById( R.id.sb_small_player_ui_seek );
         playerPresenter = rootFrameView.findViewById(R.id.texture_view_player_content_presenter);
         playerPresenter.setSurfaceTextureListener(this);
-
+        parent.addView(rootFrameView);
     }
 
     @Override
@@ -80,14 +81,14 @@ public class CommonPlayerUISwitcher extends AbsBasePlayerUiSwitcher{
     private void changeScreen(boolean fullScreen) {
         if(fullScreen){
             ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            ((Activity) context).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            ((Activity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             ViewGroup.LayoutParams layoutParams = rootFrameView.getLayoutParams();
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
             rootFrameView.setLayoutParams(layoutParams);
             rootFrameView.postInvalidate();
         }else {
             ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            ((Activity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            ((Activity) context).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             ViewGroup.LayoutParams layoutParams = rootFrameView.getLayoutParams();
             Point point = new Point();
             ((Activity) context).getWindowManager().getDefaultDisplay().getSize(point);
@@ -96,27 +97,5 @@ public class CommonPlayerUISwitcher extends AbsBasePlayerUiSwitcher{
             rootFrameView.setLayoutParams(layoutParams);
             rootFrameView.postInvalidate();
         }
-    }
-
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        super.onSurfaceTextureAvailable( surface, width, height );
-//        _adapter.onSurfaceTextureAvailable( surface, width, height );
-        // TODO: 2018/9/7 播放器内容可播放
-    }
-
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-        super.onSurfaceTextureSizeChanged( surface,width,height );
-    }
-
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        return super.onSurfaceTextureDestroyed( surface );
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-        super.onSurfaceTextureUpdated( surface );
     }
 }
