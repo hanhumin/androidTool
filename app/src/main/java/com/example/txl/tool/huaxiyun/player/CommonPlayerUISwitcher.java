@@ -23,6 +23,11 @@ public class CommonPlayerUISwitcher extends AbsBasePlayerUiSwitcher{
     private ImageView ivBack, ivMore, ivPlayerController, ivChangeToFull;
     private SeekBar playerSeekBar;
 
+    /**
+     * 小屏 大屏播放器的高度
+     * */
+    private int smallUiHeight, fullUiHeight;
+
     public CommonPlayerUISwitcher(BasePlayerAdapter adapter, ViewGroup parent, Context context) {
         super(adapter,parent, context);
     }

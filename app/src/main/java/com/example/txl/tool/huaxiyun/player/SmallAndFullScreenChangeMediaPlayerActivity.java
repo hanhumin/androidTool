@@ -29,14 +29,12 @@ import java.io.IOException;
  * 播放器可以大小屏幕切换
  * */
 
-public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity implements IMediaPlayer {
+public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
 
     private static final String TAG = SmallAndFullScreenChangeMediaPlayerActivity.class.getSimpleName();
-    private MediaPlayer mediaPlayer;
+    private HuaXiYunSimplePlayer huaXiYunSimplePlayer;
     CommonPlayerUISwitcher uiSwitcher;
     CommonPlayerController playerController;
-    private TextureView textureView;
-    boolean prepared = false, surfaceTextureAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,119 +44,25 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
         frameLayout.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
         frameLayout.setOrientation(LinearLayout.VERTICAL);
         setContentView( frameLayout);
-        textureView = new TextureView(this);
-        textureView.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
         PlayerAdapter playerAdapter = new PlayerAdapter();
         uiSwitcher = new CommonPlayerUISwitcher( playerAdapter,frameLayout,this );
         uiSwitcher.setSurfaceTextureListener( playerAdapter );
         playerController = new CommonPlayerController( playerAdapter );
-        setEventListener( playerController );
-        mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource( this, Uri.parse("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff50000bd0p9ur6936mllnbeo40&line=0") );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mediaPlayer.setLooping(true);
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                playerController.onPrepared(SmallAndFullScreenChangeMediaPlayerActivity.this);
-                mediaPlayer.start();
-            }
-        });
-        mediaPlayer.prepareAsync();
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-//                mediaPlayer.start();
-//                mediaPlayer.setSurface(new Surface(textureView.getSurfaceTexture()));
-            }
-        });
-        frameLayout.addView(textureView);
-        DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int width = metric.widthPixels; // 屏幕宽度（像素）
-        int height = metric.heightPixels; // 屏幕高度（像素）
-        float density = metric.density; // 屏幕密度（0.75 / 1.0 / 1.5）
-        int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240）
-        Log.d( TAG,"width:"+width+" height:"+height+" density:"+density+" densityDpi:"+densityDpi );
+        huaXiYunSimplePlayer = new HuaXiYunSimplePlayer(true,true);
+        huaXiYunSimplePlayer.setEventListener(playerController);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        playerController.stop();
-    }
-
-    @Override
-    public void init(Context context) {
-
-    }
-
-    @Override
-    public long getDuration() {
-        return mediaPlayer.getDuration();
-    }
-
-    @Override
-    public long getCurrentPosition() {
-        return 0;
-    }
-
-    @Override
-    public boolean play() {
-        mediaPlayer.start();
-        return false;
-    }
-
-    @Override
-    public boolean open(String url) {
-        return false;
-    }
-
-    @Override
-    public boolean pause() {
-        return false;
-    }
-
-    @Override
-    public boolean stop() {
-        mediaPlayer.stop();
-        return true;
-    }
-
-    @Override
-    public boolean isPlaying() {
-        return false;
-    }
-
-    @Override
-    public boolean seekTo(long pos) {
-        return false;
-    }
-
-    @Override
-    public boolean releasePlayer() {
-        return false;
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-
-    @Override
-    public void updateProgress() {
-
-    }
-
-    @Override
-    public void setEventListener(IPlayerEvents listener) {
-
     }
 
 
+    /**
+     *  FIXME: 2018/9/18 感觉基本adapter设计不是很合理，
+     想要的效果是：逻辑控制和ui控制本身并不知道播放器是一个什么样子的对象。也不需要知道播放器对
+     象的具体实现，只需要通过Adapter来实现一系列的交互操作即可
+     */
     class PlayerAdapter extends BasePlayerAdapter{
 
         @Override
@@ -168,7 +72,7 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
 
         @Override
         public IMediaPlayer getMediaPlayer() {
-            return SmallAndFullScreenChangeMediaPlayerActivity.this;
+            return huaXiYunSimplePlayer;
         }
 
         @Override
@@ -193,7 +97,7 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
 
         @Override
         public void setProgress(float pos) {
-
+            huaXiYunSimplePlayer.seekTo((long) pos);
         }
 
         @Override
@@ -208,7 +112,7 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
 
         @Override
         public void destroy() {
-
+            huaXiYunSimplePlayer.destroy();
         }
 
         @Override
@@ -233,7 +137,7 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
 
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            mediaPlayer.setSurface( new Surface( surface ) );
+
         }
 
         @Override
@@ -249,6 +153,41 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity im
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
             //test git add
+        }
+
+        @Override
+        public boolean onError(IMediaPlayer player, int code, String msg) {
+            return false;
+        }
+
+        @Override
+        public boolean onPrepared(IMediaPlayer player) {
+            return false;
+        }
+
+        @Override
+        public boolean onSeekComplete(IMediaPlayer player, long pos) {
+            return false;
+        }
+
+        @Override
+        public boolean onComplete(IMediaPlayer player) {
+            return false;
+        }
+
+        @Override
+        public boolean onBuffering(IMediaPlayer player, boolean buffering, float percentage) {
+            return false;
+        }
+
+        @Override
+        public boolean onProgress(IMediaPlayer player, long pos) {
+            return false;
+        }
+
+        @Override
+        public void onDestroy(IMediaPlayer player) {
+
         }
     }
 }

@@ -11,7 +11,7 @@ import android.view.View;
  * date：2018/9/8
  * description：
  */
-public abstract class BasePlayerAdapter implements TextureView.SurfaceTextureListener {
+public abstract class BasePlayerAdapter implements TextureView.SurfaceTextureListener, IMediaPlayer.IPlayerEvents {
     /**
      * 定义相关的要展示的ui
      * */
