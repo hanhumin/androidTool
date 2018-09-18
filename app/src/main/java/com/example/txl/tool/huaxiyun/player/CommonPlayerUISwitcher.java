@@ -23,6 +23,8 @@ public class CommonPlayerUISwitcher extends AbsBasePlayerUiSwitcher{
     private ImageView ivBack, ivMore, ivPlayerController, ivChangeToFull;
     private SeekBar playerSeekBar;
 
+    private int resLayoutId = R.layout.activity_small_and_full_screen_change_player;
+
     /**
      * 小屏 大屏播放器的高度
      * */
@@ -34,7 +36,7 @@ public class CommonPlayerUISwitcher extends AbsBasePlayerUiSwitcher{
 
     @Override
     void initView(Context context) {
-        rootFrameView = (FrameLayout) LayoutInflater.from( context ).inflate( R.layout.activity_small_and_full_screen_change_player,parent,false );
+        rootFrameView = (FrameLayout) LayoutInflater.from( context ).inflate( resLayoutId,parent,false );
         parent.addView(rootFrameView);
         rootConstraintLayout = rootFrameView.findViewById(R.id.cl_small_player_ui_content);
         ivBack = rootConstraintLayout.findViewById( R.id.iv_small_player_ui_back );

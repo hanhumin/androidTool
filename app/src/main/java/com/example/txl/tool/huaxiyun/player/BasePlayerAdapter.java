@@ -2,7 +2,6 @@ package com.example.txl.tool.huaxiyun.player;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.TextureView;
 import android.view.View;
 
 /**
@@ -11,7 +10,9 @@ import android.view.View;
  * date：2018/9/8
  * description：
  */
-public abstract class BasePlayerAdapter implements TextureView.SurfaceTextureListener, IMediaPlayer.IPlayerEvents {
+public abstract class BasePlayerAdapter<P> implements  IMediaPlayer {
+
+    protected P player;
     /**
      * 定义相关的要展示的ui
      * */
@@ -19,6 +20,10 @@ public abstract class BasePlayerAdapter implements TextureView.SurfaceTextureLis
 
     protected boolean _paused = false;
     private boolean _isMediaRunning = false;
+
+    public BasePlayerAdapter(P player) {
+        this.player = player;
+    }
 
     public boolean isMediaRunning() {
         return _isMediaRunning;
@@ -35,7 +40,9 @@ public abstract class BasePlayerAdapter implements TextureView.SurfaceTextureLis
 
     public abstract void showUI(String componentId, boolean show);
 
-    public abstract IMediaPlayer getMediaPlayer();
+    public P getPlayer(){
+        return player;
+    }
 
     /**
      * 请求数据工具

@@ -2,28 +2,14 @@ package com.example.txl.tool.huaxiyun.player;
 
 
 import android.content.Context;
-import android.graphics.SurfaceTexture;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Surface;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 
 import com.example.txl.tool.BaseActivity;
-import com.example.txl.tool.R;
 
-import java.io.IOException;
 
 /**
  * 播放器可以大小屏幕切换
@@ -44,12 +30,13 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
         frameLayout.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
         frameLayout.setOrientation(LinearLayout.VERTICAL);
         setContentView( frameLayout);
-        PlayerAdapter playerAdapter = new PlayerAdapter();
-        uiSwitcher = new CommonPlayerUISwitcher( playerAdapter,frameLayout,this );
-        uiSwitcher.setSurfaceTextureListener( playerAdapter );
-        playerController = new CommonPlayerController( playerAdapter );
+
         huaXiYunSimplePlayer = new HuaXiYunSimplePlayer(true,true);
-        huaXiYunSimplePlayer.setEventListener(playerController);
+        PlayerAdapter playerAdapter = new PlayerAdapter(huaXiYunSimplePlayer);
+        uiSwitcher = new CommonPlayerUISwitcher( playerAdapter,frameLayout,this );
+        playerController = new CommonPlayerController( playerAdapter );
+        huaXiYunSimplePlayer.setEventListener(playerAdapter);
+        playerController.init(null);
     }
 
     @Override
@@ -63,16 +50,15 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
      想要的效果是：逻辑控制和ui控制本身并不知道播放器是一个什么样子的对象。也不需要知道播放器对
      象的具体实现，只需要通过Adapter来实现一系列的交互操作即可
      */
-    class PlayerAdapter extends BasePlayerAdapter{
+    class PlayerAdapter extends BasePlayerAdapter<HuaXiYunSimplePlayer> implements IMediaPlayer.IPlayerEvents<HuaXiYunSimplePlayer> {
+
+        public PlayerAdapter(HuaXiYunSimplePlayer player) {
+            super(player);
+        }
 
         @Override
         public void showUI(String componentId, boolean show) {
 
-        }
-
-        @Override
-        public IMediaPlayer getMediaPlayer() {
-            return huaXiYunSimplePlayer;
         }
 
         @Override
@@ -82,12 +68,12 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
 
         @Override
         public AbsBasePlayerUiSwitcher getUiSwitcher() {
-            return uiSwitcher;
+            return null;
         }
 
         @Override
         public AbsMediaPlayerController getController() {
-            return playerController;
+            return null;
         }
 
         @Override
@@ -97,7 +83,7 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
 
         @Override
         public void setProgress(float pos) {
-            huaXiYunSimplePlayer.seekTo((long) pos);
+
         }
 
         @Override
@@ -111,8 +97,69 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
         }
 
         @Override
+        public void init(Context context) {
+
+        }
+
+        @Override
+        public long getDuration() {
+            return 0;
+        }
+
+        @Override
+        public long getCurrentPosition() {
+            return 0;
+        }
+
+        @Override
+        public boolean play() {
+            return false;
+        }
+
+        @Override
+        public boolean open(String url) {
+            huaXiYunSimplePlayer.open(url);
+            return true;
+        }
+
+        @Override
+        public boolean pause() {
+            return false;
+        }
+
+        @Override
+        public boolean stop() {
+            return false;
+        }
+
+        @Override
+        public boolean isPlaying() {
+            return false;
+        }
+
+        @Override
+        public boolean seekTo(long pos) {
+            return false;
+        }
+
+        @Override
+        public boolean releasePlayer() {
+            return false;
+        }
+
+        @Override
         public void destroy() {
-            huaXiYunSimplePlayer.destroy();
+
+        }
+
+        @Override
+        public void updateProgress() {
+
+        }
+
+        @Override
+        public void setEventListener(IPlayerEvents listener) {
+
         }
 
         @Override
@@ -136,57 +183,39 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
         }
 
         @Override
-        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-
-        }
-
-        @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
-        }
-
-        @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        public boolean onError(HuaXiYunSimplePlayer player, int code, String msg) {
+            playerController.onError(player,code,msg);
             return false;
         }
 
         @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-            //test git add
-        }
-
-        @Override
-        public boolean onError(IMediaPlayer player, int code, String msg) {
+        public boolean onPrepared(HuaXiYunSimplePlayer player) {
+            playerController.onPrepared(player);
             return false;
         }
 
         @Override
-        public boolean onPrepared(IMediaPlayer player) {
+        public boolean onSeekComplete(HuaXiYunSimplePlayer player, long pos) {
             return false;
         }
 
         @Override
-        public boolean onSeekComplete(IMediaPlayer player, long pos) {
+        public boolean onComplete(HuaXiYunSimplePlayer player) {
             return false;
         }
 
         @Override
-        public boolean onComplete(IMediaPlayer player) {
+        public boolean onBuffering(HuaXiYunSimplePlayer player, boolean buffering, float percentage) {
             return false;
         }
 
         @Override
-        public boolean onBuffering(IMediaPlayer player, boolean buffering, float percentage) {
+        public boolean onProgress(HuaXiYunSimplePlayer player, long pos) {
             return false;
         }
 
         @Override
-        public boolean onProgress(IMediaPlayer player, long pos) {
-            return false;
-        }
-
-        @Override
-        public void onDestroy(IMediaPlayer player) {
+        public void onDestroy(HuaXiYunSimplePlayer player) {
 
         }
     }

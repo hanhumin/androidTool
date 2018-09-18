@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.example.txl.tool.utils.AppExecutors;
 import com.example.txl.tool.utils.CancellableRunnable;
 
-public abstract class AbsMediaPlayerController implements IMediaPlayer.IPlayerEvents {
+public abstract class AbsMediaPlayerController<P> implements IMediaPlayer.IPlayerEvents<P> {
     protected BasePlayerAdapter _adapter;
     private CancellableRunnable _delayPlay;
 
@@ -13,27 +13,23 @@ public abstract class AbsMediaPlayerController implements IMediaPlayer.IPlayerEv
         this._adapter = _adapter;
     }
 
-//    public UiComponentInfo[] getUiComponents() {
-//        return defaultUiComponents;
-//    }
-
-    public IMediaPlayer getMediaPlayer() {
-        return _adapter.getMediaPlayer();
-    }
 
     public Object getDataDataUtils() {
         return _adapter.getDataUtils();
     }
 
+    /**
+     * init params ready to play
+     * */
     public void init(Bundle initParameters) {
     }
 
     public void stop() {
-        _adapter.getMediaPlayer().stop();
+        _adapter.stop();
     }
 
     public void pause() {
-        _adapter.getMediaPlayer().pause();
+        _adapter.pause();
     }
 
     public void destroy() {
@@ -47,14 +43,7 @@ public abstract class AbsMediaPlayerController implements IMediaPlayer.IPlayerEv
         if (!_adapter.isMediaRunning()) {
             return false;
         }
-
-        IMediaPlayer mediaPlayer = getMediaPlayer();
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        } else {
-            mediaPlayer.play();
-        }
-        _adapter.onPlayPaused(!mediaPlayer.isPlaying());
+        _adapter.onPlayPaused(!_adapter.isPlaying());
         return true;
     }
 
@@ -73,58 +62,45 @@ public abstract class AbsMediaPlayerController implements IMediaPlayer.IPlayerEv
             }
         };
         // FIXME: 2018/9/8 AppExecutors 全局单例
-        new AppExecutors().mainThread().executeDelay(delayPlay,ms);
+        new AppExecutors().mainThread().executeDelay(_delayPlay,ms);
     }
 
     public long doSeek(float pos) {
-        IMediaPlayer mediaPlayer = getMediaPlayer();
-        long duration = mediaPlayer.getDuration();
+        long duration = _adapter.getDuration();
         long seekTargetPos = percentageToOffset(pos, duration);
-        mediaPlayer.seekTo(seekTargetPos);
+        _adapter.seekTo(seekTargetPos);
         return seekTargetPos;
     }
 
     @Override
-    public boolean onError(IMediaPlayer iMediaPlayer, int code, String msg) {
-        _adapter.setMediaRunning(false);
-        IMediaPlayer mediaPlayer = getMediaPlayer();
-        mediaPlayer.stop();
+    public boolean onError(P player, int code, String msg) {
         return false;
     }
 
     @Override
-    public boolean onPrepared(IMediaPlayer iMediaPlayer) {
+    public boolean onPrepared(P player) {
 
         return false;
     }
 
     @Override
-    public boolean onSeekComplete(IMediaPlayer iMediaPlayer, long pos) {
+    public boolean onSeekComplete(P player, long pos) {
         return false;
     }
 
     @Override
-    public boolean onComplete(IMediaPlayer iMediaPlayer) {
-        _adapter.onPlayPaused(!iMediaPlayer.isPlaying());
+    public boolean onComplete(P player) {
         _adapter.setMediaRunning(false);
         return false;
     }
 
     @Override
-    public boolean onBuffering(IMediaPlayer iMediaPlayer, boolean buffering, float percentage) {
+    public boolean onBuffering(P player, boolean buffering, float percentage) {
         return false;
     }
 
     @Override
-    public boolean onProgress(IMediaPlayer iMediaPlayer, long pos) {
-        IMediaPlayer mediaPlayer = getMediaPlayer();
-        if (mediaPlayer == null) {
-            return false;
-        }
-        long duration = mediaPlayer.getDuration();
-        if (duration > 0) {
-            _adapter.setProgress(offsetToPercent(pos, duration));
-        }
+    public boolean onProgress(P player, long pos) {
         return false;
     }
 
@@ -137,7 +113,7 @@ public abstract class AbsMediaPlayerController implements IMediaPlayer.IPlayerEv
     }
 
     @Override
-    public void onDestroy(IMediaPlayer iMediaPlayer) {
+    public void onDestroy(P player) {
         _adapter.setMediaRunning(false);
     }
 }

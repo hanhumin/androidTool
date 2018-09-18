@@ -7,7 +7,7 @@ import android.view.Surface;
  * Copyright (c) 2018, 唐小陆 All rights reserved.
  * author：txl
  * date：2018/9/7
- * description：播放控制器抽象
+ * description：抽象播放器交互相关的方法
  */
 public interface IMediaPlayer {
 
@@ -40,19 +40,19 @@ public interface IMediaPlayer {
     /**
      * 可以考虑继承mediaPlayer的事件回调接口
      * */
-    interface IPlayerEvents {
-        boolean onError(IMediaPlayer player, int code, String msg);
+    interface IPlayerEvents<P> {
+        boolean onError(P player, int code, String msg);
 
-        boolean onPrepared(IMediaPlayer player);
+        boolean onPrepared(P player);
 
-        boolean onSeekComplete(IMediaPlayer player, long pos);
+        boolean onSeekComplete(P player, long pos);
 
-        boolean onComplete(IMediaPlayer player);
+        boolean onComplete(P player);
 
-        boolean onBuffering(IMediaPlayer player, boolean buffering, float percentage);
+        boolean onBuffering(P player, boolean buffering, float percentage);
 
-        boolean onProgress(IMediaPlayer player, long pos);
+        boolean onProgress(P player, long pos);
 
-        void onDestroy(IMediaPlayer player);
+        void onDestroy(P player);
     }
 }
