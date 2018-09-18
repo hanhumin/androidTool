@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
@@ -44,6 +46,9 @@ public class CanvasView extends View {
 //        drawBitmap(canvas,null,new Rect( 50,50,200,200 ),new Paint(  ));
 
         drawBitmap( canvas,30,30,new Paint(  ) );
+        drawCirle(canvas);
+        drawColor(canvas);
+        drawColorWithPorterDuff(canvas);
     }
 
     /**
@@ -103,5 +108,20 @@ public class CanvasView extends View {
             }
         }
 //        canvas.drawBitmapMesh( bitmap, );
+    }
+
+    private void drawCirle(Canvas canvas){
+        canvas.drawCircle(getWidth()/2,getHeight()/2,30,new Paint());
+    }
+
+    /**
+     * 填充背景色
+     * */
+    private void drawColor(Canvas canvas){
+        canvas.drawColor(Color.BLUE);
+    }
+
+    private void drawColorWithPorterDuff(Canvas canvas){
+        canvas.drawColor(Color.GRAY, PorterDuff.Mode.ADD);
     }
 }
