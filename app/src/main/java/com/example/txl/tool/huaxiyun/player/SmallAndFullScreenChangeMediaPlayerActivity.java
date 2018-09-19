@@ -107,7 +107,11 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
 
         @Override
         public void onPlayPaused(boolean paused) {
-
+            if (paused){
+                huaXiYunSimplePlayer.play();
+            }else {
+                huaXiYunSimplePlayer.pause();
+            }
         }
 
         @Override
@@ -140,17 +144,17 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
 
         @Override
         public boolean pause() {
-            return false;
+            return huaXiYunSimplePlayer.pause();
         }
 
         @Override
         public boolean stop() {
-            return false;
+            return huaXiYunSimplePlayer.stop();
         }
 
         @Override
         public boolean isPlaying() {
-            return false;
+            return huaXiYunSimplePlayer.isPlaying();
         }
 
         @Override
@@ -220,7 +224,7 @@ public class SmallAndFullScreenChangeMediaPlayerActivity extends BaseActivity{
 
         @Override
         public boolean onComplete(HuaXiYunSimplePlayer player) {
-            return false;
+            return playerController.onComplete(player);
         }
 
         @Override

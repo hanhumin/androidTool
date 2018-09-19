@@ -23,7 +23,7 @@ public class CommonPlayerController extends AbsMediaPlayerController<HuaXiYunSim
     @Override
     public void init(Bundle initParameters) {
         super.init(initParameters);
-        _adapter.open("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff50000bd0p9ur6936mllnbeo40&line=0");
+        doPlay("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff50000bd0p9ur6936mllnbeo40&line=0");
     }
 
     @Override
@@ -84,6 +84,7 @@ public class CommonPlayerController extends AbsMediaPlayerController<HuaXiYunSim
 
     @Override
     public boolean onComplete(HuaXiYunSimplePlayer player) {
+        _adapter.getUiSwitcher().context = null;
         return super.onComplete(player);
     }
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class AbsBasePlayerUiSwitcher implements View.OnClickListener,TextureView.SurfaceTextureListener{
+public abstract class AbsBasePlayerUiSwitcher implements View.OnClickListener{
     private final String TAG = getClass().getSimpleName();
 
     protected Context context;
@@ -24,6 +24,8 @@ public abstract class AbsBasePlayerUiSwitcher implements View.OnClickListener,Te
     protected FrameLayout rootFrameView;//自定义view构造播放控件，需要解决滑动冲突，
     protected ConstraintLayout rootConstraintLayout;
     protected TextureView playerPresenter;//播放内容的呈现者
+
+    protected SurfaceTextureListener listener = new SurfaceTextureListener();
     private List<TextureView.SurfaceTextureListener> surfaceTextureListeners;
 
     public AbsBasePlayerUiSwitcher(BasePlayerAdapter adapter) {
@@ -42,10 +44,7 @@ public abstract class AbsBasePlayerUiSwitcher implements View.OnClickListener,Te
         rootConstraintLayout.addView( view );
     }
 
-    public void togglePlayPause() {
-        AbsMediaPlayerController controller = _adapter.getController();
-        controller.doTogglePlayPause();
-    }
+    public abstract void togglePlayPause();
 
     public void showUi(int resId, boolean show){
 
@@ -72,43 +71,45 @@ public abstract class AbsBasePlayerUiSwitcher implements View.OnClickListener,Te
         surfaceTextureListeners.add(listener);
     }
 
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        Log.d(TAG,"onSurfaceTextureAvailable");
-        if(surfaceTextureListeners != null){
-            for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
-                listener.onSurfaceTextureAvailable(surface,width,height);
+    private class SurfaceTextureListener implements TextureView.SurfaceTextureListener{
+        @Override
+        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+            Log.d(TAG,"onSurfaceTextureAvailable");
+            if(surfaceTextureListeners != null){
+                for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
+                    listener.onSurfaceTextureAvailable(surface,width,height);
+                }
             }
         }
-    }
 
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-        Log.d(TAG,"onSurfaceTextureSizeChanged");
-        if(surfaceTextureListeners != null){
-            for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
-                listener.onSurfaceTextureSizeChanged( surface,width,height );
+        @Override
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+            Log.d(TAG,"onSurfaceTextureSizeChanged");
+            if(surfaceTextureListeners != null){
+                for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
+                    listener.onSurfaceTextureSizeChanged( surface,width,height );
+                }
             }
         }
-    }
 
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        Log.d(TAG,"onSurfaceTextureDestroyed");
-        if(surfaceTextureListeners != null){
-            for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
-                listener.onSurfaceTextureDestroyed( surface );
+        @Override
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+            Log.d(TAG,"onSurfaceTextureDestroyed");
+            if(surfaceTextureListeners != null){
+                for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
+                    listener.onSurfaceTextureDestroyed( surface );
+                }
+                return true;
             }
-            return true;
+            return false;
         }
-        return false;
-    }
 
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-        if(surfaceTextureListeners != null){
-            for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
-                listener.onSurfaceTextureUpdated( surface );
+        @Override
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+            if(surfaceTextureListeners != null){
+                for (TextureView.SurfaceTextureListener listener : surfaceTextureListeners){
+                    listener.onSurfaceTextureUpdated( surface );
+                }
             }
         }
     }

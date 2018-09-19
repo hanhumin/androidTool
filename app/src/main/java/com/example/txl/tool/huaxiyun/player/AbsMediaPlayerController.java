@@ -48,6 +48,7 @@ public abstract class AbsMediaPlayerController<P> implements IMediaPlayer.IPlaye
     }
 
     public void doPlay(String playUrl) {
+        _adapter.open(playUrl);
     }
 
     public void delayDoPlay(final String playUrl, int ms) {
@@ -79,7 +80,7 @@ public abstract class AbsMediaPlayerController<P> implements IMediaPlayer.IPlaye
 
     @Override
     public boolean onPrepared(P player) {
-
+        _adapter.setMediaRunning(true);
         return false;
     }
 
