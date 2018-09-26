@@ -5,10 +5,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".coordinatorlayout.CoordinatorLayoutActivity">
+    <!--behavior跨级滑动  第一个元素可以滑动或固定，第二个滑动，第三个固定-->
+    <!--<android.support.design.widget.CoordinatorLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="200dp"-->
+            <!--app:layout_behavior="com.example.txl.tool.coordinatorlayout.MyBehavior">-->
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/colorAccent"-->
+                <!--android:text="CoordinatorLayout 学习；CoordinatorLayout 学习；CoordinatorLayout 学习；CoordinatorLayout 学习；CoordinatorLayout 学习；" />-->
+        <!--</LinearLayout>-->
+        <!--<android.support.design.widget.AppBarLayout-->
+            <!--android:paddingTop="200dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="#3f427642"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="爪猪啊 爪猪啊 爪猪啊 爪猪啊"-->
+                <!--app:layout_scrollFlags="scroll|enterAlways"/>-->
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="滑 滑 滑"-->
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+                <!--/>-->
+            <!--<FrameLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="我不想跟随滑动"-->
+                    <!--/>-->
+
+                <!--<ImageView-->
+
+                    <!--android:clickable="true"-->
+                    <!--android:focusable="true"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:src="@drawable/small_screen_player_ui_close_ad"-->
+                    <!--android:layout_marginStart="321dp"-->
+                    <!--android:layout_gravity="center_vertical"/>-->
+            <!--</FrameLayout>-->
+        <!--</android.support.design.widget.AppBarLayout>-->
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/list_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--/>-->
+
+    <!--</android.support.design.widget.CoordinatorLayout>-->
+
+    <!--Behavior-->
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -19,50 +80,11 @@
                 android:background="@color/colorAccent"
                 android:text="CoordinatorLayout 学习；CoordinatorLayout 学习；CoordinatorLayout 学习；CoordinatorLayout 学习；CoordinatorLayout 学习；" />
         </LinearLayout>
-        <android.support.design.widget.AppBarLayout
-            android:paddingTop="200dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#3f427642"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="爪猪啊 爪猪啊 爪猪啊 爪猪啊"
-                app:layout_scrollFlags="scroll|enterAlways"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="滑 滑 滑"
-                app:layout_scrollFlags="scroll|enterAlways"
-                />
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="我不想跟随滑动"
-                    />
-
-                <ImageView
-
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/small_screen_player_ui_close_ad"
-                    android:layout_marginStart="321dp"
-                    android:layout_gravity="center_vertical"/>
-            </FrameLayout>
-        </android.support.design.widget.AppBarLayout>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
-
     </android.support.design.widget.CoordinatorLayout>
 
 </android.support.constraint.ConstraintLayout>
