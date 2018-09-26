@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/small_screen_player_ui_close_ad"
-                    android:layout_marginStart="331dp"
+                    android:layout_marginStart="321dp"
                     android:layout_gravity="center_vertical"/>
             </FrameLayout>
         </android.support.design.widget.AppBarLayout>
