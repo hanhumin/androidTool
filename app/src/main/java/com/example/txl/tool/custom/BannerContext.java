@@ -48,7 +48,7 @@ public class BannerContext {
         return currentStrategy.toRealPosition(position);
     }
 
-    public void initBannerItemView(@NonNull List<View> itemViews, FlexibleBannerView.ViewCreator creator){
+    public void initBannerItemView(@NonNull List<View> itemViews, FlexibleBannerView.IViewCreator creator){
         currentStrategy.initBannerItemView(itemViews,creator);
     }
 

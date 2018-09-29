@@ -33,7 +33,7 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
 
     private List<View> itemViews;
 
-    protected ViewCreator creator;
+    protected IViewCreator creator;
     private PagerAdapter adapter;
     private BannerContext _mBannerContext;
 
@@ -95,6 +95,7 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
      * */
     public void setBannerStyle(String bannerName){
         _mBannerContext.changeBannerStrategy(bannerName);
+        initItemViews(creator);
     }
 
     @Override
@@ -137,7 +138,7 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
         isAutoPlay = autoPlay;
     }
 
-    public void setViewCreator(ViewCreator creator){
+    public void setViewCreator(IViewCreator creator){
         this.creator = creator;
         initItemViews(creator);
     }
@@ -146,10 +147,10 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
         return viewPager;
     }
 
-    private void initItemViews(@NonNull ViewCreator creator){
+    private void initItemViews(@NonNull IViewCreator creator){
         _mBannerContext.initBannerItemView(itemViews,creator);
         count = creator.getCount();
-        creator.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -200,16 +201,12 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
         }
     }
 
-    public abstract class ViewCreator{
+    public interface IViewCreator {
         /**
          * Return the number of views available.
          */
         abstract int getCount();
 
         abstract View createView(int position);
-
-        public void notifyDataSetChanged(){
-            adapter.notifyDataSetChanged();
-        }
     }
 }

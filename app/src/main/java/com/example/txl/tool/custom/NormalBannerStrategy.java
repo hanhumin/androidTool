@@ -30,10 +30,10 @@ public class NormalBannerStrategy implements IBannerStrategy {
     }
 
     @Override
-    public void initBannerItemView(@NonNull List<View> itemViews, FlexibleBannerView.ViewCreator creator) {
+    public void initBannerItemView(@NonNull List<View> itemViews, FlexibleBannerView.IViewCreator creator) {
         itemViews.clear();
         if(creator == null || creator.getCount() == 0){
-            Log.d(TAG,"ViewCreator creator is null or count is zero please check");
+            Log.d(TAG,"IViewCreator creator is null or count is zero please check");
             return;
         }
         count = creator.getCount();
