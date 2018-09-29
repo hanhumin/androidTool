@@ -2,13 +2,22 @@ package com.example.txl.tool.custom;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.support.annotation.NonNull;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Scroller;
+
+import com.example.txl.tool.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -16,18 +25,45 @@ import android.widget.Scroller;
  * date：2018/8/18
  * description：
  */
-public class CustomBannerView extends ViewGroup {
+public class CustomBannerView extends FrameLayout implements ViewPager.OnPageChangeListener {
     private static final String TAG = "CustomBannerView";
 
-    private int childrenCount;
-    private int childWidth;
-    private int childHeight;
-    /**
-     * 当前处于轮播图的位置
-     * */
-    private int currentIndex = 0;
+    public static final int BANNER_STYLE_NORMAL = 0;
+    public static final int BANNER_STYLE_CYCLE = 1;
 
-    private Scroller mScroller;
+    private int bannerStyle = BANNER_STYLE_NORMAL;
+    private int currentItem;
+
+    protected ViewPager viewPager;
+    private List<ViewPager.OnPageChangeListener> mOnPageChangeListeners;
+
+    private List<View> itemViews;
+
+    protected ViewCreator creator;
+    private PagerAdapter adapter;
+    private BannerContext _mBannerContext;
+
+    private boolean isAutoPlay;
+    private int count;
+
+    private long delayTime;
+
+    private final Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            if (count > 1 && isAutoPlay) {
+                currentItem = currentItem % (count + 1) + 1;
+//                Log.i(tag, "curr:" + currentItem + " count:" + count);
+                if (currentItem == 1) {
+                    viewPager.setCurrentItem(currentItem, false);
+                    CustomBannerView.this.post(task);
+                } else {
+                    viewPager.setCurrentItem(currentItem);
+                    CustomBannerView.this.postDelayed(task, delayTime);
+                }
+            }
+        }
+    };
 
     public CustomBannerView(Context context) {
         this( context ,null);
@@ -39,104 +75,147 @@ public class CustomBannerView extends ViewGroup {
 
     public CustomBannerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super( context, attrs, defStyleAttr );
-        mScroller = new Scroller( context );
+        init(context);
+    }
+
+    private void init(Context context) {
+        initParams();
+        initView(context);
+    }
+
+    private void initParams() {
+        itemViews = new ArrayList<>();
+        _mBannerContext = new BannerContext(NormalBannerStrategy.NAME);
+    }
+
+    private void initView(Context context){
+        viewPager = new ViewPager(context);
+        addView(viewPager);
+        adapter = new BannerPagerAdapter();
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(this);
+    }
+
+    /**
+     * 设置轮播的类型
+     * */
+    public void setBannerStyle(String bannerName){
+        _mBannerContext.changeBannerStrategy(bannerName);
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure( widthMeasureSpec, heightMeasureSpec );
-        childWidth = getMeasuredWidth();
-        childHeight = getMeasuredHeight();
-        childrenCount = getChildCount();
-//        if(0 == childrenCount){
-//            setMeasuredDimension( 0,0 );
-//        }else {
-//            View view = getChildAt( 0 );
-            measureChildren( widthMeasureSpec,heightMeasureSpec );
-//            childHeight = view.getMeasuredHeight();
-//            childWidth = view.getMeasuredWidth() ;
-//            setMeasuredDimension( childWidth*childrenCount,childHeight );
-//        }
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if(changed){
-            int leftMargin = 0;
-            for(int i=0; i<childrenCount; i++){
-                View view = getChildAt( i );
-                view.layout( leftMargin, 0, leftMargin+childWidth, childHeight );
-                leftMargin += childWidth;
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if(mOnPageChangeListeners != null){
+            for(ViewPager.OnPageChangeListener listener : mOnPageChangeListeners){
+                listener.onPageScrolled(_mBannerContext.toRealPosition(position),positionOffset,positionOffsetPixels);
             }
         }
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw( canvas );
-
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev){
-        return super.dispatchTouchEvent( ev );
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true;
-    }
-
-    int mLastX = 0, mLastY = 0;
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        int x = (int) event.getRawX();
-        int y = (int) event.getRawY();
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                if(!mScroller.isFinished()){
-                    mScroller.abortAnimation();
-                }
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                int deltaX = (int) (event.getRawX() -x);
-                int deltaY = (int) (event.getRawY() - y);
-                Log.d( TAG,"move, deltaX:"+deltaX+" deltaY:"+deltaY +"  childrenCount:"+childrenCount);
-                scrollBy( 20,0 );
-                break;
-            case MotionEvent.ACTION_UP:
-                int mScrollX = getScrollX();
-                currentIndex = (mScrollX)/childWidth+1;
-                if(currentIndex < 0){
-                    currentIndex = childrenCount-1;
-                }else if(currentIndex >childrenCount-1){
-                    currentIndex = 0;
-                }
-                Log.d( TAG,"move, mScrollX:"+mScrollX+"  currentIndex:"+currentIndex);
-//                scrollTo( currentIndex+childWidth,0 );
-//                scrollBy( currentIndex *(x - mLastX),0 );
-                int scrollToX = currentIndex * childWidth;
-                smoothScrollTo(scrollToX,getScrollY());
-                break;
+    public void onPageSelected(int position) {
+        currentItem=position;
+        if(mOnPageChangeListeners != null){
+            for(ViewPager.OnPageChangeListener listener : mOnPageChangeListeners){
+                listener.onPageSelected(_mBannerContext.toRealPosition(position));
+            }
         }
-        mLastX = x;
-        mLastY = y;
-        return true;
-    }
-
-    private void smoothScrollTo(int destX, int destY){
-        int scrollX = getScrollX();
-        int scrollY = getScrollY();
-        int deltaX = destX - scrollX;
-        int deltaY = destY - scrollY;
-        mScroller.startScroll( scrollX,scrollY,deltaX,deltaY,1000 );
-        invalidate();
     }
 
     @Override
-    public void computeScroll() {
-        if(mScroller.computeScrollOffset()){
-            scrollTo( mScroller.getCurrX(),mScroller.getCurrY() );
+    public void onPageScrollStateChanged(int state) {
+        if(mOnPageChangeListeners != null){
+            for(ViewPager.OnPageChangeListener listener:mOnPageChangeListeners){
+                listener.onPageScrollStateChanged(state);
+            }
+        }
+        _mBannerContext.setPageIndex(viewPager,state,currentItem);
+    }
+
+    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener){
+        if(mOnPageChangeListeners == null){
+            mOnPageChangeListeners = new ArrayList<>();
+        }
+        mOnPageChangeListeners.add(listener);
+    }
+
+    public void setAutoPlay(boolean autoPlay) {
+        isAutoPlay = autoPlay;
+    }
+
+    public void setViewCreator(ViewCreator creator){
+        this.creator = creator;
+        initItemViews(creator);
+    }
+
+    public ViewPager getViewPager() {
+        return viewPager;
+    }
+
+    private void initItemViews(@NonNull ViewCreator creator){
+        _mBannerContext.initBannerItemView(itemViews,creator);
+        count = creator.getCount();
+        creator.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        Log.i(tag, ev.getAction() + "--" + isAutoPlay);
+        if (isAutoPlay) {
+            int action = ev.getAction();
+            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL
+                    || action == MotionEvent.ACTION_OUTSIDE) {
+                startAutoPlay();
+            } else if (action == MotionEvent.ACTION_DOWN) {
+                stopAutoPlay();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private void stopAutoPlay() {
+        this.post(task);
+    }
+
+    private void startAutoPlay() {
+        this.removeCallbacks(task);
+    }
+
+    class BannerPagerAdapter extends PagerAdapter{
+
+        @Override
+        public int getCount() {
+            return itemViews.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View v = itemViews.get(position);
+            container.addView(v);
+            return v;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+    }
+
+    public abstract class ViewCreator{
+        /**
+         * Return the number of views available.
+         */
+        abstract int getCount();
+
+        abstract View createView(int position);
+
+        public void notifyDataSetChanged(){
+            adapter.notifyDataSetChanged();
         }
     }
 }
