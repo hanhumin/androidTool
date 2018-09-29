@@ -1,20 +1,14 @@
 package com.example.txl.tool.custom;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.PagerSnapHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.Scroller;
-
-import com.example.txl.tool.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +19,7 @@ import java.util.List;
  * date：2018/8/18
  * description：
  */
-public class CustomBannerView extends FrameLayout implements ViewPager.OnPageChangeListener {
+public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageChangeListener {
     private static final String TAG = "CustomBannerView";
 
     public static final int BANNER_STYLE_NORMAL = 0;
@@ -56,24 +50,24 @@ public class CustomBannerView extends FrameLayout implements ViewPager.OnPageCha
 //                Log.i(tag, "curr:" + currentItem + " count:" + count);
                 if (currentItem == 1) {
                     viewPager.setCurrentItem(currentItem, false);
-                    CustomBannerView.this.post(task);
+                    FlexibleBannerView.this.post(task);
                 } else {
                     viewPager.setCurrentItem(currentItem);
-                    CustomBannerView.this.postDelayed(task, delayTime);
+                    FlexibleBannerView.this.postDelayed(task, delayTime);
                 }
             }
         }
     };
 
-    public CustomBannerView(Context context) {
+    public FlexibleBannerView(Context context) {
         this( context ,null);
     }
 
-    public CustomBannerView(Context context, AttributeSet attrs) {
+    public FlexibleBannerView(Context context, AttributeSet attrs) {
         this( context, attrs, 0 );
     }
 
-    public CustomBannerView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FlexibleBannerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super( context, attrs, defStyleAttr );
         init(context);
     }
@@ -90,7 +84,7 @@ public class CustomBannerView extends FrameLayout implements ViewPager.OnPageCha
 
     private void initView(Context context){
         viewPager = new ViewPager(context);
-        addView(viewPager);
+        addView(viewPager,0);
         adapter = new BannerPagerAdapter();
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);

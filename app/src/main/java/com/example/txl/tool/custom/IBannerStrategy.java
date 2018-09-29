@@ -16,7 +16,7 @@ public interface IBannerStrategy {
      * */
     int toRealPosition(int position);
 
-    void initBannerItemView(List<View> itemViews, CustomBannerView.ViewCreator creator);
+    void initBannerItemView(List<View> itemViews, FlexibleBannerView.ViewCreator creator);
 
     /**
      * 根据状态，计算当前应该被选中的位置

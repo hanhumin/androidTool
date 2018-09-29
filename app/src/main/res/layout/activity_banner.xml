@@ -5,13 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     tools:context=".custom.BannerActivity">
-    <com.example.txl.tool.custom.CustomBannerView
+    <com.example.txl.tool.custom.FlexibleBannerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp_banner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </com.example.txl.tool.custom.CustomBannerView>
+        android:layout_height="match_parent"/>
 
 </android.support.constraint.ConstraintLayout>
