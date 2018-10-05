@@ -1,6 +1,7 @@
-package com.example.txl.tool.custom;
+package com.example.txl.tool.banner;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.example.txl.tool.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +25,6 @@ import java.util.List;
 public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageChangeListener {
     private static final String TAG = "CustomBannerView";
 
-    public static final int BANNER_STYLE_NORMAL = 0;
-    public static final int BANNER_STYLE_CYCLE = 1;
-
-    private int bannerStyle = BANNER_STYLE_NORMAL;
     private int currentItem;
 
     protected ViewPager viewPager;
@@ -40,7 +39,8 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
     private boolean isAutoPlay;
     private int count;
 
-    private long delayTime;
+    private int delayTime = 3 * 1000;
+    private int viewPagerId = -1;
 
     private final Runnable task = new Runnable() {
         @Override
@@ -69,25 +69,38 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
 
     public FlexibleBannerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super( context, attrs, defStyleAttr );
-        init(context);
+        init(context,attrs);
     }
 
-    private void init(Context context) {
+    private void init(Context context, AttributeSet attrs) {
         initParams();
-        initView(context);
+        initView(context,attrs);
     }
 
     private void initParams() {
         itemViews = new ArrayList<>();
-        _mBannerContext = new BannerContext(NormalBannerStrategy.NAME);
+        _mBannerContext = new BannerContext( NormalBannerStrategy.NAME);
     }
 
-    private void initView(Context context){
-        viewPager = new ViewPager(context);
-        addView(viewPager,0);
-        adapter = new BannerPagerAdapter();
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(this);
+    private void initView(Context context, AttributeSet attrs){
+        handleTypedArray(context, attrs);
+        viewPager = findViewById( viewPagerId );
+        if(viewPager == null){
+            viewPager = new ViewPager( context );
+            addView(viewPager,0);
+        }
+
+    }
+
+    private void handleTypedArray(Context context, AttributeSet attrs) {
+        if(attrs == null){
+            return;
+        }
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FlexibleBannerView);
+        isAutoPlay = typedArray.getBoolean( R.styleable.FlexibleBannerView_auto_play,isAutoPlay );
+        delayTime = typedArray.getInt( R.styleable.FlexibleBannerView_delay_time,delayTime );
+        viewPagerId = typedArray.getResourceId( R.styleable.FlexibleBannerView_viewPagerId,-1 );
+        typedArray.recycle();
     }
 
     /**
@@ -95,7 +108,10 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
      * */
     public void setBannerStyle(String bannerName){
         _mBannerContext.changeBannerStrategy(bannerName);
-        initItemViews(creator);
+    }
+
+    public void setCurrentItem(int position){
+        viewPager.setCurrentItem( position );
     }
 
     @Override
@@ -134,23 +150,42 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
         mOnPageChangeListeners.add(listener);
     }
 
-    public void setAutoPlay(boolean autoPlay) {
+    public FlexibleBannerView setAutoPlay(boolean autoPlay) {
         isAutoPlay = autoPlay;
+        return this;
     }
 
-    public void setViewCreator(IViewCreator creator){
+    public FlexibleBannerView setViewCreator(IViewCreator creator){
         this.creator = creator;
-        initItemViews(creator);
+        return this;
     }
 
     public ViewPager getViewPager() {
         return viewPager;
     }
 
-    private void initItemViews(@NonNull IViewCreator creator){
+    public FlexibleBannerView start(){
+        initItemViews(creator,0);
+        return this;
+    }
+
+    public FlexibleBannerView start(int item){
+        initItemViews(creator,item);
+        return this;
+    }
+
+    private void initItemViews(@NonNull IViewCreator creator,int item){
         _mBannerContext.initBannerItemView(itemViews,creator);
         count = creator.getCount();
-        adapter.notifyDataSetChanged();
+        if(adapter == null){
+            adapter = new BannerPagerAdapter();
+            viewPager.addOnPageChangeListener(this);
+        }
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem( item );
+        if(isAutoPlay){
+            startAutoPlay();
+        }
     }
 
     @Override
@@ -169,11 +204,13 @@ public class FlexibleBannerView extends FrameLayout implements ViewPager.OnPageC
     }
 
     private void stopAutoPlay() {
-        this.post(task);
+        this.removeCallbacks(task);
+
     }
 
     private void startAutoPlay() {
         this.removeCallbacks(task);
+        this.postDelayed(task,delayTime);
     }
 
     class BannerPagerAdapter extends PagerAdapter{

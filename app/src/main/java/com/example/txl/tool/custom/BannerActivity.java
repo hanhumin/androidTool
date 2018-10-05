@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.txl.tool.R;
+import com.example.txl.tool.banner.CycleBannerStrategy;
+import com.example.txl.tool.banner.FlexibleBannerView;
 
 public class BannerActivity extends AppCompatActivity {
 
@@ -19,6 +21,8 @@ public class BannerActivity extends AppCompatActivity {
 
     private void initView() {
         bannerView = findViewById(R.id.FlexibleBannerView);
+        bannerView.setBannerStyle( CycleBannerStrategy.NAME);
+        bannerView.setAutoPlay( true );
         bannerView.setViewCreator(new FlexibleBannerView.IViewCreator() {
             @Override
             public int getCount() {
@@ -32,9 +36,10 @@ public class BannerActivity extends AppCompatActivity {
                 return textView;
             }
         });
+        bannerView.start( 1 );
     }
 
     public void changeBannerStyle(View view) {
-        bannerView.setBannerStyle(CycleBannerStrategy.NAME);
+        bannerView.setBannerStyle( CycleBannerStrategy.NAME);
     }
 }
