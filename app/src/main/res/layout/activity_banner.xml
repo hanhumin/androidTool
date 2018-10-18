@@ -9,6 +9,8 @@
     <com.example.txl.tool.banner.FlexibleBannerView
         android:id="@+id/FlexibleBannerView"
         android:layout_width="match_parent"
+        app:auto_play="true"
+        app:delay_time="5000"
         android:layout_height="100dp"/>
     <Button
         android:layout_width="match_parent"

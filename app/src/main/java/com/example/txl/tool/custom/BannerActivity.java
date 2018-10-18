@@ -22,7 +22,6 @@ public class BannerActivity extends AppCompatActivity {
     private void initView() {
         bannerView = findViewById(R.id.FlexibleBannerView);
         bannerView.setBannerStyle( CycleBannerStrategy.NAME);
-        bannerView.setAutoPlay( true );
         bannerView.setViewCreator(new FlexibleBannerView.IViewCreator() {
             @Override
             public int getCount() {
