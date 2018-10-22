@@ -11,29 +11,37 @@ import android.database.sqlite.SQLiteOpenHelper;
  * date：2018/10/17
  * description：
  */
-public class MySqliteHelper extends SQLiteOpenHelper {
+public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String DATABESE_NAME = "todo.db";
     public static int DB_VERSION = 1;
-    public static String table_name = "table_todo";
+    public static String table_todo = "table_todo";
 
-    public MySqliteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public MySQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super( context, name, factory, version );
     }
 
-    public MySqliteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
+    public MySQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super( context, name, factory, version, errorHandler );
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "create table if not exists " + table_name + " (id integer primary key, completeDate INTEGER, completeDateStr TEXT, content TEXT," +
+        String sql = "create table if not exists " + table_todo + " (id integer primary key autoincrement, completeDate INTEGER, completeDateStr TEXT, content TEXT," +
                 "date INTEGER, dateStr TEXT, status INTEGER, title TEXT, type INTEGER, userId INTEGER)";
         db.execSQL( sql );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(newVersion == 2 && oldVersion == 1){
+            String sql = "alter table  " + table_todo + " add column test_update varchar";
+            db.execSQL( sql );
+        }
+    }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        super.onDowngrade( db, oldVersion, newVersion );
     }
 
     @Override
