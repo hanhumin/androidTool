@@ -10,7 +10,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.example.txl.tool.App;
 import com.example.txl.tool.R;
 import com.example.txl.tool.recycler.bean.BeautyGirls;
-import com.example.txl.tool.utils.image.utils.ImageLoader;
+import com.txl.lib.image_load.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;

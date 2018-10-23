@@ -1,4 +1,4 @@
-package com.example.txl.tool.utils.image.utils;
+package com.txl.lib.image_load;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

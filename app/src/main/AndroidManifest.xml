@@ -17,7 +17,12 @@
         <activity android:name=".MainActivity">
 
         </activity>
-        <activity android:name=".sqlite.OpenSQLiteActivity" />
+        <activity android:name=".sqlite.OpenSQLiteActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".recycler.RecyclerViewActivity"
             android:label="@string/title_activity_recycler_view"
@@ -39,10 +44,7 @@
 
         <activity android:name=".custom.DragViewActivity" />
         <activity android:name=".custom.BannerActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity android:name=".constraintLayout.ConstraintLayoutActivity" />
         <activity android:name=".breakpoint.BreakPointDownloadActivity" />

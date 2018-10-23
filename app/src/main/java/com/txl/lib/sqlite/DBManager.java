@@ -11,16 +11,28 @@ import android.database.sqlite.SQLiteOpenHelper;
  * description：数据库管理
  */
 public class DBManager {
+    public static final String DATABESE_NAME = "todo.db";
+    public static int DB_VERSION = 1;
+
     private SQLiteOpenHelper helper;
     private SQLiteDatabase sqLiteDatabase;
 
     public DBManager(Context context) {
-        helper = new MySQLiteHelper( context, MySQLiteHelper.DATABESE_NAME, null, MySQLiteHelper.DB_VERSION);
+        helper = new MySQLiteHelper( context, DATABESE_NAME, null, DB_VERSION);
+        sqLiteDatabase = helper.getReadableDatabase();
+    }
+
+    public DBManager(Context context, String dbName, int dbVersion) {
+        helper = new MySQLiteHelper( context, dbName, null, dbVersion);
         sqLiteDatabase = helper.getReadableDatabase();
     }
 
     public SQLiteOpenHelper getHelper(){
         return helper;
+    }
+
+    public SQLiteDatabase getSqLiteDatabase() {
+        return sqLiteDatabase;
     }
 
     public void destory(){

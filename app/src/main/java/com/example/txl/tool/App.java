@@ -3,7 +3,7 @@ package com.example.txl.tool;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.txl.tool.utils.image.utils.ImageLoader;
+import com.txl.lib.image_load.ImageLoader;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.

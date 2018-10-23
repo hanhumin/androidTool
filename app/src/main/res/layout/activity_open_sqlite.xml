@@ -39,6 +39,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/open_sqlite_edittext"/>
+    <Button
+        android:id="@+id/insert_a_todo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="插入一条todo数据"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/open_sqlite_edittext"/>
 
 
 
