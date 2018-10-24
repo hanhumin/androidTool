@@ -40,10 +40,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         if(listener != null){
             listener.onDatabaseUpgrade( db ,oldVersion,newVersion);
         }
-        if(newVersion == 2 && oldVersion == 1){
-            String sql = "alter table  " + table_todo + " add column test_update varchar";
-            db.execSQL( sql );
-        }
     }
 
     @Override
@@ -58,7 +54,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         super.onConfigure( db );
     }
 
-    public void setListener(IDatabaseChangeListener listener) {
+    public void setOnDatabaseChangeListener(IDatabaseChangeListener listener) {
         this.listener = listener;
     }
 

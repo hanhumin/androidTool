@@ -13,20 +13,28 @@ import android.widget.Toast;
 
 import com.example.txl.tool.BaseActivity;
 import com.example.txl.tool.R;
+import com.example.txl.tool.task.dao.ITaskDao;
+import com.example.txl.tool.task.dao.TaskBean;
+import com.example.txl.tool.task.dao.TaskDaoImpl;
 import com.example.txl.tool.utils.FileUtils;
+import com.txl.lib.sqlite.DBManager;
+import com.txl.lib.sqlite.MySQLiteHelper;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenSQLiteActivity extends BaseActivity implements View.OnClickListener{
+public class OpenSQLiteActivity extends BaseActivity implements View.OnClickListener, MySQLiteHelper.IDatabaseChangeListener {
 
     private String TAG = OpenSQLiteActivity.class.getSimpleName();
 
     private Button submitButton;
+    private Button insertTodoButton;
     private EditText editText;
     private ListView containListView;
     private ArrayAdapter<String> adapter;
     private List<String> dbs;
+    private ITaskDao<TaskBean> taskDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,12 @@ public class OpenSQLiteActivity extends BaseActivity implements View.OnClickList
         }
         adapter = new ArrayAdapter<String>( this, R.layout.expandablelistview_item,dbs);
         containListView.setAdapter( adapter );
+        insertTodoButton = findViewById( R.id.insert_a_todo );
+        insertTodoButton.setOnClickListener( this );
+        DBManager dbManager = new DBManager(  );
+        dbManager.addDatabaseChangeListener( this );
+        dbManager.createDatabase( this );
+        taskDao = new TaskDaoImpl( dbManager.getHelper() );
     }
 
     @Override
@@ -79,6 +93,37 @@ public class OpenSQLiteActivity extends BaseActivity implements View.OnClickList
                         sqLiteDatabase.close();
                     }
                 }
+                break;
+            case R.id.insert_a_todo:
+                TaskBean taskBean = new TaskBean();
+                taskBean.setTitle( "测试添加" );
+                taskBean.setContent( "完成数据库lib的编写" );
+                taskBean.setDate( System.currentTimeMillis() );
+                taskBean.setStatus( 0 );
+                try {
+                    taskDao.addTask( taskBean );
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                break;
         }
+    }
+
+    @Override
+    public void onDatabaseCreate(SQLiteDatabase db) {
+
+    }
+
+    @Override
+    public void onDatabaseUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(newVersion == 2 && oldVersion == 1){
+            String sql = "alter table  " + "table_todo" + " add column taskid integer";
+            db.execSQL( sql );
+        }
+    }
+
+    @Override
+    public void onDatabaseDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 }

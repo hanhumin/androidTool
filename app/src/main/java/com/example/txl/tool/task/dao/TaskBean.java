@@ -17,6 +17,7 @@ public class TaskBean {
     String title;
     int type;
     int userId;
+    int taskId;
 
     public long getCompleteDate() {
         return completeDate;
@@ -96,5 +97,13 @@ public class TaskBean {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 }

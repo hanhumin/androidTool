@@ -20,12 +20,13 @@ public class TaskDaoImpl implements ITaskDao<TaskBean> {
 
     public TaskDaoImpl(@NonNull SQLiteOpenHelper helper) {
         this.helper = helper;
+        createTable();
     }
 
     @Override
     public void createTable() {
         //在本地没有数据服务器有数据的情况下可能会出现id主键冲突。如何解决？
-        String sql = "create table if not exists " + table_name + " (id integer primary key autoincrement,completeDate INTEGER, completeDateStr TEXT, content TEXT," +
+        String sql = "create table if not exists " + table_name + " (id integer primary key autoincrement, taskid integer,completeDate INTEGER, completeDateStr TEXT, content TEXT," +
                 "date INTEGER, dateStr TEXT, status INTEGER, title TEXT, type INTEGER, userId INTEGER)";
         SQLiteDatabase database = helper.getWritableDatabase();
         database.execSQL( sql );
@@ -51,9 +52,10 @@ public class TaskDaoImpl implements ITaskDao<TaskBean> {
 
     @Override
     public void addTask(TaskBean task) {
-        String value = task.getId() +", "+task.getCompleteDate()+","+task.getCompleteDateStr()+","+task.getContent()+","+task.getDate()+","+task.getDateStr()+","
+        String key = " (taskid, completeDate, completeDateStr, content, date, dateStr, status, title, type, userId) ";
+        String value = task.getTaskId() +", "+task.getCompleteDate()+","+task.getCompleteDateStr()+","+task.getContent()+","+task.getDate()+","+task.getDateStr()+","
                 +task.getStatus()+","+task.getTitle()+","+task.getType()+","+task.getUserId();
-        String sql = "insert into "+table_name+" ("+value+")";
+        String sql = "insert into "+table_name+key+" VALUES  ("+value+")";
         SQLiteDatabase database = helper.getWritableDatabase();
         database.execSQL( sql );
         database.close();
@@ -61,8 +63,16 @@ public class TaskDaoImpl implements ITaskDao<TaskBean> {
 
     @Override
     public void update(TaskBean task) {
-        String value = String.format( "" );
-        String sql = "UPDATE "+table_name+" SET "+value+" WHERE date ="+task.getDate();
+        String value = "completeDate = "+task.getCompleteDate()+
+                ",completeDateStr = "+task.getCompleteDateStr()+
+                ", content = "+task.getContent()+
+                ",date = "+task.getDate()+
+                ",dateStr = "+task.getDateStr()+
+                ",status = "+task.getStatus()+
+                ",title = "+task.getTitle()+
+                ",type = "+task.getType()+
+                ",userId = "+task.getUserId();
+        String sql = "UPDATE "+table_name+" SET "+value+" WHERE taskid ="+task.getTaskId();
         SQLiteDatabase database = helper.getWritableDatabase();
         database.execSQL( sql );
         database.close();
@@ -70,6 +80,24 @@ public class TaskDaoImpl implements ITaskDao<TaskBean> {
 
     @Override
     public void delete() {
+
+    }
+
+    @Override
+    public void onDatabaseCreate(SQLiteDatabase db) {
+
+    }
+
+    @Override
+    public void onDatabaseUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(newVersion == 2 && oldVersion == 1){
+            String sql = "alter table  " + table_name + " add column taskid integer";
+            db.execSQL( sql );
+        }
+    }
+
+    @Override
+    public void onDatabaseDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
 }

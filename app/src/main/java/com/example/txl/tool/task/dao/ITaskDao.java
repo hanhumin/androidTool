@@ -1,5 +1,7 @@
 package com.example.txl.tool.task.dao;
 
+import com.txl.lib.sqlite.MySQLiteHelper;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
  * date：2018/10/23
  * description：
  */
-public interface ITaskDao<T> {
+public interface ITaskDao<T> extends MySQLiteHelper.IDatabaseChangeListener {
 
     /**
      * 创建表
