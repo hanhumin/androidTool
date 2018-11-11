@@ -38,29 +38,33 @@ public class VerificationCodeInputView extends RelativeLayout {
     /**
      * 输入框宽度
      * */
-    private int mEtWidth;
+    private int mTvWidth = -1;
+    /**
+     * 输入框高度
+     * */
+    private int mTvHeight = -1;
     /**
      * 输入框之间的分割线
      * */
-    private Drawable mEtDividerDrawable;
+    private Drawable mTtDividerDrawable;
     /**
      * 输入框文字大小
      * */
-    private int mEtTextSize;
+    private int mTvTextSize;
     /**
      * 输入框文字的颜色
      * */
-    private int mEtTextColor;
+    private int mTvTextColor;
     /**
      * 输入框边框的颜色
      * */
-    private Drawable mEtBackgroundDrawableFocus;
-    private Drawable mEtBackgroundDrawableNormal;
+    private Drawable mTtBackgroundDrawableFocus;
+    private Drawable mTtBackgroundDrawableNormal;
 
     /**
      * 输入框之间的间距
      * */
-    private int mEtSpace;
+    private int mTvSpace;
 
     private TextView[] mTextViews;
     private Drawable focusDrawable;
@@ -87,29 +91,30 @@ public class VerificationCodeInputView extends RelativeLayout {
         verificationCodeInputEt = rootView.findViewById(R.id.et_verification_code_input);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerificationCodeInputView, defStyleAttr, 0);
-        mEtNumber = typedArray.getInteger(R.styleable.VerificationCodeInputView_icv_et_number, 1);
-        mEtSpace = typedArray.getInteger(R.styleable.VerificationCodeInputView_icv_et_spacing, 5 );
-        mEtWidth = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeInputView_icv_et_width, 42);
-        mEtDividerDrawable = typedArray.getDrawable(R.styleable.VerificationCodeInputView_icv_et_divider_drawable);
-        mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeInputView_icv_et_text_size, 16);
-        mEtTextColor = typedArray.getColor(R.styleable.VerificationCodeInputView_icv_et_text_color, Color.WHITE);
-        mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.VerificationCodeInputView_icv_et_bg_focus);
-        mEtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.VerificationCodeInputView_icv_et_bg_normal);
+        mEtNumber = typedArray.getInteger(R.styleable.VerificationCodeInputView_vci_tv_number, 1);
+        mTvSpace = typedArray.getInteger(R.styleable.VerificationCodeInputView_vci_tv_spacing, 5 );
+        mTvWidth = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeInputView_vci_tv_width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mTvHeight = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeInputView_vci_tv_height,ViewGroup.LayoutParams.WRAP_CONTENT);
+        mTtDividerDrawable = typedArray.getDrawable(R.styleable.VerificationCodeInputView_vci_tv_divider_drawable );
+        mTvTextSize = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeInputView_vci_tv_text_size, 16);
+        mTvTextColor = typedArray.getColor(R.styleable.VerificationCodeInputView_vci_tv_text_color, Color.WHITE);
+        mTtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.VerificationCodeInputView_vci_tv_bg_focus );
+        mTtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.VerificationCodeInputView_vci_tv_bg_normal );
         Drawable defaultFocusDrawable = context.getResources().getDrawable( R.drawable.under_line_focus );
         Drawable defaultNormalDrawable = context.getResources().getDrawable( R.drawable.under_line_normal );
-        focusDrawable = mEtBackgroundDrawableFocus!=null ? mEtBackgroundDrawableFocus: defaultFocusDrawable;
-        normalDrawable = mEtBackgroundDrawableNormal!=null ? mEtBackgroundDrawableNormal: defaultNormalDrawable;
+        focusDrawable = mTtBackgroundDrawableFocus !=null ? mTtBackgroundDrawableFocus : defaultFocusDrawable;
+        normalDrawable = mTtBackgroundDrawableNormal !=null ? mTtBackgroundDrawableNormal : defaultNormalDrawable;
         typedArray.recycle();
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        initTextViews(mContext, mEtNumber, mEtWidth,mEtDividerDrawable,mEtTextSize,mEtTextColor);
+        initTextViews(mContext, mEtNumber, mTvWidth, mTvHeight,mTtDividerDrawable, mTvTextSize, mTvTextColor );
         setListener();
     }
 
-    private void initTextViews(Context context, int etNumber, int etWidth, Drawable etDividerDrawable, float etTextSize, int etTextColor) {
+    private void initTextViews(Context context, int etNumber, int tvWidth, int tvHeight, Drawable etDividerDrawable, float etTextSize, int etTextColor) {
         //将光标隐藏
         verificationCodeInputEt.setCursorVisible(false);
         //最大输入长度
@@ -121,24 +126,27 @@ public class VerificationCodeInputView extends RelativeLayout {
         }
         verificationCodeInputEt.setTextSize(etTextSize);
         verificationCodeInputEt.setLongClickable( false );
+        RelativeLayout.LayoutParams relativeParams = (LayoutParams) verificationCodeInputEt.getLayoutParams();
+        relativeParams.height = tvHeight;
+        verificationCodeInputEt.setLayoutParams( relativeParams );
         mTextViews = new TextView[etNumber];
         for (int i = 0; i < etNumber; i++) {
             TextView textView = new TextView(context);
             textView.setTextSize(etTextSize);
             textView.setTextColor(etTextColor);
             if (i == 0) {
-                textView.setBackground(mEtBackgroundDrawableFocus);
+                textView.setBackground( mTtBackgroundDrawableFocus );
             } else {
-                textView.setBackground(mEtBackgroundDrawableNormal);
+                textView.setBackground( mTtBackgroundDrawableNormal );
             }
             textView.setGravity( Gravity.CENTER);
 
             textView.setFocusable(false);
 
             mTextViews[i] = textView;
-            LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams( etWidth, ViewGroup.LayoutParams.WRAP_CONTENT );
+            LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams( tvWidth, tvHeight );
             if (i != 0 && i < etNumber) {
-                layoutParams.leftMargin = mEtSpace;
+                layoutParams.leftMargin = mTvSpace;
             }
             containerLinear.addView( textView ,layoutParams);
         }
@@ -238,9 +246,9 @@ public class VerificationCodeInputView extends RelativeLayout {
     public void clearAllText() {
         for (int i = 0; i < mTextViews.length; i++) {
             if (i == 0) {
-                mTextViews[i].setBackground(mEtBackgroundDrawableFocus);
+                mTextViews[i].setBackground( mTtBackgroundDrawableFocus );
             } else {
-                mTextViews[i].setBackground(mEtBackgroundDrawableNormal);
+                mTextViews[i].setBackground( mTtBackgroundDrawableNormal );
             }
             mTextViews[i].setText("");
         }

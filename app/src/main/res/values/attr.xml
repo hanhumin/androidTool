@@ -2,20 +2,22 @@
 <resources>
     <declare-styleable name="VerificationCodeInputView">
         <!--输入框的数量-->
-        <attr name="icv_et_number" format="integer" />
+        <attr name="vci_tv_number" format="integer" />
         <!--输入框的宽度-->
-        <attr name="icv_et_width" format="dimension|reference" />
+        <attr name="vci_tv_width" format="dimension|reference" />
+        <!--输入框的高度-->
+        <attr name="vci_tv_height" format="dimension|reference" />
         <!--输入框之间的分割线-->
-        <attr name="icv_et_divider_drawable" format="reference" />
+        <attr name="vci_tv_divider_drawable" format="reference" />
         <!--输入框文字颜色-->
-        <attr name="icv_et_text_color" format="color|reference" />
+        <attr name="vci_tv_text_color" format="color|reference" />
         <!--输入框文字大小-->
-        <attr name="icv_et_text_size" format="dimension|reference" />
+        <attr name="vci_tv_text_size" format="dimension|reference" />
         <!--输入框获取焦点时边框-->
-        <attr name="icv_et_bg_focus" format="reference" />
+        <attr name="vci_tv_bg_focus" format="reference" />
         <!--输入框没有焦点时边框-->
-        <attr name="icv_et_bg_normal" format="reference" />
+        <attr name="vci_tv_bg_normal" format="reference" />
         <!--输入框间距-->
-        <attr name="icv_et_spacing" format="reference|dimension"/>
+        <attr name="vci_tv_spacing" format="reference|dimension"/>
     </declare-styleable>
 </resources>
