@@ -48,6 +48,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/open_sqlite_edittext"/>
 
+    <com.txl.lib.custom_view.Verification_code_input.VerificationCodeInputView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icv_et_number="6"
+        app:icv_et_width="60dp"
+        app:icv_et_text_color="#dd000000"
+        app:icv_et_text_size="12sp"
+        app:icv_et_bg_normal="@drawable/under_line_normal"
+        app:icv_et_bg_focus="@drawable/under_line_focus"
+        app:layout_constraintTop_toBottomOf="@id/insert_a_todo"
+        />
+
 
 
 </android.support.constraint.ConstraintLayout>

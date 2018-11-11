@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <!--验证码显示的容器-->
+    <LinearLayout
+        android:id="@+id/verification_code_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"/>
+
+    <EditText
+        android:id="@+id/et_verification_code_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:background="@android:color/transparent"
+        android:inputType="number"
+        />
+</RelativeLayout>
