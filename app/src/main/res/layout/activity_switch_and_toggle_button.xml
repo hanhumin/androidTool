@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.txl.lib.switchView.SwitchAndToggleButtonActivity"
+    android:orientation="vertical">
+    <!--showText 是否显示文本-->
+    <!--splitTrack 有点像是否占一半的开关状态-->
+    <!--switchMinWidth 最小宽度-->
+    <!--switchPadding 有点像是否占一半的开关状态-->
+    <!--switchTextAppearance 文字外观-->
+    <!--textOff 关闭时的文字-->
+    <!--textOn 打开时的文字-->
+    <!--textStyle 字体-->
+
+    <!--thumb 开关的咄咄-->
+    <!--thumbTextPadding 有点像是否占一半的开关状态-->
+    <!--thumbTint 有点像是否占一半的开关状态-->
+    <!--thumbTintMode 有点像是否占一半的开关状态-->
+    <!--track 有点像是否占一半的开关状态-->
+    <!--trackTint 有点像是否占一半的开关状态-->
+    <!--trackTintMode 有点像是否占一半的开关状态-->
+    <!--typeface 有点像是否占一半的开关状态-->
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:showText="true"
+        android:splitTrack="false"
+        android:switchPadding="100dp"
+        android:textOff="off"
+        android:textOn="on"
+        android:textStyle="italic"
+        android:thumb="@drawable/thumb"
+        android:thumbTint="#ff0"
+        android:thumbTintMode="add"
+        android:track="@drawable/track"
+        android:switchMinWidth="10dp"
+        />
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:disabledAlpha="1.5"/>
+
+</LinearLayout>
