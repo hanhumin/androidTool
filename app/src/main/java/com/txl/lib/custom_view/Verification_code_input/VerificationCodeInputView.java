@@ -92,7 +92,7 @@ public class VerificationCodeInputView extends RelativeLayout {
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerificationCodeInputView, defStyleAttr, 0);
         mEtNumber = typedArray.getInteger(R.styleable.VerificationCodeInputView_vci_tv_number, 1);
-        mTvSpace = typedArray.getInteger(R.styleable.VerificationCodeInputView_vci_tv_spacing, 5 );
+        mTvSpace = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeInputView_vci_tv_spacing, 5 );
         mTvWidth = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeInputView_vci_tv_width, ViewGroup.LayoutParams.WRAP_CONTENT);
         mTvHeight = typedArray.getDimensionPixelSize(R.styleable.VerificationCodeInputView_vci_tv_height,ViewGroup.LayoutParams.WRAP_CONTENT);
         mTtDividerDrawable = typedArray.getDrawable(R.styleable.VerificationCodeInputView_vci_tv_divider_drawable );
