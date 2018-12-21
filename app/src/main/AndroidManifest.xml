@@ -14,10 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".sqlite.OpenSQLiteActivity">
-
-        </activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".sqlite.OpenSQLiteActivity"></activity>
         <activity
             android:name=".recycler.RecyclerViewActivity"
             android:label="@string/title_activity_recycler_view"
@@ -38,20 +36,22 @@
             android:process=":remote" />
 
         <activity android:name=".custom.DragViewActivity" />
-        <activity android:name=".custom.BannerActivity"></activity>
+        <activity android:name=".custom.BannerActivity" />
         <activity android:name=".constraintLayout.ConstraintLayoutActivity" />
         <activity android:name=".breakpoint.BreakPointDownloadActivity" />
         <activity
             android:name=".huaxiyun.player.SmallAndFullScreenChangeMediaPlayerActivity"
             android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".coordinatorlayout.CoordinatorLayoutActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".coordinatorlayout.CoordinatorLayoutActivity" />
         <activity android:name="com.txl.lib.switchView.SwitchAndToggleButtonActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.txl.lib.calendar.CalendarActivity"></activity>
     </application>
 
 </manifest>

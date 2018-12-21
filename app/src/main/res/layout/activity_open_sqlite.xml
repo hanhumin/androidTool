@@ -58,6 +58,7 @@
         app:vci_tv_bg_normal="@drawable/under_line_normal"
         app:vci_tv_bg_focus="@drawable/under_line_focus"
         app:layout_constraintTop_toBottomOf="@id/insert_a_todo"
+        app:layout_constraintStart_toStartOf="parent"
         />
 
 
