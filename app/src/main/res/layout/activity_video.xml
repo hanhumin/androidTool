@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:foregroundGravity="center"
     tools:context="com.example.txl.tool.gank.io.video.VideoActivity">
-    <com.example.txl.tool.wiget.PageScrollerRecyclerView
+    <com.txl.lib.wiget.PageScrollerRecyclerView
         android:id="@+id/video_activity_RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

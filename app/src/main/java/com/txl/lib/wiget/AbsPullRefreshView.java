@@ -1,4 +1,4 @@
-package com.example.txl.tool.wiget;
+package com.txl.lib.wiget;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.

@@ -1,4 +1,4 @@
-package com.example.txl.tool.wiget;
+package com.txl.lib.wiget;
 
 import android.content.Context;
 import android.view.View;

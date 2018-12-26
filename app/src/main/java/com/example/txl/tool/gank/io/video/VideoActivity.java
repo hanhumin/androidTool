@@ -1,21 +1,16 @@
 package com.example.txl.tool.gank.io.video;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.Surface;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.txl.tool.BaseActivity;
 import com.example.txl.tool.R;
 import com.example.txl.tool.player.SimpleAndroidPlayer;
-import com.example.txl.tool.player.TextureAndroidPlayer;
 import com.example.txl.tool.player.TextureVideoPlayerView;
-import com.example.txl.tool.wiget.PageScrollerRecyclerView;
+import com.txl.lib.wiget.PageScrollerRecyclerView;
 
 import java.util.List;
 

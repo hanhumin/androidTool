@@ -5,14 +5,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
-import android.widget.Adapter;
 
 import com.example.txl.tool.BaseActivity;
 import com.example.txl.tool.R;
 import com.example.txl.tool.recycler.adapter.FiLiAdapter;
 import com.example.txl.tool.recycler.bean.BeautyGirls;
-import com.example.txl.tool.wiget.PullRefreshRecyclerView;
+import com.txl.lib.wiget.PullRefreshRecyclerView;
 
 import java.util.List;
 

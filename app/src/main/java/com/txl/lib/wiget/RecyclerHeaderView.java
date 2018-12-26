@@ -1,18 +1,9 @@
-package com.example.txl.tool.wiget;
+package com.txl.lib.wiget;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.txl.tool.R;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
