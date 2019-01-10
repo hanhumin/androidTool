@@ -47,6 +47,7 @@ public class ImageLoader {
 
     public static final int MESSAGE_POST_RESULT = 1;
     public static final int MESSAGE_POST_IMAGE_SIZE = 2;
+    public static final int MESSAGE_POST_BITMAP = 3;
 
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 
@@ -94,6 +95,10 @@ public class ImageLoader {
                 case MESSAGE_POST_IMAGE_SIZE:
                     SourceReady ready = (SourceReady) msg.obj;
                     ready.bitmapSourceReady(msg.arg1, msg.arg2 );
+                    return;
+                case MESSAGE_POST_BITMAP:
+                    LoadBitmapCallBack callBack = (LoadBitmapCallBack) msg.obj;
+                    callBack.onFinish(callBack.b);
                     return;
             }
 
@@ -209,6 +214,32 @@ public class ImageLoader {
             bitmap = downloadBitmapFromUrl(uri);
         }
         return bitmap;
+    }
+
+    /**
+     * 从缓存中加载bitmap
+     * */
+    public void loadBitmapFromCache(final String uri, final int reqWidth, final int reqHeight, final LoadBitmapCallBack callBack){
+        final Bitmap[] bitmap = {loadBitmapFromMemCache(uri)};
+        if(bitmap[0] != null && callBack != null){
+            Log.d( TAG,"loadBitmapFromCache,uri:"+uri );
+            callBack.onFinish(bitmap[0]);
+            return;
+        }
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bitmap[0] = loadBitmapFromDiskCache(uri,reqWidth,reqHeight);
+                    Log.d( TAG,"loadBitmapFromCache loadBitmapFromDiskCache ,uri:"+uri );
+                    callBack.b = bitmap[0];
+                    mMainHandler.sendMessage(  mMainHandler.obtainMessage(MESSAGE_POST_BITMAP,callBack) );
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        THREAD_POOL_EXECUTOR.execute( task );
     }
 
     private Bitmap loadBitmapFromMemCache(String url){
@@ -399,5 +430,10 @@ public class ImageLoader {
 
     public interface SourceReady{
         void bitmapSourceReady(int bitmapWidth, int bitmapHeight);
+    }
+
+    public static abstract class LoadBitmapCallBack{
+        Bitmap b = null;
+        public abstract void onFinish(Bitmap bitmap);
     }
 }
