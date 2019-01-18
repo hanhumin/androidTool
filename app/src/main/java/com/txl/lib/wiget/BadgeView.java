@@ -2,9 +2,10 @@ package com.txl.lib.wiget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -20,8 +21,6 @@ import android.view.View;
 public class BadgeView extends View {
     private String TAG = BadgeView.class.getSimpleName();
     private Drawable mDrawable = null;
-    private Paint mTextPaint;
-    private int mTextBgColor;
 
     /**
      *图片显示边距
@@ -33,9 +32,29 @@ public class BadgeView extends View {
      * */
     private RectF dstRect;
 
-    boolean change = true;
+    int imageHeight = -1, imageWidth = -1;
 
+    /**
+     * 右上角文本
+     * */
+    String text = "1";
+    /**
+     * 文本所需要占用的矩形
+     * */
+    Rect textRect;
+    /**
+     * 文本背景内容矩形
+     * */
+    RectF textBgRectF;
+    Paint mTextPaint;
+    Paint mTextBgPaint;
+    int textSize = 36;
+    /**
+     * 文本内容额外的宽度
+     * */
+    int textPadding = 12;
 
+    int rectRadius = 60;
 
     public BadgeView(Context context) {
         super(context);
@@ -56,7 +75,50 @@ public class BadgeView extends View {
 
     {
         mTextPaint = new Paint();
+        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setTextSize(textSize);
+        mTextBgPaint = new Paint();
+        mTextBgPaint.setColor(Color.RED);
         dstRect = new RectF();
+        textRect = new Rect();
+        textBgRectF = new RectF();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        switch (widthMode){
+            case MeasureSpec.UNSPECIFIED:
+            case MeasureSpec.EXACTLY:
+                break;
+            case MeasureSpec.AT_MOST:
+
+                break;
+        }
+        setMeasuredDimension(getSize(widthMeasureSpec),getSize(heightMeasureSpec));
+    }
+
+    private int getSize(int measureSpec){
+        int result = 0;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+        switch (specMode){
+            case MeasureSpec.UNSPECIFIED:
+            case MeasureSpec.EXACTLY:
+                result = specSize;
+                Log.d(TAG,"getSize MeasureSpec.UNSPECIFIED  "+specSize);
+                break;
+            case MeasureSpec.AT_MOST:
+                Log.d(TAG,"getSize MeasureSpec.AT_MOST  "+specSize);
+                result = imageWidth + imagePaddingLeft+imagePaddingRight;
+                break;
+        }
+
+        return MeasureSpec.makeMeasureSpec(result,specMode);
     }
 
     @Override
@@ -65,41 +127,39 @@ public class BadgeView extends View {
         if(mDrawable != null){
             Log.d(TAG,"mDrawable not null");
             canvas.save();
-            mDrawable.setBounds(0,0,getWidth()/2,getHeight()/3);
-            mDrawable.draw(canvas);
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) mDrawable;
-            if(dstRect == null || change){
-                dstRect = new RectF(0,0,getWidth(),getHeight());
+            if(imageHeight == -1 || imageWidth == -1){
+                mDrawable.setBounds(imagePaddingLeft,imagePaddingTop,getWidth()-imagePaddingRight,getHeight()-imagePaddingBottom);
+            }else {
+                mDrawable.setBounds(imagePaddingLeft,imagePaddingTop,imagePaddingLeft+imageWidth,imagePaddingTop+imageHeight);
             }
-//            canvas.drawBitmap(bitmapDrawable.getBitmap(),null, dstRect,mTextPaint);
+            mDrawable.draw(canvas);
+            mTextPaint.getTextBounds(text,0,text.length(), textRect);
+            float textWidth = mTextPaint.measureText(text);
+            textBgRectF.set(getWidth()-textWidth-textPadding*2,0,getWidth(), textRect.height()+textPadding*2);
+            canvas.drawRoundRect(textBgRectF,rectRadius,rectRadius,mTextBgPaint);
+            canvas.drawText(text,getWidth()-textWidth-textPadding, textRect.height()+textPadding,mTextPaint);
             canvas.restore();
         }
     }
 
 
-    public void setImageDrawable(){}
+    public void setImageDrawable(Drawable drawable){
+        this.mDrawable = drawable;
+        invalidate();
+    }
 
     public void setImageRes(int imageRes){
         mDrawable = ContextCompat.getDrawable(getContext(),imageRes);
         invalidate();
     }
 
-    public void setImagePaddingLeft(int imagePaddingLeft) {
+    public void setImagePadding(int imagePaddingLeft,int imagePaddingTop, int imagePaddingRight, int imagePaddingBottom){
         this.imagePaddingLeft = imagePaddingLeft;
         dstRect.left = imagePaddingLeft;
-    }
-
-    public void setImagePaddingTop(int imagePaddingTop) {
         this.imagePaddingTop = imagePaddingTop;
         dstRect.top = imagePaddingTop;
-    }
-
-    public void setImagePaddingRight(int imagePaddingRight) {
         this.imagePaddingRight = imagePaddingRight;
         dstRect.right = imagePaddingRight;
-    }
-
-    public void setImagePaddingBottom(int imagePaddingBottom) {
         this.imagePaddingBottom = imagePaddingBottom;
         dstRect.bottom = imagePaddingBottom;
     }
@@ -113,5 +173,19 @@ public class BadgeView extends View {
         dstRect.top = padding;
         dstRect.left = padding;
         dstRect.right = padding;
+    }
+
+    /**
+     * @param imageWidth  图片宽
+     * @param imageHeight  图片高
+     * Notice: 调用了这个方法后 imagePaddingRight,imagePaddingBottom 会失效
+     * */
+    public void setBadgeImageSize(int imageWidth, int imageHeight){
+        this.imageWidth = imageWidth;
+        this.imageHeight = imageHeight;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

@@ -13,6 +13,14 @@ public class HecoderActivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hecoder_activty);
         badgeView = findViewById(R.id.badge_view);
-        badgeView.setImageRes(R.drawable.content);
+        badgeView.setImageRes(R.drawable.ic_messages_like_selected);
+        badgeView.setImagePadding(10);
+
+//        badgeView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                badgeView.setImageRes(R.drawable.content);
+//            }
+//        },5000);
     }
 }
