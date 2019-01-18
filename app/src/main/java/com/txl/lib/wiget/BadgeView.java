@@ -96,10 +96,26 @@ public class BadgeView extends View {
             case MeasureSpec.EXACTLY:
                 break;
             case MeasureSpec.AT_MOST:
-
+                if(imageHeight == -1 || imageWidth == -1){
+                    widthSize = mDrawable.getIntrinsicWidth()+imagePaddingLeft+imagePaddingRight;
+                }else {
+                    widthSize = imageWidth+imagePaddingLeft+imagePaddingRight;
+                }
                 break;
         }
-        setMeasuredDimension(getSize(widthMeasureSpec),getSize(heightMeasureSpec));
+        switch (heightMode){
+            case MeasureSpec.UNSPECIFIED:
+            case MeasureSpec.EXACTLY:
+                break;
+            case MeasureSpec.AT_MOST:
+                if(imageHeight == -1 || imageWidth == -1){
+                    heightSize = mDrawable.getIntrinsicHeight()+imagePaddingTop+imagePaddingBottom;
+                }else {
+                    heightSize = imageWidth+imagePaddingTop+imagePaddingBottom;
+                }
+                break;
+        }
+        setMeasuredDimension(MeasureSpec.makeMeasureSpec(widthSize,widthMode),MeasureSpec.makeMeasureSpec(heightSize,heightMode));
     }
 
     private int getSize(int measureSpec){
