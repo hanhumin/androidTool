@@ -97,7 +97,11 @@ public class BadgeView extends View {
                 break;
             case MeasureSpec.AT_MOST:
                 if(imageHeight == -1 || imageWidth == -1){
-                    widthSize = mDrawable.getIntrinsicWidth()+imagePaddingLeft+imagePaddingRight;
+                    if(mDrawable == null){
+                        heightSize = 0;
+                    }else {
+                        widthSize = mDrawable.getIntrinsicWidth()+imagePaddingLeft+imagePaddingRight;
+                    }
                 }else {
                     widthSize = imageWidth+imagePaddingLeft+imagePaddingRight;
                 }
@@ -109,7 +113,11 @@ public class BadgeView extends View {
                 break;
             case MeasureSpec.AT_MOST:
                 if(imageHeight == -1 || imageWidth == -1){
-                    heightSize = mDrawable.getIntrinsicHeight()+imagePaddingTop+imagePaddingBottom;
+                    if(mDrawable == null){
+                        heightSize = 0;
+                    }else {
+                        heightSize = mDrawable.getIntrinsicHeight()+imagePaddingTop+imagePaddingBottom;
+                    }
                 }else {
                     heightSize = imageWidth+imagePaddingTop+imagePaddingBottom;
                 }
