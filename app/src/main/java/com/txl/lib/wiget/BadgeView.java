@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +38,7 @@ public class BadgeView extends View {
     /**
      * 右上角文本
      * */
-    String text = "1";
+    String text = "";
     /**
      * 文本所需要占用的矩形
      * */
@@ -55,6 +56,11 @@ public class BadgeView extends View {
     int textPadding = 12;
 
     int rectRadius = 60;
+    /**
+     * 文本内容的宽度
+     * */
+    private float textWidth;
+    private float oneTextWidth;
 
     public BadgeView(Context context) {
         super(context);
@@ -98,12 +104,27 @@ public class BadgeView extends View {
             case MeasureSpec.AT_MOST:
                 if(imageHeight == -1 || imageWidth == -1){
                     if(mDrawable == null){
-                        heightSize = 0;
+                        widthSize = 0;
                     }else {
-                        widthSize = mDrawable.getIntrinsicWidth()+imagePaddingLeft+imagePaddingRight;
+                        //右上角的文本为空
+                        if(TextUtils.isEmpty(text)){
+                            widthSize = mDrawable.getIntrinsicWidth()+imagePaddingLeft+imagePaddingRight;
+                        }else {
+                            oneTextWidth = mTextPaint.measureText("1");
+                            //-12-oneTextWidth的原因是文本和图片的重合区域,+12的原因是文本到右边的padding。12是文本左右的边距
+//                            widthSize = mDrawable.getIntrinsicWidth()+imagePaddingLeft-12-oneTextWidth+textWidth+12
+                            widthSize = (int) (mDrawable.getIntrinsicWidth()+imagePaddingLeft-oneTextWidth+textWidth+imagePaddingRight);
+                        }
                     }
                 }else {
-                    widthSize = imageWidth+imagePaddingLeft+imagePaddingRight;
+                    if(TextUtils.isEmpty(text)){
+                        widthSize = imageWidth+imagePaddingLeft+imagePaddingRight;
+                    }else {
+                        oneTextWidth = mTextPaint.measureText("1");
+                        //-12-oneTextWidth的原因是文本和图片的重合区域,+12的原因是文本到右边的padding。12是文本左右的边距
+//                            widthSize = mDrawable.getIntrinsicWidth()+imagePaddingLeft-12-oneTextWidth+textWidth+12
+                        widthSize = (int) (imageWidth+imagePaddingLeft-oneTextWidth+textWidth+imagePaddingRight);
+                    }
                 }
                 break;
         }
@@ -126,25 +147,6 @@ public class BadgeView extends View {
         setMeasuredDimension(MeasureSpec.makeMeasureSpec(widthSize,widthMode),MeasureSpec.makeMeasureSpec(heightSize,heightMode));
     }
 
-    private int getSize(int measureSpec){
-        int result = 0;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-        switch (specMode){
-            case MeasureSpec.UNSPECIFIED:
-            case MeasureSpec.EXACTLY:
-                result = specSize;
-                Log.d(TAG,"getSize MeasureSpec.UNSPECIFIED  "+specSize);
-                break;
-            case MeasureSpec.AT_MOST:
-                Log.d(TAG,"getSize MeasureSpec.AT_MOST  "+specSize);
-                result = imageWidth + imagePaddingLeft+imagePaddingRight;
-                break;
-        }
-
-        return MeasureSpec.makeMeasureSpec(result,specMode);
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -157,15 +159,37 @@ public class BadgeView extends View {
                 mDrawable.setBounds(imagePaddingLeft,imagePaddingTop,imagePaddingLeft+imageWidth,imagePaddingTop+imageHeight);
             }
             mDrawable.draw(canvas);
-            mTextPaint.getTextBounds(text,0,text.length(), textRect);
-            float textWidth = mTextPaint.measureText(text);
-            textBgRectF.set(getWidth()-textWidth-textPadding*2,0,getWidth(), textRect.height()+textPadding*2);
-            canvas.drawRoundRect(textBgRectF,rectRadius,rectRadius,mTextBgPaint);
-            canvas.drawText(text,getWidth()-textWidth-textPadding, textRect.height()+textPadding,mTextPaint);
+            if(!TextUtils.isEmpty(text)){
+                //测量文字的显示内容区域
+                mTextPaint.getTextBounds(text,0,text.length(), textRect);
+                textBgRectF.set(imagePaddingLeft+mDrawable.getBounds().width()-textPadding-oneTextWidth,
+                        0,getWidth(), textRect.height()+textPadding*2);
+                canvas.drawRoundRect(textBgRectF,rectRadius,rectRadius,mTextBgPaint);
+                canvas.drawText(text,getWidth()-textWidth-textPadding, textRect.height()+textPadding,mTextPaint);
+            }
             canvas.restore();
         }
     }
 
+
+    /**
+     * 设置右上角文本
+     * 考虑到可能会显示其他的一些东西，没有将参数设置成int类型
+     * */
+    public void setBadgeText(String text){
+        if(TextUtils.isEmpty(text)){
+            return;
+        }
+        float newTextWith = mTextPaint.measureText(text);
+        textWidth = newTextWith;
+
+        if(!TextUtils.isEmpty(this.text) && text.length() == this.text.length()){
+            invalidate();
+        }else {
+            requestLayout();
+        }
+        this.text = text;
+    }
 
     public void setImageDrawable(Drawable drawable){
         this.mDrawable = drawable;
@@ -209,7 +233,4 @@ public class BadgeView extends View {
         this.imageHeight = imageHeight;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
 }
