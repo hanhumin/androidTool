@@ -7,12 +7,6 @@
     tools:context=".activity.HecoderActivty"
     android:orientation="vertical"
     android:background="@color/colorPrimary">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/content"
-       />
     <com.txl.lib.wiget.BadgeView
         android:layout_marginStart="30dp"
         android:id="@+id/badge_view"
@@ -21,4 +15,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#f707"/>
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/bt_click"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="文字点击测试"/>
 </LinearLayout>

@@ -20,4 +20,13 @@
         <!--输入框间距-->
         <attr name="vci_tv_spacing" format="reference|dimension"/>
     </declare-styleable>
+    <declare-styleable name="BadgeView">
+        <attr name="badge_image_width" format="integer" />
+        <attr name="badge_image_height" format="integer" />
+        <attr name="badge_image_padding" format="integer" />
+        <attr name="badge_image_padding_left" format="integer" />
+        <attr name="badge_image_padding_right" format="integer" />
+        <attr name="badge_image_padding_top" format="integer" />
+        <attr name="badge_image_padding_bottom" format="integer" />
+    </declare-styleable>
 </resources>

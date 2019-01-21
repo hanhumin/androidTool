@@ -153,11 +153,7 @@ public class BadgeView extends View {
         if(mDrawable != null){
             Log.d(TAG,"mDrawable not null");
             canvas.save();
-            if(imageHeight == -1 || imageWidth == -1){
-                mDrawable.setBounds(imagePaddingLeft,imagePaddingTop,getWidth()-imagePaddingRight,getHeight()-imagePaddingBottom);
-            }else {
-                mDrawable.setBounds(imagePaddingLeft,imagePaddingTop,imagePaddingLeft+imageWidth,imagePaddingTop+imageHeight);
-            }
+            initDrawable();
             mDrawable.draw(canvas);
             if(!TextUtils.isEmpty(text)){
                 //测量文字的显示内容区域
@@ -193,12 +189,20 @@ public class BadgeView extends View {
 
     public void setImageDrawable(Drawable drawable){
         this.mDrawable = drawable;
-        invalidate();
+        requestLayout();
+    }
+
+    private void initDrawable(){
+        if(imageHeight == -1 || imageWidth == -1){
+            mDrawable.setBounds(imagePaddingLeft,imagePaddingTop,getWidth()-imagePaddingRight,getHeight()-imagePaddingBottom);
+        }else {
+            mDrawable.setBounds(imagePaddingLeft,imagePaddingTop,imagePaddingLeft+imageWidth,imagePaddingTop+imageHeight);
+        }
     }
 
     public void setImageRes(int imageRes){
         mDrawable = ContextCompat.getDrawable(getContext(),imageRes);
-        invalidate();
+        requestLayout();
     }
 
     public void setImagePadding(int imagePaddingLeft,int imagePaddingTop, int imagePaddingRight, int imagePaddingBottom){

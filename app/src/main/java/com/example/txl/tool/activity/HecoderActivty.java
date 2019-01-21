@@ -3,12 +3,16 @@ package com.example.txl.tool.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.txl.tool.R;
 import com.txl.lib.wiget.BadgeView;
 
 public class HecoderActivty extends AppCompatActivity {
     BadgeView badgeView;
+    TextView textView;
+    Button button;
     int num = 1;
     boolean state = true;
     @Override
@@ -28,6 +32,15 @@ public class HecoderActivty extends AppCompatActivity {
                 int res = state ? R.drawable.ic_messages_like_selected:R.drawable.ic_messages_like_unselected;
                 badgeView.setImageRes(res);
                 state = !state;
+            }
+        });
+        textView = findViewById(R.id.tv_text);
+        button = findViewById(R.id.bt_click);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                num = num * 10;
+                textView.setText(num+"");
             }
         });
 //        badgeView.postDelayed(new Runnable() {
