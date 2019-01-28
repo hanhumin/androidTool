@@ -46,12 +46,13 @@
             android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".coordinatorlayout.CoordinatorLayoutActivity" />
-        <activity android:name="com.txl.lib.switchView.SwitchAndToggleButtonActivity"></activity>
+        <activity android:name="com.txl.lib.switchView.SwitchAndToggleButtonActivity" />
         <activity android:name="com.txl.lib.calendar.CalendarActivity" />
-        <activity android:name=".activity.HecoderActivty">
+        <activity android:name=".activity.HecoderActivty"></activity>
+        <activity android:name=".activity.NestedScrollingDemoActivity">
 
         </activity>
-        <activity android:name=".activity.NestedScrollingDemoActivity">
+        <activity android:name=".activity.PopWindowAndMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

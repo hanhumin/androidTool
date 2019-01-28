@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
@@ -36,4 +38,5 @@ dependencies {
     implementation files('libs/disklrucache-2.0.2.jar')
     implementation files('libs/jsoup-1.11.3.jar')
     implementation 'com.haibin:calendarview:3.4.8'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
