@@ -4,13 +4,8 @@ package com.example.txl.tool.player.music;
  * @author TXL
  * description :
  */
-public interface IMusicPlayer {
+public interface IMusicPlayer<T> {
     void init();
-
-    /**
-     * 是否显示notification
-     * */
-    void startNotification(boolean has);
 
     long getCurrentPosition();
 
@@ -33,7 +28,14 @@ public interface IMusicPlayer {
     boolean isPlaying();
 
     /**
-     * description :音频播放通过Notification操作需要及时更改界面
+     * 返回判断是不是同一音频的标记
+     * */
+    T getPlayTag();
+
+    void setPlayTag(T tag);
+
+    /**
+     * description :音频播放需要通过Notification操作需要及时更改界面
      */
     interface IMusicPlayerEvents {
         boolean onError(IMusicPlayer xmp, int code, String msg);

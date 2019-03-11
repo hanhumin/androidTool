@@ -1,12 +1,11 @@
 package com.example.txl.tool.player.music;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-
-import com.example.txl.tool.player.IMediaPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public abstract class AbsPlayerService extends Service implements IMusicPlayer.I
     boolean hasNotification;
 
     void initPlayer(){
-        _mPlayer = createPlayer();
+        _mPlayer = createPlayer(this);
         if(musicPlayerEvents != null){
             musicPlayerEvents.clear();
             musicPlayerEvents = null;
@@ -42,7 +41,7 @@ public abstract class AbsPlayerService extends Service implements IMusicPlayer.I
         musicPlayerEvents = null;
     }
 
-    abstract IMusicPlayer createPlayer();
+    abstract IMusicPlayer createPlayer(Context context);
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -164,7 +163,7 @@ public abstract class AbsPlayerService extends Service implements IMusicPlayer.I
         return true;
     }
 
-    public static class PlayerAdapter extends Binder implements IMusicPlayer{
+    public static class PlayerAdapter extends Binder implements IMusicPlayer,INotification{
         AbsPlayerService absPlayerService;
         public PlayerAdapter(AbsPlayerService playerService) {
             this.absPlayerService = playerService;
@@ -184,37 +183,43 @@ public abstract class AbsPlayerService extends Service implements IMusicPlayer.I
 
         @Override
         public long getCurrentPosition() {
-            return 0;
+            return absPlayerService._mPlayer.getCurrentPosition();
         }
 
         @Override
         public boolean seekTo(long pos) {
-            return false;
+            absPlayerService._mPlayer.seekTo( pos );
+            return true;
         }
 
         @Override
         public boolean stop() {
-            return false;
+            absPlayerService._mPlayer.stop();
+            return true;
         }
 
         @Override
         public boolean pause() {
-            return false;
+            absPlayerService._mPlayer.pause();
+            return true;
         }
 
         @Override
         public boolean play() {
-            return false;
+            absPlayerService._mPlayer.play();
+            return true;
         }
 
         @Override
         public boolean open(String url) {
-            return false;
+            absPlayerService._mPlayer.open(url);
+            return true;
         }
 
         @Override
         public void destroy() {
-
+            absPlayerService.clearPlayerEventListener();
+            absPlayerService = null;
         }
 
         @Override
@@ -224,12 +229,29 @@ public abstract class AbsPlayerService extends Service implements IMusicPlayer.I
 
         @Override
         public void removeEventListener(IMusicPlayerEvents listener) {
-
+            absPlayerService.clearPlayerEventListener();
         }
 
         @Override
         public boolean isPlaying() {
-            return false;
+            return absPlayerService._mPlayer.isPlaying();
         }
+
+        @Override
+        public Object getPlayTag() {
+            return null;
+        }
+
+        @Override
+        public void setPlayTag(Object tag) {
+
+        }
+    }
+
+    public interface INotification{
+        /**
+         * 是否显示notification
+         * */
+        void startNotification(boolean has);
     }
 }

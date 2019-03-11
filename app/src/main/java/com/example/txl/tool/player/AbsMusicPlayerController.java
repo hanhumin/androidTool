@@ -6,6 +6,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.txl.tool.player.music.AbsPlayerService;
 import com.example.txl.tool.player.music.IMusicPlayer;
 
 import java.lang.ref.WeakReference;
@@ -17,7 +18,7 @@ import java.lang.ref.WeakReference;
 public abstract class AbsMusicPlayerController implements IMusicPlayer.IMusicPlayerEvents {
     protected final String TAG = getClass().getSimpleName();
     WeakReference<Context> _mContext;
-    IMusicPlayer _mMusicPlayer;
+    AbsPlayerService.PlayerAdapter _mMusicPlayer;
     ServiceConnection serviceConnection;
 
     public AbsMusicPlayerController(Context context) {
@@ -26,7 +27,7 @@ public abstract class AbsMusicPlayerController implements IMusicPlayer.IMusicPla
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 if(service instanceof IMusicPlayer){
-                    _mMusicPlayer = (IMusicPlayer) service;
+                    _mMusicPlayer = (AbsPlayerService.PlayerAdapter) service;
                     _mMusicPlayer.setEventListener(AbsMusicPlayerController.this);
                 }else {
                     Log.e(TAG,"serviceConnection _mMusicPlayer init error unBind service");
