@@ -26,7 +26,13 @@
             android:name=".gank.io.video.VideoActivity"
             android:hardwareAccelerated="true" />
         <activity android:name=".gesture.GestureActivity" />
-        <activity android:name=".gank.io.video.MoreTextureActivity" />
+        <activity android:name=".gank.io.video.MoreTextureActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".inter.process.communication.IPCActivity"
             android:process=":remote" />
@@ -53,11 +59,7 @@
 
         </activity>
         <activity android:name=".activity.PopWindowAndMenuActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

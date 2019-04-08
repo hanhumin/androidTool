@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.txl.tool.R;
 
@@ -25,6 +27,7 @@ public class MoreTextureActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_more_texture );
         mediaPlayer = new MediaPlayer();
+        mediaPlayer.setLooping(true);
         textureView1 = findViewById( R.id.more_texture_activity_TextureView1 );
         textureView1.setSurfaceTextureListener( new TextureView.SurfaceTextureListener() {
             @Override
@@ -42,13 +45,13 @@ public class MoreTextureActivity extends AppCompatActivity {
                     public void onCompletion(MediaPlayer mp) {
                         mediaPlayer.setSurface( new Surface( textureView2.getSurfaceTexture() ) );
 
-                        try {
-                            mediaPlayer.reset();
-                            mediaPlayer.setDataSource( MoreTextureActivity.this, Uri.parse("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff70000bdcrer2k781i9vhhqsvg&line=0") );
-                            mediaPlayer.prepareAsync();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            mediaPlayer.reset();
+//                            mediaPlayer.setDataSource( MoreTextureActivity.this, Uri.parse("https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff70000bdcrer2k781i9vhhqsvg&line=0") );
+//                            mediaPlayer.prepareAsync();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 } );
                 try {
@@ -75,7 +78,24 @@ public class MoreTextureActivity extends AppCompatActivity {
             }
         } );
         textureView2 = findViewById( R.id.more_texture_activity_TextureView2 );
-
+        TextView tvPlay1 = findViewById(R.id.tv_play_1);
+        tvPlay1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.setSurface( new Surface( textureView1.getSurfaceTexture() ) );
+                textureView1.setVisibility(View.VISIBLE);
+                textureView2.setVisibility(View.INVISIBLE);
+            }
+        });
+        TextView tvPlay2 = findViewById(R.id.tv_play_2);
+        tvPlay2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.setSurface( new Surface( textureView2.getSurfaceTexture() ) );
+                textureView2.setVisibility(View.VISIBLE);
+                textureView1.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     @Override
