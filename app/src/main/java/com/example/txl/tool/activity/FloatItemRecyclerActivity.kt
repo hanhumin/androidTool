@@ -52,20 +52,12 @@ class FloatItemRecyclerActivity : AppCompatActivity() {
         suspensionView.setBackgroundColor(0x77888888)
         suspensionView.gravity = Gravity.CENTER
         suspensionView.visibility = View.GONE
-        val decorView = window.decorView as ViewGroup
+        val decorView = findViewById<FrameLayout>(R.id.root_frame);
         decorView.addView(suspensionView)
         suspensionListViewUtils.suspensionView = suspensionView
         listView?.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                suspensionView.visibility = View.VISIBLE
-                suspensionView.layoutParams.width = view?.width!!
-                suspensionView.layoutParams.height = view?.height!!
-                Log.d(tag,"onItemClick width: ${view?.width!!} height: ${view?.height!!} parent: $parent view: $view position: $position id: $id")
-                val demoArray = IntArray(2)
-                view?.getLocationOnScreen(demoArray)
-
-                suspensionView.translationY = demoArray[1].toFloat()
-                suspensionView.layoutParams = suspensionView.layoutParams
+                suspensionListViewUtils.setNeedSuspensionView(view!!,position)
             }
         }
     }

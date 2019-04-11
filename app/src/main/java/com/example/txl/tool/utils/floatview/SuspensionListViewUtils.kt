@@ -1,5 +1,6 @@
 package com.example.txl.tool.utils.floatview
 
+import android.annotation.TargetApi
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.util.Log
@@ -24,8 +25,31 @@ class SuspensionListViewUtils {
 
     /**
      * 需要在上面再是悬浮效果的那个View
+     * 在view复用的情况下这个东西并不可靠
      * */
-    private var needFloatChild:View? = null
+    private var needSuspensionChild:View? = null
+
+    private var needSuspensionChildPosition = 0
+
+    private var needSuspensionChildVisible: Boolean = false
+
+    @TargetApi(Build.VERSION_CODES.M)
+    fun setNeedSuspensionView(needSuspensionChild: View, needSuspensionChildPosition: Int) {
+        this.needSuspensionChild = needSuspensionChild
+        this.needSuspensionChildPosition = needSuspensionChildPosition
+        needSuspensionChild.tag = needSuspensionChildPosition
+        needSuspensionChild.setOnScrollChangeListener(object : View.OnScrollChangeListener{
+            override fun onScrollChange(v: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+                Log.d(tag,"setNeedSuspensionView onScrollChange ")
+            }
+        })
+        suspensionView?.visibility = View.VISIBLE
+        suspensionView?.layoutParams?.width = needSuspensionChild.width!!
+        suspensionView?.layoutParams?.height = needSuspensionChild.height!!
+        suspensionView?.translationY = needSuspensionChild.top.toFloat()
+        suspensionView?.layoutParams = suspensionView?.layoutParams
+        Log.d(tag,"setNeedSuspensionView width: ${needSuspensionChild.width!!} height: ${needSuspensionChild.height} view: $needSuspensionChild position: $needSuspensionChildPosition")
+    }
 
     private var currentState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE
 
@@ -34,6 +58,7 @@ class SuspensionListViewUtils {
             scrollerListeners?.forEach {
                 it.onScrollStateChanged(view,scrollState)
             }
+            Log.d(tag,"onScrollStateChanged  scrollState: $scrollState")
             if (suspensionView == null) {
                 return
             }
@@ -42,62 +67,97 @@ class SuspensionListViewUtils {
                 // 停止滑动
                 AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
                     // 对正在显示的浮层的child做个副本，为了判断显示浮层的child是否发现了变化
-                    val tempFloatChild = needFloatChild
-                    // 更新浮层的位置，覆盖child
+                    val tempFloatChild = needSuspensionChild
                     updateFloatScrollStopTranslateY()
                     // 如果firstChild没有发生变化，回调floatView滑动停止的监听
-                    if (tempFloatChild === needFloatChild) {
+                    if (tempFloatChild === needSuspensionChild) {
 
                     }
                 }
                 // 开始滑动
                 AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL ->{
+                    updateFloatScrollStopTranslateY()
+                }
+                AbsListView.OnScrollListener.SCROLL_STATE_FLING ->{
 
                 }
-                    // 保存第一个child
-                    // 更新浮层的位置
-
-            }// Fling
-            // 这里有一个bug，如果手指在屏幕上快速滑动，但是手指并未离开，仍然有可能触发Fling
-            // 所以这里不对Fling状态进行处理
-            //                    case 2:
-            //                        hideFloatView();
-            //                        break;
+            }
         }
 
         override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
             scrollerListeners?.forEach {
                 it.onScroll(view,firstVisibleItem,visibleItemCount,totalItemCount)
             }
-            if (suspensionView == null) {
-                return
-            }
             // 判断显示浮层的child是否已经划出屏幕
-            if (needFloatChild != null) {
-
+            needSuspensionChildVisible = true
+            if (needSuspensionChild != null) {
+                if(needSuspensionChildPosition < firstVisibleItem || needSuspensionChildPosition > firstVisibleItem+visibleItemCount){
+                    needSuspensionChildVisible = false
+                    needSuspensionChildOverRange()
+                }else{
+                    needSuspensionChildInRange()
+                }
             }
-
-            when (currentState) {
-                // 停止滑动
-                AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> updateFloatScrollStopTranslateY()
-                // 开始滑动
-                AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL -> {}
-                // Fling
-                AbsListView.OnScrollListener.SCROLL_STATE_FLING -> {
-
+//            Log.d(tag,"needSuspensionChildPosition $needSuspensionChildPosition  needSuspensionChildVisible：$needSuspensionChildVisible  firstVisibleItem:$firstVisibleItem  visibleItemCount；$visibleItemCount  totalItemCount: $totalItemCount")
+            if(needSuspensionChildVisible){
+                when (currentState) {
+                    // 停止滑动
+                    AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> updateFloatScrollStopTranslateY()
+                    // 开始滑动
+                    AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL -> {
+                        updateFloatScrollStopTranslateY()
+                        getChildAdapterPosition(needSuspensionChild)
+                    }
+                    // Fling
+                    AbsListView.OnScrollListener.SCROLL_STATE_FLING -> {
+                        updateFloatScrollStopTranslateY()
+                    }
                 }
             }
         }
     }
 
     /**
+     * 获取child在列表中的位置
+     */
+    private fun getChildAdapterPosition(item: View?): Int {
+        val firstVisiblePosition = _listView?.firstVisiblePosition!!
+        val childCount = _listView?.childCount!!
+        for (i in 0 until childCount) {
+            val child = _listView?.getChildAt(i)
+            // 判断是否是当前的item
+            if (child === item) {
+                Log.d(tag,"getChildAdapterPosition  i ::: $i")
+                return (firstVisiblePosition + i)
+            }
+        }
+        return -1
+    }
+
+    /**
      * 更新位置
      * */
     private fun updateFloatScrollStopTranslateY() {
-        if (needFloatChild == null) {
+        if (needSuspensionChild == null) {
             return
         }
+        if(needSuspensionChildVisible){
+            suspensionView?.translationY = needSuspensionChild?.top!!.toFloat()
+        }
+    }
 
+    /**
+     * 超出显示范围
+     * */
+    fun needSuspensionChildOverRange(){
+//        suspensionView?.visibility = View.GONE
+    }
+
+    /**
+     * 显示范围内
+     * */
+    fun needSuspensionChildInRange(){
+        suspensionView?.visibility = View.VISIBLE
     }
 
     /**
