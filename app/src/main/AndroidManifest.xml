@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity android:name=".MainActivity" />
         <activity android:name=".sqlite.OpenSQLiteActivity" />
         <activity
@@ -26,7 +26,8 @@
             android:name=".gank.io.video.VideoActivity"
             android:hardwareAccelerated="true" />
         <activity android:name=".gesture.GestureActivity" />
-        <activity android:name=".gank.io.video.MoreTextureActivity" >
+        <activity android:name=".gank.io.video.MoreTextureActivity"
+            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
