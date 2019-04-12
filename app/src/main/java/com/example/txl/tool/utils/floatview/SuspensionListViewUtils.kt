@@ -230,7 +230,8 @@ class SuspensionListViewUtils {
         }
         when (targetState) {
             SUSPENSION_VIEW_STATE_GONE -> {
-
+                suspensionView?.visibility = View.GONE
+                mSuspensionViewStateListener.onSuspensionViewStateGone(suspensionView!!)
                 mSuspensionViewState = SUSPENSION_VIEW_STATE_GONE
             }
             SUSPENSION_VIEW_STATE_BOTTOM -> {
