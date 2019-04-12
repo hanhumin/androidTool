@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.txl.tool.R
+import com.example.txl.tool.utils.floatview.OVER_MODEL_SHOW_BOTTOM
 import com.example.txl.tool.utils.floatview.SuspensionListViewUtils
 import com.txl.lib.custom_view.floatitem.FloatItemRecyclerView
 
@@ -44,19 +45,28 @@ class FloatItemRecyclerActivity : AppCompatActivity() {
         floatView = FloatItemRecyclerView(this)
 
         listView = findViewById(R.id.list_view)
-        listView?.adapter = ArrayAdapter<String>(this,R.layout.float_item_recycle_view, R.id.tv_text,listOf("1","2","3","4","5","6","7","8","9","10"))
-        val suspensionListViewUtils = SuspensionListViewUtils()
+        val adapter = object:ArrayAdapter<String>(this,R.layout.float_item_recycle_view, R.id.tv_text,listOf("0","1","2","3","4","5","6","7","8","9","10")){
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                val view = super.getView(position, convertView, parent)
+                view.setTag( R.id.tv_text,position)//这个为了解决view重用的问题
+                return view
+            }
+        }
+        listView?.adapter = adapter
+        val suspensionListViewUtils = SuspensionListViewUtils(R.id.tv_text)
+        suspensionListViewUtils.mOverModel = OVER_MODEL_SHOW_BOTTOM
         suspensionListViewUtils.setListView(listView!!)
         val suspensionView = TextView(this)
         suspensionView.text = "我是悬浮"
         suspensionView.setBackgroundColor(0x77888888)
         suspensionView.gravity = Gravity.CENTER
         suspensionView.visibility = View.GONE
-        val decorView = findViewById<FrameLayout>(R.id.root_frame);
+        val decorView = findViewById<FrameLayout>(R.id.root_frame)
         decorView.addView(suspensionView)
         suspensionListViewUtils.suspensionView = suspensionView
         listView?.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                suspensionView.text = "我是悬浮 position: $position"
                 suspensionListViewUtils.setNeedSuspensionView(view!!,position)
             }
         }
