@@ -64,6 +64,19 @@ class FloatItemRecyclerActivity : AppCompatActivity() {
         val decorView = findViewById<FrameLayout>(R.id.root_frame)
         decorView.addView(suspensionView)
         suspensionListViewUtils.suspensionView = suspensionView
+//        suspensionListViewUtils.setSuspensionViewStateListener(object :SuspensionListViewUtils.SuspensionViewStateListener{
+//            override fun onSuspensionViewStateGone(suspensionView: View) {
+//
+//            }
+//
+//            override fun onSuspensionViewStateBottom(suspensionView: View) {
+//
+//            }
+//
+//            override fun onSuspensionViewStateFloating(needSuspensionChild: View, suspensionView: View) {
+//
+//            }
+//        })
         listView?.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 suspensionView.text = "我是悬浮 position: $position"
