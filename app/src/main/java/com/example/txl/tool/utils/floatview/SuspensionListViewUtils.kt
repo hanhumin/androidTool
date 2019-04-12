@@ -1,7 +1,5 @@
 package com.example.txl.tool.utils.floatview
 
-import android.annotation.TargetApi
-import android.os.Build
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -94,7 +92,7 @@ class SuspensionListViewUtils {
      * */
     private var needSuspensionChild: View? = null
 
-    private var needSuspensionChildPosition = 0
+    private var needSuspensionChildPosition = Int.MIN_VALUE
 
     /**
      *用这个来作为存储的key，来取每个item对应的position
@@ -113,11 +111,15 @@ class SuspensionListViewUtils {
             suspensionView?.translationY = needSuspensionChild.top.toFloat()
             mSuspensionViewState = SUSPENSION_VIEW_STATE_FLOAT
         }
+        Log.d(tag,"setNeedSuspensionView needSuspensionChildPosition:$needSuspensionChildPosition")
     }
 
+    var debug: Boolean = true
     private val myScrollerListener = object : AbsListView.OnScrollListener {
         override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
-            Log.d(tag, "onScrollStateChanged  scrollState: $scrollState")
+            if(debug){
+                Log.d(tag, "onScrollStateChanged  scrollState: $scrollState")
+            }
             when (scrollState) {
                 // 停止滑动
                 AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
@@ -138,7 +140,13 @@ class SuspensionListViewUtils {
         }
 
         override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+            if(debug){
+                Log.d(tag,"onScroll firstVisibleItem:$firstVisibleItem  visibleItemCount:$visibleItemCount  totalItemCount: $totalItemCount   needSuspensionChildPosition:$needSuspensionChildPosition")
+            }
             if (suspensionView != null) {
+                if (needSuspensionChild?.getTag(mKeyPositionTagKey) != needSuspensionChildPosition-_listView?.headerViewsCount!!) {
+                    val v = getNeedSuspensionChild(needSuspensionChildPosition,totalItemCount)
+                }
                 if (needSuspensionChildPosition < firstVisibleItem || needSuspensionChildPosition >= firstVisibleItem + visibleItemCount) {
                     needSuspensionChildOverRange()
                 } else {
@@ -158,34 +166,37 @@ class SuspensionListViewUtils {
      * 更新位置
      * */
     private fun updateFloatScrollStopTranslateY() {
-        if (needSuspensionChild?.getTag(mKeyPositionTagKey) != needSuspensionChildPosition) {
-            getChildAdapterPosition(needSuspensionChildPosition)
-        }
         if (mSuspensionViewState == SUSPENSION_VIEW_STATE_FLOAT && needSuspensionChild != null) {
             suspensionView?.translationY = needSuspensionChild?.top!!.toFloat()
         }
     }
 
     /**
-     * 获取child在列表中的位置
+     * 获取child需要显示滑动的child
+     *
      */
-    private fun getChildAdapterPosition(position: Int): View? {
-        needSuspensionChild = null
+    private fun getNeedSuspensionChild(position: Int,totalItemCount: Int): View? {
         val firstVisiblePosition = _listView?.firstVisiblePosition!!
         val lastVisiblePosition = _listView?.lastVisiblePosition!!
+        if(debug){
+            Log.d(tag,"firstVisiblePosition： $firstVisiblePosition  lastVisiblePosition: $lastVisiblePosition")
+        }
         if (position < firstVisiblePosition || position > lastVisiblePosition) {
-            return null
+            return needSuspensionChild
+        }
+        if(position < _listView?.headerViewsCount!! || position>totalItemCount- _listView?.footerViewsCount!!){
+            return needSuspensionChild
         }
         val childCount = _listView?.childCount!!
         for (i in 0 until childCount) {
             val child = _listView?.getChildAt(i)
             // 判断是否是当前的item
-            if (child != null && child.getTag(mKeyPositionTagKey) == position) {
+            if (child != null && child.getTag(mKeyPositionTagKey) == position-_listView?.headerViewsCount!!) {
                 needSuspensionChild = child
                 return child
             }
         }
-        return null
+        return needSuspensionChild
     }
 
     /**

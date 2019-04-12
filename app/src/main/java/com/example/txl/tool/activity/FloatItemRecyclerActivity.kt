@@ -77,6 +77,28 @@ class FloatItemRecyclerActivity : AppCompatActivity() {
 //
 //            }
 //        })
+        val tv = TextView(this)
+        tv.text = "sad我是悬浮"
+        tv.setBackgroundColor(0x77888888)
+        tv.gravity = Gravity.CENTER
+        listView?.addHeaderView(tv)
+        val tv3 = TextView(this)
+        tv3.text = "我是悬浮654546564546"
+        tv3.setBackgroundColor(0x77888888)
+        tv3.gravity = Gravity.CENTER
+        listView?.addHeaderView(tv3)
+
+        var tv4 = TextView(this)
+        tv4.text = "我是addFooterView1"
+        tv4.setBackgroundColor(0x77888888)
+        tv4.gravity = Gravity.CENTER
+        listView?.addFooterView(tv4)
+
+        tv4 = TextView(this)
+        tv4.text = "我是addFooterView2"
+        tv4.setBackgroundColor(0x77888888)
+        tv4.gravity = Gravity.CENTER
+        listView?.addFooterView(tv4)
         listView?.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 suspensionView.text = "我是悬浮 position: $position"
