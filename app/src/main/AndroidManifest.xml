@@ -16,9 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activity.FloatItemRecyclerActivity">
+        <activity android:name=".coordinatorlayout.CoordinatorLayoutNavigationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".coordinatorlayout.CollapsingToolbarLayoutActivity" />
+        <activity android:name=".activity.FloatItemRecyclerActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".sqlite.OpenSQLiteActivity" />
         <activity
@@ -31,9 +37,7 @@
         <activity android:name=".gesture.GestureActivity" />
         <activity
             android:name=".gank.io.video.MoreTextureActivity"
-            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize">
-
-        </activity>
+            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize" />
         <activity
             android:name=".inter.process.communication.IPCActivity"
             android:process=":remote" />
@@ -52,18 +56,14 @@
             android:name=".huaxiyun.player.SmallAndFullScreenChangeMediaPlayerActivity"
             android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".coordinatorlayout.CoordinatorLayoutActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".coordinatorlayout.CoordinatorLayoutActivity">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name="com.txl.lib.switchView.SwitchAndToggleButtonActivity" />
         <activity android:name="com.txl.lib.calendar.CalendarActivity" />
         <activity android:name=".activity.HecoderActivty" />
-        <activity android:name=".activity.NestedScrollingDemoActivity"></activity>
-        <activity android:name=".activity.PopWindowAndMenuActivity"></activity>
+        <activity android:name=".activity.NestedScrollingDemoActivity" />
+        <activity android:name=".activity.PopWindowAndMenuActivity" />
     </application>
 
 </manifest>
