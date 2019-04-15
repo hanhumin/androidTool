@@ -1,7 +1,14 @@
 package com.example.txl.tool.coordinatorlayout;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.txl.tool.R;
@@ -21,7 +29,10 @@ import java.util.List;
 public class CoordinatorLayoutActivity extends AppCompatActivity {
     private static final String TAG =  CoordinatorLayoutActivity.class.getSimpleName();
 
-    private RecyclerView recyclerView;
+    private TabLayout tableLayout;
+    private ViewPager viewPager;
+    private String[] mTitles = new String[] { "简介", "评价", "相关" };
+    private TableFragment[] mFragments = new TableFragment[mTitles.length];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,41 +41,31 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
         initView();
     }
 
-    List<String> listItem;
+
     private void initView() {
-        recyclerView = findViewById(R.id.list_view);
-        listItem = new ArrayList<>();
-        for(int i=0; i<100; i++){
-            listItem.add("我是第"+i+"个元素");
+        for (int i = 0; i < mTitles.length; i++)
+        {
+            mFragments[i] =  TableFragment.Companion.newInstance((mTitles[i]));
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new RecyclerView.Adapter() {
+        tableLayout = findViewById(R.id.table_layout);
+        viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                TextView tv = (TextView) getLayoutInflater().inflate(R.layout.cordinatory_test_item, null,false);
-                return new MyViewHolder(tv);
+            public Fragment getItem(int position) {
+                return mFragments[position];
             }
 
             @Override
-            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-                MyViewHolder myViewHolder = (MyViewHolder)holder;
-                myViewHolder.tv.setText(listItem.get(position));
+            public int getCount() {
+                return mFragments.length;
             }
 
+            @Nullable
             @Override
-            public int getItemCount() {
-                return listItem.size();
+            public CharSequence getPageTitle(int position) {
+                return mTitles[position];
             }
         });
+        tableLayout.setupWithViewPager(viewPager);
     }
-
-    class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView tv;
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            tv = (TextView) itemView;
-
-        }
-    }
-
 }

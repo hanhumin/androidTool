@@ -17,11 +17,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity android:name=".activity.FloatItemRecyclerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".sqlite.OpenSQLiteActivity" />
@@ -56,7 +52,13 @@
             android:name=".huaxiyun.player.SmallAndFullScreenChangeMediaPlayerActivity"
             android:configChanges="locale|layoutDirection|orientation|keyboardHidden|navigation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".coordinatorlayout.CoordinatorLayoutActivity" />
+        <activity android:name=".coordinatorlayout.CoordinatorLayoutActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.txl.lib.switchView.SwitchAndToggleButtonActivity" />
         <activity android:name="com.txl.lib.calendar.CalendarActivity" />
         <activity android:name=".activity.HecoderActivty" />
