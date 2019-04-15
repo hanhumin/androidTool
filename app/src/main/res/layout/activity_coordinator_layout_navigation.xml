@@ -18,4 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="跳转到CollapsingToolbarLayout"/>
+     <TextView
+        android:id="@+id/tv_jump_FloatActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="跳转到CollapsingToolbarLayout"/>
 </LinearLayout>

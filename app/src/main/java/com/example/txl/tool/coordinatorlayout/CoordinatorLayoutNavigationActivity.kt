@@ -21,6 +21,10 @@ class CoordinatorLayoutNavigationActivity : AppCompatActivity(), View.OnClickLis
                 val intent = Intent(this,CollapsingToolbarLayoutActivity::class.java)
                 startActivity(intent)
             }
+            R.id.tv_jump_FloatActionBar -> {
+                val intent = Intent(this,FloatingActionButtonActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -35,5 +39,7 @@ class CoordinatorLayoutNavigationActivity : AppCompatActivity(), View.OnClickLis
         tvJumpToolbar.setOnClickListener(this)
         val tvJumpCollapsing: TextView = findViewById(R.id.tv_jump_CollapsingToolbarLayout)
         tvJumpCollapsing.setOnClickListener(this)
+        val tvJumpFloatingActionButton: TextView = findViewById(R.id.tv_jump_FloatActionBar)
+        tvJumpFloatingActionButton.setOnClickListener(this)
     }
 }
