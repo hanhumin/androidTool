@@ -43,4 +43,5 @@ dependencies {
     implementation('com.lzp:FloatItemRecyclerView:1.2.0') {
         exclude group: "com.android.support"
     }
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.0'
 }
