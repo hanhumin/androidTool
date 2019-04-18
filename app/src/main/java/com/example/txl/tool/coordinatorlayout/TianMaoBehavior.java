@@ -27,12 +27,12 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
     /**
      * 顶部title在y方向的偏移
      * */
-    private int offectY = 0;
+    private float offsetY = 0;
 
     /**
      * 最大偏移
      * */
-    private int maxOffect = 0;
+    private int maxOffset = 0;
 
     // 界面整体向上滑动，达到列表可滑动的临界点
     private boolean upReach;
@@ -63,7 +63,7 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
         if ((axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0) {
-            maxOffect = child.getHeight()/2;
+            maxOffset = -child.getHeight()/2;
             return true;
         }
         return super.onStartNestedScroll(coordinatorLayout,child,directTargetChild,target,axes,type);
@@ -72,7 +72,6 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
     @Override
     public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
-        Log.d(TAG,"onNestedPreScroll");
         if (dy != 0) {
             RecyclerView recyclerView;
             if(!(target instanceof RecyclerView)){
@@ -84,21 +83,31 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
                 int firstVisiblePosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
                 if (firstVisiblePosition == 0 && firstVisiblePosition < lastPosition) {//上滑
-                    downReach = true;
-                }
-                // 整体可以滑动，否则RecyclerView消费滑动事件
-                if (canScroll(child, dy) && firstVisiblePosition == 0) {
-                    float finalY = child.getTranslationY() - dy;
-                    if (finalY < -child.getHeight()) {
-                        finalY = -child.getHeight();
-                        upReach = true;
-                    } else if (finalY > 0) {
-                        finalY = 0;
+                    float translationY = offsetY = child.getTranslationY();
+                    Log.d( TAG,"translationY:  "+translationY );
+                    if (translationY+dy <= maxOffset) {
+                        consumed[1] = dy;
+                    }else if(translationY < maxOffset && translationY+dy > maxOffset){
+                        consumed[1]  = (int) (dy - maxOffset + translationY);
+                    }else {
+                        consumed[1] = 0;
                     }
-                    child.setTranslationY(finalY);
-                    // 让CoordinatorLayout消费滑动事件
-                    consumed[1] = dy;
+                    offsetY += consumed[1];
+                    child.setTranslationY( offsetY );
                 }
+//                // 整体可以滑动，否则RecyclerView消费滑动事件
+//                if (canScroll(child, dy) && firstVisiblePosition == 0) {
+//                    float finalY = child.getTranslationY() - dy;
+//                    if (finalY < -child.getHeight()) {
+//                        finalY = -child.getHeight();
+//                        upReach = true;
+//                    } else if (finalY > 0) {
+//                        finalY = 0;
+//                    }
+//                    child.setTranslationY(finalY);
+//                    // 让CoordinatorLayout消费滑动事件
+//                    consumed[1] = dy;
+//                }
                 lastPosition = firstVisiblePosition;
             }
             if(dy < 0){//上滑
@@ -111,7 +120,7 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
     }
 
     private boolean canScroll(View child, float scrollY) {
-        if (scrollY > 0 && child.getTranslationY() == maxOffect && !upReach) {
+        if (scrollY > 0 && child.getTranslationY() == maxOffset && !upReach) {
             return false;
         }
 
