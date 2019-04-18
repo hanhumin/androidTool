@@ -72,7 +72,7 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
     @Override
     public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
-
+        Log.d(TAG,"onNestedPreScroll");
         if (dy != 0) {
             RecyclerView recyclerView;
             if(!(target instanceof RecyclerView)){
@@ -83,7 +83,7 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
             if(layoutManager instanceof LinearLayoutManager){
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
                 int firstVisiblePosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                if (firstVisiblePosition == 0 && firstVisiblePosition < lastPosition) {
+                if (firstVisiblePosition == 0 && firstVisiblePosition < lastPosition) {//上滑
                     downReach = true;
                 }
                 // 整体可以滑动，否则RecyclerView消费滑动事件
@@ -101,6 +101,12 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
                 }
                 lastPosition = firstVisiblePosition;
             }
+            if(dy < 0){//上滑
+
+            }else {//下滑
+
+            }
+
         }
     }
 
