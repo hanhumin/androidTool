@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".coordinatorlayout.CustomBehaviorActivity"></activity>
+        <activity android:name=".coordinatorlayout.SimpleTitleBehaviorActivity"></activity>
+        <activity android:name=".coordinatorlayout.CustomBehaviorActivity" />
         <activity android:name=".coordinatorlayout.FloatingActionButtonActivity" />
         <activity android:name=".coordinatorlayout.CoordinatorLayoutNavigationActivity">
             <intent-filter>

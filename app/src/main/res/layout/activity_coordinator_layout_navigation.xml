@@ -11,21 +11,36 @@
         android:padding="5dp"
         android:id="@+id/tv_jump_CoordinatorLayoutActivity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="跳转到Toolbar+table_viewPager" />
+        android:layout_height="60dp"
+        android:text="跳转到Toolbar+table_viewPager"
+        android:gravity="center"
+        android:background="@drawable/border"/>
     <TextView
         android:id="@+id/tv_jump_CollapsingToolbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
         android:text="跳转到CollapsingToolbarLayout"/>
      <TextView
         android:id="@+id/tv_jump_FloatActionBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+         android:gravity="center"
+         android:background="@drawable/border"
         android:text="跳转到CollapsingToolbarLayout"/>
     <TextView
         android:id="@+id/tv_jump_custom_behavior"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
         android:text="跳转到自定义behavior"/>
+    <TextView
+        android:id="@+id/tv_jump_simple_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="跳转到simple behavior"/>
 </LinearLayout>
