@@ -103,4 +103,6 @@
     <string name="pause">暂停</string>
     <string name="recycler_scrolling_view_TianMao_behavior" translatable="false">com.example.txl.tool.coordinatorlayout.TianMaoBehavior</string>
     <string name="recycler_simple_title_behavior">com.example.txl.tool.coordinatorlayout.SimpleTitleBehavior</string>
+    <string name="recycler_view_behavior">com.example.txl.tool.coordinatorlayout.RecyclerViewBehavior</string>
+    <string name="SampleHeaderBehavior_behavior">com.example.txl.tool.coordinatorlayout.SampleHeaderBehavior</string>
 </resources>

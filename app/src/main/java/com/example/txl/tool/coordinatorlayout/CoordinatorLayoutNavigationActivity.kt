@@ -33,6 +33,10 @@ class CoordinatorLayoutNavigationActivity : AppCompatActivity(), View.OnClickLis
                 val intent = Intent(this,SimpleTitleBehaviorActivity::class.java)
                 startActivity(intent)
             }
+            R.id.tv_jump_recycler_behavior->{
+                val intent = Intent(this,RecyclerViewBehaviorActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -52,5 +56,6 @@ class CoordinatorLayoutNavigationActivity : AppCompatActivity(), View.OnClickLis
         val tvJumpcustomBehavior: TextView = findViewById(R.id.tv_jump_custom_behavior)
         tvJumpcustomBehavior.setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_simple_behavior).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_recycler_behavior).setOnClickListener(this)
     }
 }

@@ -14,7 +14,7 @@ import android.view.View;
 /**
  * create by txl
  * at 2018/9/21
- * description :天猫顶部效果
+ * description :简单依赖关系
  */
 public class SimpleTitleBehavior extends CoordinatorLayout.Behavior<View> {
     // 列表顶部和title底部重合时，列表的滑动距离。
