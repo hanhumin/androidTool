@@ -2,6 +2,7 @@ package com.example.txl.tool.coordinatorlayout;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,6 +16,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+
+import com.example.txl.tool.R;
+import com.example.txl.tool.utils.DisplayUtil;
 
 /**
  * create by txl
@@ -29,17 +34,14 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
      * */
     private float offsetY = 0;
 
+    int topMargit =0;
+    int leftMargit =0;
+    int rightMargit =0;
+
     /**
      * 最大偏移
      * */
     private int maxOffset = 0;
-
-    // 界面整体向上滑动，达到列表可滑动的临界点
-    private boolean upReach;
-    // 列表向上滑动后，再向下滑动，达到界面整体可滑动的临界点
-    private boolean downReach;
-    // 列表上一个全部可见的item位置
-    private int lastPosition = -1;
 
     public TianMaoBehavior() {
         super();
@@ -49,89 +51,49 @@ public class TianMaoBehavior extends CoordinatorLayout.Behavior<View> {
         super(context, attrs);
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(CoordinatorLayout parent, View child, MotionEvent ev) {
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                downReach = false;
-                upReach = false;
-                break;
-        }
-        return super.onInterceptTouchEvent(parent, child, ev);
+    void init(Context context){
+        topMargit = DisplayUtil.dip2px(context,55);
+        leftMargit = DisplayUtil.dip2px(context,45);
+        rightMargit = DisplayUtil.dip2px(context,45);
     }
 
     @Override
-    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
-        if ((axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0) {
-            maxOffset = -child.getHeight()/2;
-            return true;
-        }
-        return super.onStartNestedScroll(coordinatorLayout,child,directTargetChild,target,axes,type);
+    public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
+        init(child.getContext());
+        return isDependsOn(dependency);
+    }
+
+    boolean isDependsOn(View dependency){
+        return dependency.getId() == R.id.header;
     }
 
     @Override
-    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
-        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
-        if (dy != 0) {
-            RecyclerView recyclerView;
-            if(!(target instanceof RecyclerView)){
-                return;
-            }
-            recyclerView = (RecyclerView) target;
-            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-            if(layoutManager instanceof LinearLayoutManager){
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
-                int firstVisiblePosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                if (firstVisiblePosition == 0 && firstVisiblePosition < lastPosition) {//上滑
-                    float translationY = offsetY = child.getTranslationY();
-                    Log.d( TAG,"translationY:  "+translationY );
-                    if (translationY+dy <= maxOffset) {
-                        consumed[1] = dy;
-                    }else if(translationY < maxOffset && translationY+dy > maxOffset){
-                        consumed[1]  = (int) (dy - maxOffset + translationY);
-                    }else {
-                        consumed[1] = 0;
-                    }
-                    offsetY += consumed[1];
-                    child.setTranslationY( offsetY );
-                }
-//                // 整体可以滑动，否则RecyclerView消费滑动事件
-//                if (canScroll(child, dy) && firstVisiblePosition == 0) {
-//                    float finalY = child.getTranslationY() - dy;
-//                    if (finalY < -child.getHeight()) {
-//                        finalY = -child.getHeight();
-//                        upReach = true;
-//                    } else if (finalY > 0) {
-//                        finalY = 0;
-//                    }
-//                    child.setTranslationY(finalY);
-//                    // 让CoordinatorLayout消费滑动事件
-//                    consumed[1] = dy;
-//                }
-                lastPosition = firstVisiblePosition;
-            }
-            if(dy < 0){//上滑
+    public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
+        boolean handle = false;
+        float dependencyTranslationY = -dependency.getTranslationY();
+        int dependencyHeight = dependency.getHeight();
+        Log.d(TAG,"onDependentViewChanged dependencyTranslationY :: "+dependencyTranslationY+"   dependencyHeight :: "+dependencyHeight);
+        if(dependencyTranslationY != 0 && dependencyTranslationY <= dependencyHeight){
+            handle = true;
+            child.getHeight();
+            View v = child.findViewById(R.id.tv_transformation);
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
+            float offset = dependencyTranslationY/dependencyHeight;
 
-            }else {//下滑
+            Drawable drawable = child.getBackground().mutate();
+            drawable.setAlpha((int) (255*offset));
 
-            }
-
+            layoutParams.topMargin = (int) (topMargit*(1-offset));
+            layoutParams.leftMargin = (int) (leftMargit * offset);
+            layoutParams.rightMargin = (int) (rightMargit*offset);
+            v.setLayoutParams(layoutParams);
         }
+        if(dependencyTranslationY == 0){
+            Drawable drawable = child.getBackground().mutate();
+            drawable.setAlpha(0);
+        }
+        return handle;
     }
 
-    private boolean canScroll(View child, float scrollY) {
-        if (scrollY > 0 && child.getTranslationY() == maxOffset && !upReach) {
-            return false;
-        }
 
-        if (downReach) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
-    }
 }
