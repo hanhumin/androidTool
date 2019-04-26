@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ebf5ee"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/tv_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="25dp"
+        android:background="#ff0000"
+        android:gravity="center"
+        android:padding="30dp"
+        android:text="center text"/>
+
+    <TextView
+        android:id="@+id/tv_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|start"
+        android:background="#3163d7"
+        android:padding="30dp"
+        android:text="left"
+        app:layout_anchor="@id/tv_center"
+        app:layout_anchorGravity="left|start|center_vertical"/>
+
+    <TextView
+        android:id="@+id/tv_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:background="#72c493"
+        android:padding="30dp"
+        android:text="top"
+        app:layout_anchor="@id/tv_center"
+        app:layout_anchorGravity="top|center_horizontal"/>
+
+    <TextView
+        android:id="@+id/tv_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:background="#ad56bc"
+        android:padding="30dp"
+        android:text="right"
+        app:layout_anchor="@id/tv_center"
+        app:layout_anchorGravity="right|center_vertical"/>
+
+    <TextView
+        android:id="@+id/tv_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:background="#a37551"
+        android:padding="30dp"
+        android:text="bottom"
+        app:layout_anchor="@id/tv_center"
+        app:layout_anchorGravity="bottom|center_horizontal"/>
+</android.support.design.widget.CoordinatorLayout>
