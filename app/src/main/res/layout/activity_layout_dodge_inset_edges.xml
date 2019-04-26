@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_marginTop="-50dp"
+        app:layout_insetEdge="top"
+        android:id="@+id/tvMove"
+        android:background="@android:color/holo_orange_light"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <TextView
+        android:id="@+id/tvFloat"
+        android:layout_margin="20dp"
+        app:layout_dodgeInsetEdges="top"
+        android:background="@android:color/holo_blue_bright"
+        android:layout_width="100dp"
+        android:layout_height="50dp"/>
+
+</android.support.design.widget.CoordinatorLayout>

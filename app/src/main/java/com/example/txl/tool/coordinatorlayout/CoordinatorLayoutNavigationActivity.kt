@@ -41,6 +41,10 @@ class CoordinatorLayoutNavigationActivity : AppCompatActivity(), View.OnClickLis
                 val intent = Intent(this,LayoutAnchorActivity::class.java)
                 startActivity(intent)
             }
+            R.id.tv_jump_LayoutDodgeInsetEdges->{
+                val intent = Intent(this,LayoutDodgeInsetEdgesActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -62,5 +66,6 @@ class CoordinatorLayoutNavigationActivity : AppCompatActivity(), View.OnClickLis
         findViewById<View>(R.id.tv_jump_simple_behavior).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_recycler_behavior).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_LayoutAnchor).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_LayoutDodgeInsetEdges).setOnClickListener(this)
     }
 }

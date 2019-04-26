@@ -57,4 +57,11 @@
         android:gravity="center"
         android:background="@drawable/border"
         android:text="跳转到LayoutAnchor"/>
+    <TextView
+        android:id="@+id/tv_jump_LayoutDodgeInsetEdges"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="跳转到LayoutDodgeInsetEdges"/>
 </LinearLayout>
