@@ -105,4 +105,5 @@
     <string name="recycler_simple_title_behavior">com.example.txl.tool.coordinatorlayout.SimpleTitleBehavior</string>
     <string name="recycler_view_behavior">com.example.txl.tool.coordinatorlayout.RecyclerViewBehavior</string>
     <string name="SampleHeaderBehavior_behavior">com.example.txl.tool.coordinatorlayout.SampleHeaderBehavior</string>
+    <string name="HeaderBehavior">com.example.txl.tool.coordinatorlayout.behavior.HeaderBehavior</string>
 </resources>

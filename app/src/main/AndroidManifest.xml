@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".coordinatorlayout.LayoutDodgeInsetEdgesActivity"></activity>
+        <activity android:name=".coordinatorlayout.TianMaoBehaviorDemoActivity"></activity>
+        <activity android:name=".coordinatorlayout.LayoutDodgeInsetEdgesActivity" />
         <activity android:name=".coordinatorlayout.LayoutAnchorActivity" />
         <activity android:name=".coordinatorlayout.RecyclerViewBehaviorActivity" />
         <activity android:name=".coordinatorlayout.SimpleTitleBehaviorActivity" />

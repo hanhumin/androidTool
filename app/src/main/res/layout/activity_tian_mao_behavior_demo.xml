@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".coordinatorlayout.TianMaoBehaviorDemoActivity">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <FrameLayout
+        android:id="@+id/frame_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_behavior=".coordinatorlayout.behavior.HeaderBehavior">
+        <TextView
+            android:id="@+id/tv_tm_title"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="天猫 TMALL"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/tv_transformation"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="我是搜索"
+            android:gravity="center"
+            android:layout_marginTop="55dp"
+            android:background="@android:color/white"/>
+    </FrameLayout>
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="start"
+        android:src="@android:drawable/ic_menu_camera"
+        android:scaleType="centerCrop"/>
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="end"
+        android:src="@android:drawable/ic_menu_search"
+        android:scaleType="centerCrop"/>
+</android.support.design.widget.CoordinatorLayout>
