@@ -100,7 +100,7 @@ class HeaderBehavior : CoordinatorLayout.Behavior<View> {
     /**
      * 对当前使用这个view的behavior进行变化处理
      * */
-    private fun transformationView(child: View) {
+    private fun transformationView(child: View, directUp:Boolean = false) {
         val tvSearch = child.findViewById<TextView>(R.id.tv_transformation)
         val translationY = Math.abs(child.translationY)
         val ratio = translationY / mMaxTranslationY
