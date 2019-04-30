@@ -4,8 +4,10 @@ import android.content.Context
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
+import com.example.txl.tool.R
 import com.example.txl.tool.utils.DisplayUtil
 
 /**
@@ -15,9 +17,9 @@ class HeaderBehavior : CoordinatorLayout.Behavior<View> {
 
     val TAG = HeaderBehavior::class.java.simpleName
 
-    var mMaxOffsetY = 0
-    var mLeftPadding = 0
-    var mRightPadding = 0
+    var mMaxTranslationY = 0
+    var mLeftMargin = 0
+    var mRightMargin = 0
 
     /**
      * y方向上的平移
@@ -27,9 +29,9 @@ class HeaderBehavior : CoordinatorLayout.Behavior<View> {
     private var isInit = false
 
     internal fun init(context: Context) {
-        mMaxOffsetY = DisplayUtil.dip2px(context, 55f)
-        mLeftPadding = DisplayUtil.dip2px(context, 45f)
-        mRightPadding = DisplayUtil.dip2px(context, 45f)
+        mMaxTranslationY = DisplayUtil.dip2px(context, 55f)
+        mLeftMargin = DisplayUtil.dip2px(context, 45f)
+        mRightMargin = DisplayUtil.dip2px(context, 45f)
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -50,36 +52,58 @@ class HeaderBehavior : CoordinatorLayout.Behavior<View> {
 
     override fun onNestedPreScroll(coordinatorLayout: CoordinatorLayout, child: View, target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
         mTranslationY = child.translationY
-        if (dy > 0) {//向下
-            Log.d(TAG, "onNestedPreScroll 向下")
-
-        } else {//向上
-            Log.d(TAG, "onNestedPreScroll 向上")
-            if (Math.abs(mTranslationY + dy) < mMaxOffsetY) {
+        if (dy > 0) {//向上
+            //向上滑动优先滑动顶部的header
+            if (Math.abs(mTranslationY) + dy < mMaxTranslationY) {
                 consumed[1] = dy
-            } else if (Math.abs(mTranslationY) < mMaxOffsetY && Math.abs(mTranslationY + dy) > mMaxOffsetY) {
-                consumed[1] = (mMaxOffsetY - Math.abs(mTranslationY)).toInt()
+            } else if (Math.abs(mTranslationY) < mMaxTranslationY && Math.abs(mTranslationY ) + dy> mMaxTranslationY) {
+                consumed[1] = (mMaxTranslationY - Math.abs(mTranslationY)).toInt()
             }
             child.translationY = mTranslationY - consumed[1]
+            transformationView(child)
+        }
+    }
+
+    override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: View, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
+        mTranslationY = child.translationY
+        if (dyUnconsumed < 0) {//向下
+            //在向下滑动时，当需要滑动的view不在消耗这个滑动的距离将header下拉
+            if (Math.abs(mTranslationY) > 0 && mTranslationY - dyUnconsumed <= 0) {
+                child.translationY = mTranslationY - dyUnconsumed
+            } else if (Math.abs(mTranslationY) > 0 && mTranslationY - dyUnconsumed > 0) {
+                child.translationY = 0f
+            }
+            transformationView(child)
         }
     }
 
     override fun onNestedPreFling(coordinatorLayout: CoordinatorLayout, child: View, target: View, velocityX: Float, velocityY: Float): Boolean {
         var handle = false
         if (velocityY > 0) {//向下
-            Log.d(TAG, "onNestedPreFling 向下")
+
         } else {//向上
-            Log.d(TAG, "onNestedPreFling 向上")
+
         }
         return handle
     }
 
-
-    override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: View, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
-    }
-
     override fun onNestedFling(coordinatorLayout: CoordinatorLayout, child: View, target: View, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
         return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed)
+    }
+
+    /**
+     * 对当前使用这个view的behavior进行变化处理
+     * */
+    private fun transformationView(child: View){
+        val tvSearch = child.findViewById<TextView>(R.id.tv_transformation)
+        val translationY = Math.abs(child.translationY)
+        val ratio = translationY/mMaxTranslationY
+        //我的布局是使用的FrameLayout
+        val layoutParams = tvSearch.layoutParams as FrameLayout.LayoutParams
+        layoutParams.marginStart = (mLeftMargin * ratio).toInt()
+        layoutParams.marginEnd = (mRightMargin * ratio).toInt()
+        tvSearch.layoutParams = layoutParams
+
+        child.background.mutate().alpha = (255*ratio).toInt()
     }
 }
