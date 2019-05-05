@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.http.HttpCookieDemoActivity">
+    <EditText
+        android:id="@+id/ed_user_name"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="用户名："
+        android:text="tangxiaolu"/>
+    <EditText
+        android:id="@+id/ed_user_password"
+        app:layout_constraintTop_toBottomOf="@+id/ed_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="密码："
+        android:text="tx601522485l"/>
+    <TextView
+        android:id="@+id/tv_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/ed_user_password"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="确认"
+        android:gravity="center"
+        android:background="@drawable/border"/>
+    <TextView
+        android:id="@+id/tv_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</android.support.constraint.ConstraintLayout>

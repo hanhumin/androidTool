@@ -16,7 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".coordinatorlayout.TianMaoBehaviorDemoActivity"></activity>
+        <activity android:name=".activity.http.HttpCookieDemoActivity"></activity>
+        <activity android:name=".NavigationActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".coordinatorlayout.TianMaoBehaviorDemoActivity" />
         <activity android:name=".coordinatorlayout.LayoutDodgeInsetEdgesActivity" />
         <activity android:name=".coordinatorlayout.LayoutAnchorActivity" />
         <activity android:name=".coordinatorlayout.RecyclerViewBehaviorActivity" />
@@ -24,11 +32,7 @@
         <activity android:name=".coordinatorlayout.CustomBehaviorActivity" />
         <activity android:name=".coordinatorlayout.FloatingActionButtonActivity" />
         <activity android:name=".coordinatorlayout.CoordinatorLayoutNavigationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".coordinatorlayout.CollapsingToolbarLayoutActivity" />
         <activity android:name=".activity.FloatItemRecyclerActivity" />
