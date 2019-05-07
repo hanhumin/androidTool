@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.txl.tool.activity.http.HttpCookieDemoActivity
+import com.example.txl.tool.activity.point9.Point9Activity
 import com.example.txl.tool.coordinatorlayout.CoordinatorLayoutNavigationActivity
 
 class NavigationActivity : AppCompatActivity(), View.OnClickListener {
@@ -18,6 +19,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
     fun initView(){
         findViewById<View>(R.id.tv_jump_CoordinatorLayout).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_Http).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_nine_picture).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -28,6 +30,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_Http->{
                 val intent = Intent(this, HttpCookieDemoActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_nine_picture->{
+                val intent = Intent(this, Point9Activity::class.java)
                 startActivity(intent)
             }
         }

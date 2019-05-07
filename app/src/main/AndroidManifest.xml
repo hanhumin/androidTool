@@ -16,8 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activity.http.HttpCookieDemoActivity"></activity>
-        <activity android:name=".NavigationActivity" >
+        <activity android:name=".activity.point9.Point9Activity"></activity>
+        <activity android:name=".activity.http.HttpCookieDemoActivity" />
+        <activity android:name=".NavigationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,9 +32,7 @@
         <activity android:name=".coordinatorlayout.SimpleTitleBehaviorActivity" />
         <activity android:name=".coordinatorlayout.CustomBehaviorActivity" />
         <activity android:name=".coordinatorlayout.FloatingActionButtonActivity" />
-        <activity android:name=".coordinatorlayout.CoordinatorLayoutNavigationActivity">
-
-        </activity>
+        <activity android:name=".coordinatorlayout.CoordinatorLayoutNavigationActivity"></activity>
         <activity android:name=".coordinatorlayout.CollapsingToolbarLayoutActivity" />
         <activity android:name=".activity.FloatItemRecyclerActivity" />
         <activity android:name=".MainActivity" />

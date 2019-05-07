@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.point9.Point9Activity"
+    android:orientation="vertical">
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/chat"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text=".9测验  阿萨斯多打撒撒多打撒奥所多十大阿达
+         \n阿达大大米饭撒地方吗的说法大是大非富士达发多少范德萨发送到发多少啊封打算  阿斯蒂芬啊 地方撒 发多少啊sdf 啊封啊"/>
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/chat1"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text=".9测验  阿萨斯多打撒撒多打撒奥所多十大阿达
+         \n阿达大大米饭撒地方吗的说法大是大非富士达发多少范德萨发送到发多少啊封打算  阿斯蒂芬啊 地方撒 发多少啊sdf 啊封啊"/>
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/chat2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text=".9测验  阿萨斯多打撒撒多打撒奥所多十大阿达
+         \n阿达大大米饭撒地方吗的说法大是大非富士达发多少范德萨发送到发多少啊封打算  阿斯蒂芬啊 地方撒 发多少啊sdf 啊封啊"/>
+</LinearLayout>
