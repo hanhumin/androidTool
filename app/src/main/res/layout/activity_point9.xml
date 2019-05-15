@@ -15,7 +15,7 @@
          \n阿达大大米饭撒地方吗的说法大是大非富士达发多少范德萨发送到发多少啊封打算  阿斯蒂芬啊 地方撒 发多少啊sdf 啊封啊"/>
     <TextView
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/chat1"
+        android:background="@drawable/chat3"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
