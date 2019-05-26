@@ -6,7 +6,7 @@ package com.example.txl.tool.design.pattern.proxy.staticproxy;
  * date：2019/5/27
  * description：
  */
-public class RealSubject extends Subject {
+public class RealSubject implements Subject {
     @Override
     public void visit() {
         System.out.println( "RealSubject" );

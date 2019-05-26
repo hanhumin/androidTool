@@ -6,6 +6,6 @@ package com.example.txl.tool.design.pattern.proxy.staticproxy;
  * date：2019/5/27
  * description：
  */
-public abstract class Subject {
-    public abstract void visit();
+public interface Subject {
+   void visit();
 }

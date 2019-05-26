@@ -7,7 +7,7 @@ package com.example.txl.tool.design.pattern.proxy.staticproxy;
  * date：2019/5/27
  * description：
  */
-public class ProxySubject extends Subject {
+public class ProxySubject implements Subject {
     RealSubject realSubject;
 
     public ProxySubject(RealSubject realSubject) {
