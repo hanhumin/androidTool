@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.slider.SliderActivity">
+    <com.txl.lib.custom_view.sliderView.SliderView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@color/white"
+            app:layout_type="right_menu"/>
+    </com.txl.lib.custom_view.sliderView.SliderView>
+</android.support.constraint.ConstraintLayout>

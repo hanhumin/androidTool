@@ -31,5 +31,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text=".9图片的使用"/>
+        <TextView
+            android:id="@+id/tv_jump_slider"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="仿QQ侧滑滴答清单"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

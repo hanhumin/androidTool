@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".intent.Intent2Activity"></activity>
+        <activity android:name=".activity.slider.SliderActivity"></activity>
+        <activity android:name=".intent.Intent2Activity" />
         <activity android:name=".intent.Intent1Activity" />
         <activity android:name=".activity.point9.Point9Activity" />
         <activity android:name=".activity.http.HttpCookieDemoActivity" />
