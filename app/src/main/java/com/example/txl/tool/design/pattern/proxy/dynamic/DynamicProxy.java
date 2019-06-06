@@ -1,5 +1,7 @@
 package com.example.txl.tool.design.pattern.proxy.dynamic;
 
+import com.example.txl.tool.design.pattern.proxy.staticproxy.Subject;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
