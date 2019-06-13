@@ -2,6 +2,7 @@ package com.txl.lib.custom_view.sliderView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -51,7 +52,6 @@ public class SliderView extends ViewGroup {
     private void LayoutRightMenu(){}
 
     private void layoutContentView(int l, int t, int r, int b){
-        Log.d(TAG,"layoutContentView ");
         final int paddingLeft = getPaddingLeft();
         final int paddingRight = getPaddingRight();
         final int paddingTop = getPaddingTop();
@@ -71,14 +71,39 @@ public class SliderView extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        final int paddingLeft = getPaddingLeft();
+        final int paddingRight = getPaddingRight();
+        final int paddingTop = getPaddingTop();
+        final int paddingBottom = getPaddingBottom();
+        int maxWidth = 0;
+        int maxHeight = 0;
+        int childState = 0;
         //测量内容
-        Log.d(TAG,"onMeasure mContentViews size is "+mContentViews.size());
         for (View v : mContentViews.keySet()) {
             measureChildWithMargins(v, widthMeasureSpec, 0, heightMeasureSpec, 0);
-//            measureChild(v,widthMeasureSpec,heightMeasureSpec);
-            Log.d(TAG,"onMeasure view de 测量宽度 ：： "+v.getMeasuredWidth());
+            final LayoutParams lp = (LayoutParams) v.getLayoutParams();
+            maxWidth += v.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+            maxHeight = Math.max(maxHeight, v.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
+            childState = combineMeasuredStates(childState, v.getMeasuredState());
         }
+
+        // Account for padding too
+        maxWidth += paddingLeft+paddingRight;
+        maxHeight +=paddingTop+paddingBottom;
+
+        // Check against our minimum height and width
+        maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
+        maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
+
+        // Check against our foreground's minimum height and width
+        final Drawable drawable = getBackground();
+        if (drawable != null) {
+            maxHeight = Math.max(maxHeight, drawable.getMinimumHeight());
+            maxWidth = Math.max(maxWidth, drawable.getMinimumWidth());
+        }
+        setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState),resolveSizeAndState(maxHeight, heightMeasureSpec,childState));
+
         //测量左右菜单
         for (View v : mLeftMenuViews.keySet()) {
 //            measureMenu(v, heightMeasureSpec, widthMeasureSpec);
@@ -86,7 +111,7 @@ public class SliderView extends ViewGroup {
         for (View v : mRightMenuViews.keySet()) {
 //            measureMenu(v, heightMeasureSpec, widthMeasureSpec);
         }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
     }
 
     private void measureMenu(View v, int heightMeasureSpec, int widthMeasureSpec) {
