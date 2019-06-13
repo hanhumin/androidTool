@@ -3,12 +3,13 @@ package com.txl.lib.custom_view.sliderView;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.txl.tool.R;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -16,13 +17,13 @@ import java.util.Map;
  * 目前只有一个内容view
  */
 public class SliderView extends ViewGroup {
+    protected String TAG = SliderView.class.getSimpleName();
     /**
      * 左右菜单
-     * fixme 注意removeView的时候对应的左右菜单清除
      */
-    private Map<View,View> mLeftMenuViews = new HashMap<>();
-    private Map<View,View> mRightMenuViews = new HashMap<>();
-    private Map<View,View> mContentViews = new HashMap<>();
+    private Map<View,View> mLeftMenuViews = new LinkedHashMap<>();
+    private Map<View,View> mRightMenuViews = new LinkedHashMap<>();
+    private Map<View,View> mContentViews = new LinkedHashMap<>();
 
     public SliderView(Context context) {
         super(context);
@@ -42,13 +43,7 @@ public class SliderView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        //contentView占和父容器一样的宽度
-//        mContentView.layout(l,t,r,b);
-        int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View child = getChildAt(i);
-            child.layout(l,t,child.getMeasuredWidth(),child.getMeasuredHeight());
-        }
+        layoutContentView(l,t,r,b);
     }
 
     private void layoutLeftMenu(){}
@@ -56,19 +51,52 @@ public class SliderView extends ViewGroup {
     private void LayoutRightMenu(){}
 
     private void layoutContentView(int l, int t, int r, int b){
-
+        Log.d(TAG,"layoutContentView ");
+        final int paddingLeft = getPaddingLeft();
+        final int paddingRight = getPaddingRight();
+        final int paddingTop = getPaddingTop();
+        final int paddingBottom = getPaddingBottom();
+        //第一个内容子元素开始的位置是父容器的左padding
+        int leftStart = paddingLeft;
+        for (View v : mContentViews.keySet()) {
+            final LayoutParams lp = (LayoutParams) v.getLayoutParams();
+            int top = paddingTop+lp.topMargin;
+            int bottom = top+v.getMeasuredHeight();
+            int left = leftStart + lp.leftMargin;
+            int right = left + v.getMeasuredWidth();
+            v.layout(left,top,right,bottom);
+            leftStart = right+lp.rightMargin;
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View child = getChildAt(i);
-            measureChildWithMargins(child,widthMeasureSpec,0,heightMeasureSpec,0);
+
+        //测量内容
+        Log.d(TAG,"onMeasure mContentViews size is "+mContentViews.size());
+        for (View v : mContentViews.keySet()) {
+            measureChildWithMargins(v, widthMeasureSpec, 0, heightMeasureSpec, 0);
+//            measureChild(v,widthMeasureSpec,heightMeasureSpec);
+            Log.d(TAG,"onMeasure view de 测量宽度 ：： "+v.getMeasuredWidth());
         }
+        //测量左右菜单
+        for (View v : mLeftMenuViews.keySet()) {
+//            measureMenu(v, heightMeasureSpec, widthMeasureSpec);
+        }
+        for (View v : mRightMenuViews.keySet()) {
+//            measureMenu(v, heightMeasureSpec, widthMeasureSpec);
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    private void measureMenu(View v, int heightMeasureSpec, int widthMeasureSpec) {
+        final LayoutParams lp = (LayoutParams) v.getLayoutParams();
+        //父容器不对菜单的宽度进行任何限制
+        final int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+        final int childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec,
+                getPaddingTop() + getPaddingBottom() + lp.topMargin + lp.bottomMargin, lp.height);
+
+        v.measure(childWidthMeasureSpec, childHeightMeasureSpec);
     }
 
     @Override
@@ -83,7 +111,6 @@ public class SliderView extends ViewGroup {
 
     @Override
     protected LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
-
         return new LayoutParams(lp);
     }
 
@@ -96,9 +123,6 @@ public class SliderView extends ViewGroup {
         if(params == null){
             throw new IllegalStateException("addView params is null");
         }
-        if ( mContentViews.size() > 0) {
-            throw new IllegalStateException("SliderView can host only one content child");
-        }
         if(params instanceof LayoutParams){
             LayoutParams layoutParams = (LayoutParams) params;
             switch (layoutParams.childType){
@@ -110,7 +134,7 @@ public class SliderView extends ViewGroup {
                     mRightMenuViews.put(child,child);
                     break;
                 }
-                case content:{
+                default:{
                     mContentViews.put(child,child);
                     break;
                 }
@@ -132,10 +156,7 @@ public class SliderView extends ViewGroup {
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
             TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.SliderView_Layout);
-
             childType = ChildType.fromIndex(a.getInt(R.styleable.SliderView_Layout_layout_type,2));
-//            gravity = a.getInt(com.android.internal.R.styleable.LinearLayout_Layout_layout_gravity, -1);
-
             a.recycle();
         }
 
@@ -158,11 +179,11 @@ public class SliderView extends ViewGroup {
 
             static ChildType fromIndex(int index){
                 switch (index){
-                    case 1:
+                    case 0:
                         return leftMenu;
-                    case 2:
+                    case 1:
                         return rightMenu;
-                    case 3:
+                    case 2:
                         return content;
                 }
                 return content;
