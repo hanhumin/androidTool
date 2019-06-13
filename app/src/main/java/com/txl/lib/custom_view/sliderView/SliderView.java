@@ -5,8 +5,11 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Scroller;
 
 import com.example.txl.tool.R;
 
@@ -27,20 +30,38 @@ public class SliderView extends ViewGroup {
     private Map<View, View> mContentViews = new LinkedHashMap<>();
     private int mTotalLeftMenuLength, mTotalRightMenuLength;
 
+    private int mLastXIntercept;
+    private int mLastYIntercept;
+
+    private int mLastX;
+    private int mLastY;
+
+    private Scroller mScroller;
+    private VelocityTracker mVelocityTracker;
+
     public SliderView(Context context) {
         super(context);
+        init();
     }
 
     public SliderView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public SliderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     public SliderView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
+    private void init(){
+        mScroller = new Scroller(getContext());
+        mVelocityTracker = VelocityTracker.obtain();
     }
 
     @Override
@@ -55,7 +76,7 @@ public class SliderView extends ViewGroup {
         final int paddingLeft = getPaddingLeft();
 
         int leftStart = paddingLeft - mTotalLeftMenuLength;
-        for (View v : mContentViews.keySet()) {
+        for (View v : mLeftMenuViews.keySet()) {
             final LayoutParams lp = (LayoutParams) v.getLayoutParams();
             int top = paddingTop + lp.topMargin;
             int bottom = top + v.getMeasuredHeight();
@@ -71,7 +92,7 @@ public class SliderView extends ViewGroup {
         final int paddingRight = getPaddingRight();
 
         int leftStart = getMeasuredWidth() - paddingRight;
-        for (View v : mContentViews.keySet()) {
+        for (View v : mRightMenuViews.keySet()) {
             final LayoutParams lp = (LayoutParams) v.getLayoutParams();
             int top = paddingTop + lp.topMargin;
             int bottom = top + v.getMeasuredHeight();
@@ -159,6 +180,80 @@ public class SliderView extends ViewGroup {
                 getPaddingTop() + getPaddingBottom() + lp.topMargin + lp.bottomMargin, lp.height);
 
         v.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d(TAG,"onTouchEvent "+ event.getAction());
+        mVelocityTracker.addMovement(event);
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:{
+                if(!mScroller.isFinished()){
+                    mScroller.abortAnimation();
+                }
+                break;
+            }
+            case MotionEvent.ACTION_MOVE:{
+                int deltaX = x - mLastX;
+                int deltaY = y - mLastY;
+                scrollBy(-deltaX,0);
+                break;
+            }
+            case MotionEvent.ACTION_UP:{
+                int scrollX = getScrollX();
+//                int scrollToChildIndex = scrollX / mChildWidth;
+                mVelocityTracker.computeCurrentVelocity(1000);
+                float xVelocity = mVelocityTracker.getXVelocity();
+                if(xVelocity >= 50){
+
+                }
+                mVelocityTracker.clear();
+                break;
+            }
+        }
+        mLastX = x;
+        mLastY = y;
+        return true;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        Log.d(TAG,"onInterceptTouchEvent "+ ev.getAction());
+        boolean intercepted = false;
+        int x = (int) ev.getX();
+        int y = (int) ev.getY();
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:{
+                intercepted = false;
+                if(!mScroller.isFinished()){
+                    mScroller.abortAnimation();
+                    intercepted = true;
+                }
+                break;
+            }
+            case MotionEvent.ACTION_MOVE:{
+                int deltaX = x - mLastXIntercept;
+                int deltaY = y - mLastYIntercept;
+                if(Math.abs(deltaX) > Math.abs(deltaY)){
+                    intercepted = true;
+                }else {
+                    intercepted = false;
+                }
+                break;
+            }
+            case MotionEvent.ACTION_UP:{
+                intercepted = false;
+                break;
+            }
+        }
+        mLastX = x;
+        mLastY = y;
+        mLastXIntercept = x;
+        mLastYIntercept = y;
+        Log.d(TAG,"onInterceptTouchEvent "+ev.getAction() + " intercepted :: "+intercepted);
+        return intercepted;
     }
 
     @Override

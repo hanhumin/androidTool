@@ -15,11 +15,20 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true"
             />
         <ImageView
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:background="#7f88f5"
+            android:clickable="true"
+            android:focusable="true"
             />
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            app:layout_type="left_menu"
+            android:background="#000"/>
     </com.txl.lib.custom_view.sliderView.SliderView>
 </FrameLayout>
