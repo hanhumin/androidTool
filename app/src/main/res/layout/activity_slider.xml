@@ -8,7 +8,8 @@
     <com.txl.lib.custom_view.sliderView.SliderView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent">
+        android:background="@color/colorAccent"
+        android:padding="5dp">
         <ImageView
             android:layout_marginTop="15dp"
             android:layout_width="300dp"
