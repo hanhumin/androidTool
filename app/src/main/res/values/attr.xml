@@ -45,9 +45,9 @@
     </declare-styleable>
     <declare-styleable name="SliderView_Layout">
         <attr name="layout_type" format="enum" >
-            <enum name="left_menu" value="1"/>
-            <enum name="right_menu" value="2"/>
-            <enum name="content" value="3"/>
+            <enum name="left_menu" value="0"/>
+            <enum name="right_menu" value="1"/>
+            <enum name="content" value="2"/>
         </attr>
     </declare-styleable>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.Scroller;
 
 import com.example.txl.tool.R;
 
+import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -183,6 +184,11 @@ public class SliderView extends ViewGroup {
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.d(TAG,"onTouchEvent "+ event.getAction());
         mVelocityTracker.addMovement(event);
@@ -221,6 +227,22 @@ public class SliderView extends ViewGroup {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         Log.d(TAG,"onInterceptTouchEvent "+ ev.getAction());
+        Class<?>  sliderViewClass = this.getClass();
+        try {
+            Class<?> viewGroupClass = sliderViewClass.getSuperclass();
+            Field field = viewGroupClass.getDeclaredField("mFirstTouchTarget");
+            field.setAccessible(true);
+            Object o = field.get(this);
+            Log.d(TAG,"mFirstTouchTarget is null ??? "+o);
+            Field field1 = viewGroupClass.getDeclaredField("mGroupFlags");
+            field1.setAccessible(true);
+            Object o1 = field1.get(this);
+            Log.d(TAG,"mGroupFlags ::: "+o1);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         boolean intercepted = false;
         int x = (int) ev.getX();
         int y = (int) ev.getY();
@@ -236,6 +258,9 @@ public class SliderView extends ViewGroup {
             case MotionEvent.ACTION_MOVE:{
                 int deltaX = x - mLastXIntercept;
                 int deltaY = y - mLastYIntercept;
+                if(canScroll(this,false,deltaX,x,y)){
+                    return false;
+                }
                 if(Math.abs(deltaX) > Math.abs(deltaY)){
                     intercepted = true;
                 }else {
@@ -254,6 +279,41 @@ public class SliderView extends ViewGroup {
         mLastYIntercept = y;
         Log.d(TAG,"onInterceptTouchEvent "+ev.getAction() + " intercepted :: "+intercepted);
         return intercepted;
+    }
+
+    /**
+     * 这个是ViewPager实现先滑动子view在滑动自身的关键
+     * Tests scrollability within child views of v given a delta of dx.
+     *
+     * @param v View to test for horizontal scrollability
+     * @param checkV Whether the view v passed should itself be checked for scrollability (true),
+     *               or just its children (false).
+     * @param dx Delta scrolled in pixels
+     * @param x X coordinate of the active touch point
+     * @param y Y coordinate of the active touch point
+     * @return true if child views of v can be scrolled by delta of dx.
+     */
+    protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
+        if (v instanceof ViewGroup) {
+            final ViewGroup group = (ViewGroup) v;
+            final int scrollX = v.getScrollX();
+            final int scrollY = v.getScrollY();
+            final int count = group.getChildCount();
+            // Count backwards - let topmost views consume scroll distance first.
+            for (int i = count - 1; i >= 0; i--) {
+                // TODO: Add versioned support here for transformed views.
+                // This will not work for transformed views in Honeycomb+
+                final View child = group.getChildAt(i);
+                if (x + scrollX >= child.getLeft() && x + scrollX < child.getRight()
+                        && y + scrollY >= child.getTop() && y + scrollY < child.getBottom()
+                        && canScroll(child, true, dx, x + scrollX - child.getLeft(),
+                        y + scrollY - child.getTop())) {
+                    return true;
+                }
+            }
+        }
+
+        return checkV && v.canScrollHorizontally(-dx);
     }
 
     @Override
