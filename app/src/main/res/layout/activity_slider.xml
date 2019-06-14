@@ -36,14 +36,14 @@
             android:background="#3f4">
 
         </FrameLayout>
-        <!--<ImageView-->
-            <!--android:layout_marginTop="15dp"-->
-            <!--android:layout_width="300dp"-->
-            <!--android:layout_height="200dp"-->
-            <!--android:background="@color/white"-->
-            <!--android:clickable="true"-->
-            <!--android:focusable="true"-->
-            <!--/>-->
+        <ImageView
+            android:layout_marginTop="15dp"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            />
         <ImageView
             android:layout_width="300dp"
             android:layout_height="200dp"

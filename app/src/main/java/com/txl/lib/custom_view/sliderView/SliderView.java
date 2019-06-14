@@ -133,8 +133,12 @@ public class SliderView extends ViewGroup {
         int maxWidth = 0;
         int maxHeight = 0;
         int childState = 0;
+        // FIXME: 2019/6/14 内容的最大宽度度为父容器的宽度 参考linearLayout
         //测量内容
         for (View v : mContentViews.keySet()) {
+            if(v.getVisibility() == GONE){
+                continue;
+            }
             measureChildWithMargins(v, widthMeasureSpec, 0, heightMeasureSpec, 0);
             final LayoutParams lp = (LayoutParams) v.getLayoutParams();
             maxWidth += v.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
@@ -189,11 +193,6 @@ public class SliderView extends ViewGroup {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        return super.dispatchTouchEvent(ev);
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         mVelocityTracker.addMovement(event);
         int x = (int) event.getX();
@@ -210,6 +209,7 @@ public class SliderView extends ViewGroup {
                 int deltaY = y - mLastY;
                 int scrollX = getScrollX();
                 if(DEBUG) Log.d(TAG,"mScrollX : "+scrollX);
+                // FIXME: 2019/6/14 下面的代码逻辑需要优化
                 //内容在View边界的右边 mScrollX = view的左边缘 - view内容的左边缘
                 if(deltaX > 0){//右边拉 右滑
                     if(scrollX > 0){
@@ -221,19 +221,18 @@ public class SliderView extends ViewGroup {
                             //因为前面的计算这里 scrollX一定是负值
                             scrollBy(mTotalLeftMenuLength+scrollX,0);
                         }else if(mTotalLeftMenuLength == Math.abs(scrollX)){
-                            //来一个水波纹
+                            //fixme 来一个水波纹
                         }
                     }
 
                 }else {//左边拉 左滑
                     if (scrollX > 0){
-                        if(mTotalRightMenuLength>Math.abs(scrollX+deltaX)){
+                        if(mTotalRightMenuLength>Math.abs(scrollX-deltaX)){
                             scrollBy(-deltaX,0);
-                        }else if(mTotalLeftMenuLength<Math.abs(scrollX+deltaX) && (mTotalLeftMenuLength<Math.abs(scrollX))){
-                            //因为前面的计算这里 scrollX一定是负值
-                            scrollBy(-mTotalLeftMenuLength+scrollX,0);
-                        }else if(mTotalLeftMenuLength == Math.abs(scrollX)){
-                            //来一个水波纹
+                        }else if(mTotalRightMenuLength<Math.abs(scrollX-deltaX) && (mTotalRightMenuLength<Math.abs(scrollX))){
+                            scrollBy(-mTotalRightMenuLength+scrollX,0);
+                        }else if(mTotalRightMenuLength == Math.abs(scrollX)){
+                            //fixme 来一个水波纹
                         }
                     }else {
                         scrollBy(-deltaX,0);
@@ -249,6 +248,7 @@ public class SliderView extends ViewGroup {
                 if(xVelocity >= 50){
 
                 }
+                // FIXME: 2019/6/14 根据位置实现弹性滑动
                 mVelocityTracker.clear();
                 break;
             }
