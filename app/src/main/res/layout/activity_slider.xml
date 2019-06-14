@@ -36,14 +36,14 @@
             android:background="#3f4">
 
         </FrameLayout>
-        <ImageView
-            android:layout_marginTop="15dp"
-            android:layout_width="300dp"
-            android:layout_height="200dp"
-            android:background="@color/white"
-            android:clickable="true"
-            android:focusable="true"
-            />
+        <!--<ImageView-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:layout_width="300dp"-->
+            <!--android:layout_height="200dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:clickable="true"-->
+            <!--android:focusable="true"-->
+            <!--/>-->
         <ImageView
             android:layout_width="300dp"
             android:layout_height="200dp"
@@ -55,6 +55,16 @@
             android:layout_width="100dp"
             android:layout_height="200dp"
             app:layout_type="left_menu"
+            android:background="#770"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            app:layout_type="left_menu"
+            android:background="#000"/>
+        <ImageView
+            android:layout_width="900dp"
+            android:layout_height="200dp"
+            app:layout_type="right_menu"
             android:background="#000"/>
     </com.txl.lib.custom_view.sliderView.SliderView>
     <android.support.v4.view.ViewPager
