@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:padding="5dp">
+        android:padding="30dp">
         <HorizontalScrollView
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -55,7 +55,7 @@
             android:layout_width="100dp"
             android:layout_height="200dp"
             app:layout_type="left_menu"
-            android:background="#770"/>
+            android:background="#fff"/>
         <ImageView
             android:layout_width="100dp"
             android:layout_height="200dp"
@@ -65,7 +65,7 @@
             android:layout_width="900dp"
             android:layout_height="200dp"
             app:layout_type="right_menu"
-            android:background="#000"/>
+            android:background="#777"/>
     </com.txl.lib.custom_view.sliderView.SliderView>
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"

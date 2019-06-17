@@ -2,13 +2,18 @@ package com.txl.lib.custom_view.sliderView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EdgeEffect;
 import android.widget.Scroller;
 
 import com.example.txl.tool.R;
@@ -40,6 +45,18 @@ public class SliderView extends ViewGroup {
     private Scroller mScroller;
     private VelocityTracker mVelocityTracker;
 
+    /**
+     * 用于实现左右滑动到末端的水波纹效果
+     * */
+    private EdgeEffect mLeftEdge;
+    private EdgeEffect mRightEdge;
+
+    // Offsets of the first and last items, if known.
+    // Set during population, used to determine if we are at the beginning
+    // or end of the pager data set during touch scrolling.
+    private float mFirstOffset = -Float.MAX_VALUE;
+    private float mLastOffset = Float.MAX_VALUE;
+
     public SliderView(Context context) {
         super(context);
         init();
@@ -61,8 +78,12 @@ public class SliderView extends ViewGroup {
     }
 
     private void init(){
+        setWillNotDraw(false);
         mScroller = new Scroller(getContext());
         mVelocityTracker = VelocityTracker.obtain();
+        final Context context = getContext();
+        mLeftEdge = new EdgeEffect(context);
+        mRightEdge = new EdgeEffect(context);
     }
 
     @Override
@@ -212,16 +233,18 @@ public class SliderView extends ViewGroup {
                 // FIXME: 2019/6/14 下面的代码逻辑需要优化
                 //内容在View边界的右边 mScrollX = view的左边缘 - view内容的左边缘
                 if(deltaX > 0){//右边拉 右滑
-                    if(scrollX > 0){
+                    if(scrollX > 0){//处于左滑的状态
                         scrollBy(-deltaX,0);
                     }else {
                         if(mTotalLeftMenuLength>Math.abs(scrollX-deltaX)){
                             scrollBy(-deltaX,0);
-                        }else if(mTotalLeftMenuLength<Math.abs(scrollX-deltaX) && (mTotalLeftMenuLength<Math.abs(scrollX))){
+                        }else if(mTotalLeftMenuLength<Math.abs(scrollX-deltaX) && (mTotalLeftMenuLength>Math.abs(scrollX))){
                             //因为前面的计算这里 scrollX一定是负值
-                            scrollBy(mTotalLeftMenuLength+scrollX,0);
-                        }else if(mTotalLeftMenuLength == Math.abs(scrollX)){
-                            //fixme 来一个水波纹
+                            scrollBy(-mTotalLeftMenuLength-scrollX,0);
+                        }else {
+                            mLeftEdge.onPull(Math.abs(deltaX) *1.0f/ getClientWidth());
+                            ViewCompat.postInvalidateOnAnimation(this);
+                            if(DEBUG) Log.d(TAG,"onTouchEvent 右 "+mLeftEdge.isFinished());
                         }
                     }
 
@@ -229,10 +252,12 @@ public class SliderView extends ViewGroup {
                     if (scrollX > 0){
                         if(mTotalRightMenuLength>Math.abs(scrollX-deltaX)){
                             scrollBy(-deltaX,0);
-                        }else if(mTotalRightMenuLength<Math.abs(scrollX-deltaX) && (mTotalRightMenuLength<Math.abs(scrollX))){
-                            scrollBy(-mTotalRightMenuLength+scrollX,0);
-                        }else if(mTotalRightMenuLength == Math.abs(scrollX)){
-                            //fixme 来一个水波纹
+                        }else if(mTotalRightMenuLength<Math.abs(scrollX-deltaX) && (mTotalRightMenuLength>Math.abs(scrollX))){
+                            scrollBy(mTotalRightMenuLength-scrollX,0);
+                        }else {
+                            mRightEdge.onPull(Math.abs(deltaX) *1.0f / getClientWidth());
+                            ViewCompat.postInvalidateOnAnimation(this);
+                            if(DEBUG) Log.d(TAG,"onTouchEvent mRightEdge 左 "+mRightEdge.isFinished());
                         }
                     }else {
                         scrollBy(-deltaX,0);
@@ -241,6 +266,7 @@ public class SliderView extends ViewGroup {
                 break;
             }
             case MotionEvent.ACTION_UP:{
+                mLeftEdge.onRelease();
                 int scrollX = getScrollX();
 //                int scrollToChildIndex = scrollX / mChildWidth;
                 mVelocityTracker.computeCurrentVelocity(1000);
@@ -256,6 +282,10 @@ public class SliderView extends ViewGroup {
         mLastX = x;
         mLastY = y;
         return true;
+    }
+
+    private int getClientWidth() {
+        return getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
     }
 
     @Override
@@ -317,7 +347,6 @@ public class SliderView extends ViewGroup {
             final int count = group.getChildCount();
             // Count backwards - let topmost views consume scroll distance first.
             for (int i = count - 1; i >= 0; i--) {
-                // TODO: Add versioned support here for transformed views.
                 // This will not work for transformed views in Honeycomb+
                 final View child = group.getChildAt(i);
                 if (x + scrollX >= child.getLeft() && x + scrollX < child.getRight()
@@ -330,6 +359,53 @@ public class SliderView extends ViewGroup {
         }
 
         return checkV && v.canScrollHorizontally(-dx);
+    }
+
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        if(DEBUG) Log.d(TAG,"draw  "+mLeftEdge.isFinished());
+        boolean needsInvalidate = false;
+        if (!mLeftEdge.isFinished()) {
+            final int restoreCount = canvas.save();
+            final int height = getHeight();
+            final int width = getWidth();
+
+            canvas.rotate(270);
+            canvas.translate(-height, -mTotalLeftMenuLength);
+            if (DEBUG)
+                Log.d(TAG, "draw  " + mLeftEdge.isFinished() + "   height: " + height + " width: " + width);
+            mLeftEdge.setSize(height, width);
+            needsInvalidate |= mLeftEdge.draw(canvas);
+            canvas.restoreToCount(restoreCount);
+        }
+        if (!mRightEdge.isFinished()) {
+            final int restoreCount = canvas.save();
+            final int width = getWidth();
+            final int height = getHeight();
+            Paint paint = new Paint();
+            paint.setColor(Color.RED);
+            canvas.drawRect(0,0,50,50,paint);
+            canvas.rotate(90);
+            paint.setColor(Color.BLUE);
+            canvas.drawRect(0,0,50,50,paint);
+            canvas.translate(-height*0.0f, -width-mTotalRightMenuLength);
+            paint.setColor(Color.BLACK);
+            canvas.drawRect(0,0,50,50,paint);
+            mRightEdge.setSize(height, width);
+            needsInvalidate |= mRightEdge.draw(canvas);
+            canvas.restoreToCount(restoreCount);
+        }
+        if (needsInvalidate) {
+            // Keep animating
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+
     }
 
     @Override
