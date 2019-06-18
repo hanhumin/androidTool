@@ -10,10 +10,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:padding="30dp">
+        android:paddingTop="10dp"
+        android:paddingBottom="30dp"
+        android:paddingStart="60dp"
+        android:paddingEnd="90dp">
         <HorizontalScrollView
             android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             android:background="#000"
             android:fillViewport="true">
             <LinearLayout
@@ -32,38 +35,37 @@
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             android:background="#3f4">
 
         </FrameLayout>
         <ImageView
-            android:layout_marginTop="15dp"
             android:layout_width="300dp"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             android:background="@color/white"
             android:clickable="true"
             android:focusable="true"
             />
         <ImageView
             android:layout_width="300dp"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             android:background="#7f88f5"
             android:clickable="true"
             android:focusable="true"
             />
         <ImageView
             android:layout_width="100dp"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             app:layout_type="left_menu"
             android:background="#fff"/>
         <ImageView
             android:layout_width="100dp"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             app:layout_type="left_menu"
             android:background="#000"/>
         <ImageView
             android:layout_width="900dp"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             app:layout_type="right_menu"
             android:background="#777"/>
     </com.txl.lib.custom_view.sliderView.SliderView>

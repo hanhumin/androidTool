@@ -362,35 +362,48 @@ public class SliderView extends ViewGroup {
     }
 
 
+    private static final double ANGLE = Math.PI / 6;
+    private static final float SIN = (float) Math.sin(ANGLE);
+    private static final float COS = (float) Math.cos(ANGLE);
+    private static final float RADIUS_FACTOR = 0.6f;
+    private void textSize(int width, int height){
+        final float r = width * RADIUS_FACTOR / SIN;
+        final float y = COS * r;
+        final float h = r - y;
+        final float or = height * RADIUS_FACTOR / SIN;
+        final float oy = COS * or;
+        final float oh = or - oy;
+
+        Log.d(TAG,"textSize  width :: "+width+"  height :: "+height+" hh "+h+"   min"+Math.min(height, h));
+    }
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        if(DEBUG) Log.d(TAG,"draw  "+mLeftEdge.isFinished());
         boolean needsInvalidate = false;
         if (!mLeftEdge.isFinished()) {
             final int restoreCount = canvas.save();
-            final int height = getHeight();
-            final int width = getWidth();
+            final int width = getWidth()-getPaddingLeft()-getPaddingRight();
+            final int height = getHeight()-getPaddingTop()-getPaddingBottom();
 
             canvas.rotate(270);
-            canvas.translate(-height, -mTotalLeftMenuLength);
-            if (DEBUG)
-                Log.d(TAG, "draw  " + mLeftEdge.isFinished() + "   height: " + height + " width: " + width);
-            mLeftEdge.setSize(height, width);
+            canvas.translate(-height - getPaddingTop(), -mTotalLeftMenuLength+getPaddingLeft());
+            mLeftEdge.setSize(height, getWidth());
+            textSize(height, width);
             needsInvalidate |= mLeftEdge.draw(canvas);
             canvas.restoreToCount(restoreCount);
         }
         if (!mRightEdge.isFinished()) {
             final int restoreCount = canvas.save();
-            final int width = getWidth();
-            final int height = getHeight();
+            final int width = getWidth()-getPaddingLeft()-getPaddingRight();
+            final int height = getHeight()-getPaddingTop()-getPaddingBottom();
             Paint paint = new Paint();
             paint.setColor(Color.RED);
             canvas.drawRect(0,0,50,50,paint);
             canvas.rotate(90);
             paint.setColor(Color.BLUE);
             canvas.drawRect(0,0,50,50,paint);
-            canvas.translate(-height*0.0f, -width-mTotalRightMenuLength);
+            canvas.translate(getPaddingTop(), -width-mTotalRightMenuLength-getPaddingLeft());
             paint.setColor(Color.BLACK);
             canvas.drawRect(0,0,50,50,paint);
             mRightEdge.setSize(height, width);
