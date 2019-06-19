@@ -202,6 +202,7 @@ public class SliderView extends ViewGroup {
 
     }
 
+    // FIXME: 2019/6/19 将左右菜单的最大宽度修改成内容的宽度
     private void measureMenu(View v, int heightMeasureSpec, int widthMeasureSpec) {
         final LayoutParams lp = (LayoutParams) v.getLayoutParams();
         //父容器不对菜单的宽度进行任何限制
@@ -267,14 +268,11 @@ public class SliderView extends ViewGroup {
             }
             case MotionEvent.ACTION_UP:{
                 mLeftEdge.onRelease();
-                int scrollX = getScrollX();
+                mRightEdge.onRelease();
 //                int scrollToChildIndex = scrollX / mChildWidth;
                 mVelocityTracker.computeCurrentVelocity(1000);
-                float xVelocity = mVelocityTracker.getXVelocity();
-                if(xVelocity >= 50){
-
-                }
-                // FIXME: 2019/6/14 根据位置实现弹性滑动
+//                float xVelocity = mVelocityTracker.getXVelocity();
+                completeScroll();
                 mVelocityTracker.clear();
                 break;
             }
@@ -282,6 +280,29 @@ public class SliderView extends ViewGroup {
         mLastX = x;
         mLastY = y;
         return true;
+    }
+
+    private void completeScroll() {
+        int scrollX = getScrollX();
+        if(scrollX > 72){
+//            scrollTo(mTotalRightMenuLength,0);
+            mScroller.startScroll(scrollX,0,mTotalRightMenuLength-scrollX,0);
+        }else if(scrollX < -72){
+//            scrollTo(-mTotalLeftMenuLength,0);
+            mScroller.startScroll(scrollX,0,-mTotalLeftMenuLength-scrollX,0);
+        }else {
+//            scrollTo(0,0);
+            mScroller.startScroll(scrollX,0,-scrollX,0);
+        }
+        ViewCompat.postInvalidateOnAnimation(this);
+    }
+
+    @Override
+    public void computeScroll() {
+        if(mScroller != null && mScroller.computeScrollOffset()){
+            scrollTo(mScroller.getCurrX(),mScroller.getCurrY());
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
     }
 
     private int getClientWidth() {
@@ -308,11 +329,7 @@ public class SliderView extends ViewGroup {
                 if(canScroll(this,false,deltaX,x,y)){
                     return false;
                 }
-                if(Math.abs(deltaX) > Math.abs(deltaY)){
-                    intercepted = true;
-                }else {
-                    intercepted = false;
-                }
+                intercepted = Math.abs(deltaX) > Math.abs(deltaY);
                 break;
             }
             case MotionEvent.ACTION_UP:{
@@ -417,8 +434,11 @@ public class SliderView extends ViewGroup {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-
+    protected void onDetachedFromWindow() {
+        if ((mScroller != null) && !mScroller.isFinished()) {
+            mScroller.abortAnimation();
+        }
+        super.onDetachedFromWindow();
     }
 
     @Override
