@@ -154,7 +154,6 @@ public class SliderView extends ViewGroup {
         int maxWidth = 0;
         int maxHeight = 0;
         int childState = 0;
-        // FIXME: 2019/6/14 内容的最大宽度度为父容器的宽度 参考linearLayout
         //测量内容
         for (View v : mContentViews.keySet()) {
             if(v.getVisibility() == GONE){
@@ -180,6 +179,9 @@ public class SliderView extends ViewGroup {
             maxHeight = Math.max(maxHeight, drawable.getMinimumHeight());
             maxWidth = Math.max(maxWidth, drawable.getMinimumWidth());
         }
+        final int mMaxMenuLength = MeasureSpec.getSize(resolveSizeAndState(maxWidth, widthMeasureSpec, childState));
+        int myWidthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.UNSPECIFIED);
+        //暂时让宽度在区域内
         setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState), resolveSizeAndState(maxHeight, heightMeasureSpec, childState));
 
         //测量左右菜单
@@ -189,6 +191,10 @@ public class SliderView extends ViewGroup {
                 measureMenu(v, heightMeasureSpec, widthMeasureSpec);
                 LayoutParams layoutParams = (LayoutParams) v.getLayoutParams();
                 mTotalLeftMenuLength += layoutParams.leftMargin + layoutParams.rightMargin + v.getMeasuredWidth();
+                if(mTotalLeftMenuLength>mMaxMenuLength){
+                    mTotalLeftMenuLength = mMaxMenuLength;
+                    break;
+                }
             }
         }
         mTotalRightMenuLength = 0;
@@ -197,6 +203,10 @@ public class SliderView extends ViewGroup {
                 measureMenu(v, heightMeasureSpec, widthMeasureSpec);
                 LayoutParams layoutParams = (LayoutParams) v.getLayoutParams();
                 mTotalRightMenuLength += layoutParams.leftMargin + layoutParams.rightMargin + v.getMeasuredWidth();
+                if(mTotalRightMenuLength>mMaxMenuLength){
+                    mTotalRightMenuLength = mMaxMenuLength;
+                    break;
+                }
             }
         }
 

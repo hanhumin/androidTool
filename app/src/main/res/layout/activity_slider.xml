@@ -10,10 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:paddingTop="10dp"
-        android:paddingBottom="30dp"
-        android:paddingStart="60dp"
-        android:paddingEnd="90dp">
+        android:padding="30dp">
         <HorizontalScrollView
             android:layout_width="200dp"
             android:layout_height="300dp"
@@ -40,6 +37,7 @@
 
         </FrameLayout>
         <ImageView
+            android:layout_marginTop="30dp"
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:background="@color/white"
@@ -64,7 +62,7 @@
             app:layout_type="left_menu"
             android:background="#000"/>
         <ImageView
-            android:layout_width="900dp"
+            android:layout_width="300dp"
             android:layout_height="300dp"
             app:layout_type="right_menu"
             android:background="#777"/>
