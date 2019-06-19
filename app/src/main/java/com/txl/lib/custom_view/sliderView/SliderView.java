@@ -228,40 +228,38 @@ public class SliderView extends ViewGroup {
             }
             case MotionEvent.ACTION_MOVE:{
                 int deltaX = x - mLastX;
-                int deltaY = y - mLastY;
-                int scrollX = getScrollX();
-                if(DEBUG) Log.d(TAG,"mScrollX : "+scrollX);
-                // FIXME: 2019/6/14 下面的代码逻辑需要优化
+//                int deltaY = y - mLastY;
                 //内容在View边界的右边 mScrollX = view的左边缘 - view内容的左边缘
-                if(deltaX > 0){//右边拉 右滑
-                    if(scrollX > 0){//处于左滑的状态
+                int scrollX = getScrollX();
+                //本次滑动的方向 deltaX>0 从左向右边拉
+                boolean scrollLeft = deltaX > 0;
+                // scrollX > 0 右菜单内容处于显示状态
+                boolean scrollStateLeft = scrollX > 0;
+                if(scrollLeft == scrollStateLeft){
+                    /**
+                     * scrollBy x参数为正的时候是由右边向左边滑动，为负的时候是由左边向右边滑动。
+                     * */
+                    scrollBy(-deltaX,0);
+                }else if(scrollLeft && !scrollStateLeft){
+                    if(mTotalLeftMenuLength>Math.abs(scrollX-deltaX)){
                         scrollBy(-deltaX,0);
+                    }else if(mTotalLeftMenuLength<Math.abs(scrollX-deltaX) && (mTotalLeftMenuLength>Math.abs(scrollX))){
+                        //因为前面的计算这里 scrollX一定是负值
+                        scrollBy(-mTotalLeftMenuLength-scrollX,0);
                     }else {
-                        if(mTotalLeftMenuLength>Math.abs(scrollX-deltaX)){
-                            scrollBy(-deltaX,0);
-                        }else if(mTotalLeftMenuLength<Math.abs(scrollX-deltaX) && (mTotalLeftMenuLength>Math.abs(scrollX))){
-                            //因为前面的计算这里 scrollX一定是负值
-                            scrollBy(-mTotalLeftMenuLength-scrollX,0);
-                        }else {
-                            mLeftEdge.onPull(Math.abs(deltaX) *1.0f/ getClientWidth());
-                            ViewCompat.postInvalidateOnAnimation(this);
-                            if(DEBUG) Log.d(TAG,"onTouchEvent 右 "+mLeftEdge.isFinished());
-                        }
+                        mLeftEdge.onPull(Math.abs(deltaX) *1.0f/ getClientWidth());
+                        ViewCompat.postInvalidateOnAnimation(this);
+                        if(DEBUG) Log.d(TAG,"onTouchEvent 右 "+mLeftEdge.isFinished());
                     }
-
-                }else {//左边拉 左滑
-                    if (scrollX > 0){
-                        if(mTotalRightMenuLength>Math.abs(scrollX-deltaX)){
-                            scrollBy(-deltaX,0);
-                        }else if(mTotalRightMenuLength<Math.abs(scrollX-deltaX) && (mTotalRightMenuLength>Math.abs(scrollX))){
-                            scrollBy(mTotalRightMenuLength-scrollX,0);
-                        }else {
-                            mRightEdge.onPull(Math.abs(deltaX) *1.0f / getClientWidth());
-                            ViewCompat.postInvalidateOnAnimation(this);
-                            if(DEBUG) Log.d(TAG,"onTouchEvent mRightEdge 左 "+mRightEdge.isFinished());
-                        }
-                    }else {
+                }else if(!scrollLeft && scrollStateLeft){
+                    if(mTotalRightMenuLength>Math.abs(scrollX-deltaX)){
                         scrollBy(-deltaX,0);
+                    }else if(mTotalRightMenuLength<Math.abs(scrollX-deltaX) && (mTotalRightMenuLength>Math.abs(scrollX))){
+                        scrollBy(mTotalRightMenuLength-scrollX,0);
+                    }else {
+                        mRightEdge.onPull(Math.abs(deltaX) *1.0f / getClientWidth());
+                        ViewCompat.postInvalidateOnAnimation(this);
+                        if(DEBUG) Log.d(TAG,"onTouchEvent mRightEdge 左 "+mRightEdge.isFinished());
                     }
                 }
                 break;
