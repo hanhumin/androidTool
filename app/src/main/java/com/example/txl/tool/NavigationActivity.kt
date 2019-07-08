@@ -1,8 +1,10 @@
 package com.example.txl.tool
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.example.txl.tool.activity.http.HttpCookieDemoActivity
 import com.example.txl.tool.activity.point9.Point9Activity
@@ -43,5 +45,15 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        Log.d("NavigationActivity","onConfigurationChanged")
+        super.onConfigurationChanged(newConfig)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("NavigationActivity","onDestroy")
     }
 }

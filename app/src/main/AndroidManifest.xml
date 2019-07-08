@@ -21,7 +21,8 @@
         <activity android:name=".intent.Intent1Activity" />
         <activity android:name=".activity.point9.Point9Activity" />
         <activity android:name=".activity.http.HttpCookieDemoActivity" />
-        <activity android:name=".NavigationActivity">
+        <activity android:name=".NavigationActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
