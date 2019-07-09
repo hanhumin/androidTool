@@ -4,21 +4,26 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Copyright (c) 2018, 唐小陆 All rights reserved.
+ * Copyright (c) 2019, 唐小陆 All rights reserved.
  * author：txl
- * date：2018/8/14
+ * date：2019/7/9
  * description：
  */
 public class Book implements Parcelable {
-    public int bookId;
-    public String bookName;
+    private int bookId;
+    private String name;
+    private String author;
 
-    protected Book(Parcel in) {
+    public Book(int bookId, String name, String author) {
+        this.bookId = bookId;
+        this.name = name;
+        this.author = author;
     }
 
-    public Book(int bookId, String bookName) {
-        this.bookId = bookId;
-        this.bookName = bookName;
+    protected Book(Parcel in) {
+        bookId = in.readInt();
+        name = in.readString();
+        author = in.readString();
     }
 
     public static final Creator<Book> CREATOR = new Creator<Book>() {
@@ -41,6 +46,31 @@ public class Book implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt( bookId );
-        dest.writeString( bookName );
+        dest.writeString( name );
+        dest.writeString( author );
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

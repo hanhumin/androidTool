@@ -10,6 +10,7 @@ import com.example.txl.tool.activity.http.HttpCookieDemoActivity
 import com.example.txl.tool.activity.point9.Point9Activity
 import com.example.txl.tool.activity.slider.SliderActivity
 import com.example.txl.tool.coordinatorlayout.CoordinatorLayoutNavigationActivity
+import com.example.txl.tool.inter.process.communication.AidlDemoActivity
 
 class NavigationActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -24,6 +25,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_Http).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_nine_picture).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_slider).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_aidl_simple_use).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -42,6 +44,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_slider->{
                 val intent = Intent(this, SliderActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_aidl_simple_use->{
+                val intent = Intent(this, AidlDemoActivity::class.java)
                 startActivity(intent)
             }
         }

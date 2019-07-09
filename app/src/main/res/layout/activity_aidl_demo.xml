@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".inter.process.communication.AidlDemoActivity"
+    android:gravity="center"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_get_book_list"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="获取书籍"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:background="#7f7"/>
+    <TextView
+        android:id="@+id/tv_add_book"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="添加书籍"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:background="#7f7"/>
+</LinearLayout>

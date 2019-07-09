@@ -38,5 +38,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="仿QQ侧滑滴答清单"/>
+        <TextView
+            android:id="@+id/tv_jump_aidl_simple_use"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="Aidl基本使用"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

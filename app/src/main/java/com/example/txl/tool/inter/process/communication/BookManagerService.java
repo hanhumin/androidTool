@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -17,11 +18,13 @@ public class BookManagerService extends Service {
     private Binder mBinder = new IBookManager.Stub() {
         @Override
         public List<Book> getBookList() throws RemoteException {
+            Log.d( TAG,"getBookList thread :"+Thread.currentThread().getName() );
             return mBookList;
         }
 
         @Override
         public void addBook(Book book) throws RemoteException {
+            Log.d( TAG,"addBook thread :"+Thread.currentThread().getName() );
             mBookList.add( book );
         }
     };
@@ -32,8 +35,8 @@ public class BookManagerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mBookList.add( new Book( 1,"Android" ) );
-        mBookList.add( new Book( 2,"IOS" ) );
+        mBookList.add( new Book( 1,"Android","小王" ) );
+        mBookList.add( new Book( 2,"IOS" ,"小张") );
     }
 
     @Override

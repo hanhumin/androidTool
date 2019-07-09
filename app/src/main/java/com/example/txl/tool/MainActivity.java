@@ -18,7 +18,6 @@ import com.example.txl.tool.custom.DragViewActivity;
 import com.example.txl.tool.gank.io.video.MoreTextureActivity;
 import com.example.txl.tool.gank.io.video.VideoActivity;
 import com.example.txl.tool.gesture.GestureActivity;
-import com.example.txl.tool.inter.process.communication.Book;
 import com.example.txl.tool.inter.process.communication.IPCActivity;
 import com.example.txl.tool.inter.process.communication.User;
 import com.example.txl.tool.recycler.RecyclerViewActivity;
