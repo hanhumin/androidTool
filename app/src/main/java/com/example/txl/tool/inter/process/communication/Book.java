@@ -73,4 +73,13 @@ public class Book implements Parcelable {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookId=" + bookId +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
 }

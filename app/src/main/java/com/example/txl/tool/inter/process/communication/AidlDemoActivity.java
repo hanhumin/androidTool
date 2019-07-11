@@ -16,12 +16,24 @@ import com.example.txl.tool.R;
 import java.util.List;
 
 public class AidlDemoActivity extends AppCompatActivity {
+    private final String TAG = "AidlDemoActivity";
     private TextView tvGetBookList, tvAddBook;
     IBookManager bookManager;
+    IOnBookArrivedListener onBookArrivedListener =  new IOnBookArrivedListener.Stub(){
+        @Override
+        public void onNewBookArrived(Book book) throws RemoteException {
+            Log.d( TAG,"onNewBookArrived  "+book);
+        }
+    };
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             bookManager = IBookManager.Stub.asInterface( service );
+            try {
+                bookManager.registerBookArrivedListener(onBookArrivedListener);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -84,6 +96,13 @@ public class AidlDemoActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(bookManager != null && bookManager.asBinder().isBinderAlive()){
+            try {
+                bookManager.unRegisterBookArrivedListener( onBookArrivedListener );
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
         unbindService( serviceConnection );
     }
 }
