@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".rxjava.RxJavaDemoActivity"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_rxjava_basic_use"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="基本使用"/>
+    <TextView
+        android:id="@+id/tv_rxjava_scheduling"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="线程调度"/>
+    <TextView
+        android:id="@+id/tv_rxjava_map"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="map变换"/>
+
+</LinearLayout>

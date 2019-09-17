@@ -59,5 +59,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="Glide"/>
+        <TextView
+            android:id="@+id/tv_jump_rxjava_demo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="RxJava"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

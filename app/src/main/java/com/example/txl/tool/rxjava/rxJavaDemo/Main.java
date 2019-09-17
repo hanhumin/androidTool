@@ -1,8 +1,4 @@
-package com.example.txl.tool.rxJavaDemo;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
+package com.example.txl.tool.rxjava.rxJavaDemo;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;

@@ -12,6 +12,7 @@ import com.example.txl.tool.activity.slider.SliderActivity
 import com.example.txl.tool.coordinatorlayout.CoordinatorLayoutNavigationActivity
 import com.example.txl.tool.glide.GlideDemoActivity
 import com.example.txl.tool.inter.process.communication.AidlDemoActivity
+import com.example.txl.tool.rxjava.RxJavaDemoActivity
 import com.example.txl.tool.window.WindowAndWindowManagerActivity
 
 class NavigationActivity : AppCompatActivity(), View.OnClickListener {
@@ -30,6 +31,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_aidl_simple_use).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_window_and_windowmanager).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_glide_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_rxjava_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -60,6 +62,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_glide_demo->{
                 val intent = Intent(this, GlideDemoActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_rxjava_demo->{
+                val intent = Intent(this, RxJavaDemoActivity::class.java)
                 startActivity(intent)
             }
         }

@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".fragment.FragmentDemoActivity"></activity>
+        <activity android:name=".rxjava.RxJavaDemoActivity"></activity>
+        <activity android:name=".rxjava.RxJavaDemoActivity" />
+        <activity android:name=".fragment.FragmentDemoActivity" />
         <activity android:name=".glide.GlideDemoActivity" />
         <activity android:name=".window.WindowAndWindowManagerActivity" />
         <activity android:name=".inter.process.communication.AidlDemoActivity" />
