@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <!--小屏播放器控制ui-->
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_small_player_ui_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -128,5 +128,5 @@
             app:layout_constraintCircleAngle="57"
             />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.example.txl.tool.huaxiyun.player.PlayerView>

@@ -1,9 +1,9 @@
 package com.example.txl.tool.coordinatorlayout
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,7 @@ import java.util.ArrayList
  *description :
  */
 const val TITLE = "title"
-class TableFragment : Fragment() {
+class TableFragment : androidx.fragment.app.Fragment() {
 
 
     private var mTitle = "Defaut Value"
@@ -35,15 +35,15 @@ class TableFragment : Fragment() {
     }
 
     private var listItem:  ArrayList<String> =ArrayList()
-    var recyclerView: RecyclerView? = null
+    var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listItem = ArrayList<String>()
         for (i in 0..99) {
             listItem.add("我是第" + i + "个元素")
         }
-        recyclerView?.layoutManager = LinearLayoutManager(context)
-        recyclerView?.adapter = object : RecyclerView.Adapter<MyViewHolder>() {
+        recyclerView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        recyclerView?.adapter = object : androidx.recyclerview.widget.RecyclerView.Adapter<MyViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
                 val tv = layoutInflater.inflate(R.layout.cordinatory_test_item, null, false) as TextView
                 return MyViewHolder(tv)
@@ -60,11 +60,11 @@ class TableFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        recyclerView = inflater.inflate(R.layout.table_fragment_item,container,false) as RecyclerView?
+        recyclerView = inflater.inflate(R.layout.table_fragment_item,container,false) as androidx.recyclerview.widget.RecyclerView?
         return recyclerView
     }
 
-    internal inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    internal inner class MyViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         var tv: TextView
 
         init {

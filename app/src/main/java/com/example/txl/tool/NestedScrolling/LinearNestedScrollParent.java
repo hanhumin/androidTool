@@ -2,11 +2,11 @@ package com.example.txl.tool.NestedScrolling;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.view.NestedScrollingParent2;
-import android.support.v4.view.NestedScrollingParentHelper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.view.NestedScrollingParent2;
+import androidx.core.view.NestedScrollingParentHelper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;

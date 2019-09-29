@@ -2,7 +2,7 @@ package com.example.txl.tool.huaxiyun.player;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;

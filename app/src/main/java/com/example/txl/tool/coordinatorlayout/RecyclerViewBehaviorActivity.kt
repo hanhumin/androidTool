@@ -1,10 +1,10 @@
 package com.example.txl.tool.coordinatorlayout
 
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -15,7 +15,7 @@ import com.example.txl.tool.utils.ColorUtils
 class RecyclerViewBehaviorActivity : AppCompatActivity() {
 
 
-    var recyclerView: RecyclerView? = null
+    var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,7 @@ class RecyclerViewBehaviorActivity : AppCompatActivity() {
 
     private fun initView() {
         recyclerView = findViewById(R.id.recycler_view)
-        recyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        recyclerView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         var adapter = MyAdapter(this)
         val list = ArrayList<String>()
         for (i in 0..20){

@@ -1,11 +1,10 @@
 package com.example.txl.tool.gank.io.video;
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Surface;
 import android.view.TextureView;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.example.txl.tool.R;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * 测试多个TextureView同时使用的情况

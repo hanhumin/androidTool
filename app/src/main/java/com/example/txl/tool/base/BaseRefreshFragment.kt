@@ -2,8 +2,8 @@
 
 import android.app.Fragment
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.IdRes
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.NO_ID
@@ -27,7 +27,7 @@ abstract class BaseRefreshFragment<P: BaseRefreshContract.BaseRefreshPresenter,D
 
     protected var smartRefreshLayout: SmartRefreshLayout?= null
 
-    protected var recyclerView:RecyclerView? = null
+    protected var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
 
     protected var baseAdapter : BaseAdapter<D>? = null
 
@@ -71,7 +71,7 @@ abstract class BaseRefreshFragment<P: BaseRefreshContract.BaseRefreshPresenter,D
 
     abstract fun getAdapter(): BaseAdapter<D>
 
-    abstract fun getLayoutManager(): RecyclerView.LayoutManager
+    abstract fun getLayoutManager(): androidx.recyclerview.widget.RecyclerView.LayoutManager
 
 
 

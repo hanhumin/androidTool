@@ -1,11 +1,11 @@
 package com.example.txl.tool.activity
 
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -25,9 +25,9 @@ class FloatItemRecyclerActivity : AppCompatActivity() {
 
     val tag: String = javaClass.simpleName
 
-    var recyclerView:RecyclerView? = null
+    var recyclerView: androidx.recyclerview.widget.RecyclerView? = null
     var listView:ListView? = null
-    var floatView:FloatItemRecyclerView<RecyclerView>? = null
+    var floatView:FloatItemRecyclerView<androidx.recyclerview.widget.RecyclerView>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,9 +38,9 @@ class FloatItemRecyclerActivity : AppCompatActivity() {
 
     fun initView(){
         recyclerView = findViewById(com.example.txl.tool.R.id.recycler_view)
-        recyclerView?.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        recyclerView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         recyclerView?.adapter = MyAdapter()
-        recyclerView?.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        recyclerView?.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL))
         recyclerView?.addOnScrollListener(MyOnScrollListener())
         floatView = FloatItemRecyclerView(this)
 
@@ -108,7 +108,7 @@ class FloatItemRecyclerActivity : AppCompatActivity() {
     }
 
     var currentState = 0;
-    inner class MyOnScrollListener: RecyclerView.OnScrollListener (){
+    inner class MyOnScrollListener: androidx.recyclerview.widget.RecyclerView.OnScrollListener (){
 //        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //            super.onScrollStateChanged(recyclerView, newState)
 //            if (floatView == null) {
@@ -162,7 +162,7 @@ class FloatItemRecyclerActivity : AppCompatActivity() {
 //        }
     }
 
-    inner class MyAdapter : RecyclerView.Adapter<MyViewHolder>() {
+    inner class MyAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<MyViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
             return MyViewHolder(layoutInflater.inflate(R.layout.float_item_recycle_view,parent,false))
@@ -178,7 +178,7 @@ class FloatItemRecyclerActivity : AppCompatActivity() {
 
     }
 
-    class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    class MyViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
     }
 }

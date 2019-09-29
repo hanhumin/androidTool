@@ -1,22 +1,18 @@
 package com.example.txl.tool.coordinatorlayout;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.NestedScrollView;
+
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.example.txl.tool.R;
 import com.example.txl.tool.utils.DisplayUtil;

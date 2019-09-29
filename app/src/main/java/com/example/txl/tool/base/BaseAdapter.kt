@@ -1,7 +1,7 @@
 package com.example.txl.tool.base
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import android.view.ViewGroup
  *@author TXL
  *description :
  */
-abstract class BaseAdapter<T>(context: Context, list: ArrayList<T>?) : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<T>>() {
+abstract class BaseAdapter<T>(context: Context, list: ArrayList<T>?) : androidx.recyclerview.widget.RecyclerView.Adapter<BaseAdapter.BaseViewHolder<T>>() {
 
     var itemClickListener: OnItemClickListener<T>? = null
 
@@ -48,7 +48,7 @@ abstract class BaseAdapter<T>(context: Context, list: ArrayList<T>?) : RecyclerV
         holder.onBindViewHolder(position, listData!![position], this)
     }
 
-    abstract class BaseViewHolder<D>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    abstract class BaseViewHolder<D>(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         var mData: D? = null
         var mPosition = -1
         var mAdapter: BaseAdapter<D>? = null

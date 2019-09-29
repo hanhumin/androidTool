@@ -1,9 +1,9 @@
 package com.example.txl.tool.coordinatorlayout
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -21,13 +21,13 @@ class CustomBehaviorActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        val recyclerView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recycler_view)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         listItem = ArrayList<String>()
         for (i in 0..99) {
             listItem.add("我是第" + i + "个元素")
         }
-        recyclerView?.adapter = object : RecyclerView.Adapter<MyViewHolder>() {
+        recyclerView?.adapter = object : androidx.recyclerview.widget.RecyclerView.Adapter<MyViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
                 val tv = layoutInflater.inflate(R.layout.cordinatory_test_item, null, false) as TextView
                 return MyViewHolder(tv)
@@ -43,7 +43,7 @@ class CustomBehaviorActivity : AppCompatActivity() {
         }
     }
 
-    class MyViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
+    class MyViewHolder (itemView: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         var tv: TextView = itemView as TextView
     }
 }

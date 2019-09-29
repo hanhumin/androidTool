@@ -1,13 +1,13 @@
 package com.example.txl.tool.activity.slider
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.ViewPager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +27,7 @@ class SliderActivity : AppCompatActivity() {
      * 引入viewPager的原因是观察他在fragment中嵌套横向滑动的RecyclerView的现象
      * */
     private fun initView() {
-        val viewPager = findViewById<ViewPager>(R.id.view_pager)
+        val viewPager = findViewById<androidx.viewpager.widget.ViewPager>(R.id.view_pager)
         val adapter = PagerAdapter(supportFragmentManager)
         adapter.list.add(DemoFragment())
         adapter.list.add(DemoFragment())
@@ -40,9 +40,9 @@ class SliderActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-    class PagerAdapter(fm : FragmentManager) : FragmentStatePagerAdapter(fm){
-        val list :ArrayList<Fragment> = ArrayList()
-        override fun getItem(position: Int): Fragment {
+    class PagerAdapter(fm : androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentStatePagerAdapter(fm){
+        val list :ArrayList<androidx.fragment.app.Fragment> = ArrayList()
+        override fun getItem(position: Int): androidx.fragment.app.Fragment {
             return list[position]
         }
 
@@ -52,16 +52,16 @@ class SliderActivity : AppCompatActivity() {
     }
 }
 
-class DemoFragment : Fragment(){
-    var rootView:RecyclerView? = null
+class DemoFragment : androidx.fragment.app.Fragment(){
+    var rootView: androidx.recyclerview.widget.RecyclerView? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.recycler_view,container,false) as RecyclerView?
+        rootView = inflater.inflate(R.layout.recycler_view,container,false) as androidx.recyclerview.widget.RecyclerView?
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        rootView as RecyclerView
-        rootView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
+        rootView as androidx.recyclerview.widget.RecyclerView
+        rootView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
         var adapter = SimpleTitleBehaviorActivity.MyAdapter(context!!)
         val list = ArrayList<String>()
         for (i in 0..20){
@@ -75,7 +75,7 @@ class DemoFragment : Fragment(){
 }
 
 
-class DemoFragment1 : Fragment(){
+class DemoFragment1 : androidx.fragment.app.Fragment(){
     var rootView:View? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.horizontal_scroller_view,container,false)

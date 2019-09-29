@@ -1,11 +1,9 @@
 package com.example.txl.tool.custom;
 
 import android.content.Context;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.TextView;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -13,7 +11,7 @@ import android.widget.TextView;
  * date：2018/8/18
  * description：
  */
-public class DragTextView extends android.support.v7.widget.AppCompatTextView {
+public class DragTextView extends androidx.appcompat.widget.AppCompatTextView {
     private static final String TAG = "DragTextView";
     public DragTextView(Context context) {
         super( context );

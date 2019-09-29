@@ -1,8 +1,8 @@
 package com.example.txl.tool.coordinatorlayout.behavior
 
 import android.content.Context
-import android.support.design.widget.CoordinatorLayout
-import android.support.v4.view.ViewCompat
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.ViewCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -13,7 +13,7 @@ import com.example.txl.tool.utils.DisplayUtil
 /**
  * 当发起嵌套滑动的时候处理
  * */
-class HeaderBehavior : CoordinatorLayout.Behavior<View> {
+class HeaderBehavior : androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior<View> {
 
     val TAG = HeaderBehavior::class.java.simpleName
 
@@ -44,7 +44,7 @@ class HeaderBehavior : CoordinatorLayout.Behavior<View> {
 
     constructor() : super()
 
-    override fun onStartNestedScroll(coordinatorLayout: CoordinatorLayout, child: View, directTargetChild: View, target: View, axes: Int, type: Int): Boolean {
+    override fun onStartNestedScroll(coordinatorLayout: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, directTargetChild: View, target: View, axes: Int, type: Int): Boolean {
         if (!isInit) {
             init(child.context)
             isInit = true
@@ -56,7 +56,7 @@ class HeaderBehavior : CoordinatorLayout.Behavior<View> {
     }
 
 
-    override fun onNestedPreScroll(coordinatorLayout: CoordinatorLayout, child: View, target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
+    override fun onNestedPreScroll(coordinatorLayout: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
         mTranslationY = child.translationY
         if (dy > 0) {//向上
             //向上滑动优先滑动顶部的header
@@ -70,7 +70,7 @@ class HeaderBehavior : CoordinatorLayout.Behavior<View> {
         }
     }
 
-    override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: View, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
+    override fun onNestedScroll(coordinatorLayout: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
         mTranslationY = child.translationY
         if (dyUnconsumed < 0) {//向下
             //在向下滑动时，当需要滑动的view不在消耗这个滑动的距离将header下拉
@@ -83,7 +83,7 @@ class HeaderBehavior : CoordinatorLayout.Behavior<View> {
         }
     }
 
-    override fun onNestedPreFling(coordinatorLayout: CoordinatorLayout, child: View, target: View, velocityX: Float, velocityY: Float): Boolean {
+    override fun onNestedPreFling(coordinatorLayout: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, target: View, velocityX: Float, velocityY: Float): Boolean {
         var handle = false
         if (velocityY > 0) {//向下
 
@@ -93,7 +93,7 @@ class HeaderBehavior : CoordinatorLayout.Behavior<View> {
         return handle
     }
 
-    override fun onNestedFling(coordinatorLayout: CoordinatorLayout, child: View, target: View, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
+    override fun onNestedFling(coordinatorLayout: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, target: View, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
         return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed)
     }
 

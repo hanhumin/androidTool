@@ -1,7 +1,7 @@
 package com.example.txl.tool;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.

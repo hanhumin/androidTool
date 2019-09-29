@@ -8,7 +8,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -66,16 +66,16 @@ public class BadgeView extends View {
         super(context);
     }
 
-    public BadgeView(Context context, @android.support.annotation.Nullable AttributeSet attrs) {
+    public BadgeView(Context context, @androidx.annotation.Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BadgeView(Context context, @android.support.annotation.Nullable AttributeSet attrs, int defStyleAttr) {
+    public BadgeView(Context context, @androidx.annotation.Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public BadgeView(Context context, @android.support.annotation.Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public BadgeView(Context context, @androidx.annotation.Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

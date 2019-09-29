@@ -1,7 +1,7 @@
 package com.example.txl.tool.gank.io.video;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.Surface;
 import android.view.View;

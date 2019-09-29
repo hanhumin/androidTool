@@ -1,8 +1,8 @@
 package com.example.txl.tool.activity
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.PopupMenu
+import androidx.appcompat.widget.PopupMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

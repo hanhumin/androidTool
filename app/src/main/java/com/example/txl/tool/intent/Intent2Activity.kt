@@ -1,7 +1,7 @@
 package com.example.txl.tool.intent
 
 import android.app.Activity
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable

@@ -1,9 +1,9 @@
 package com.example.txl.tool.coordinatorlayout
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.CollapsingToolbarLayout
-import android.support.v4.content.ContextCompat
+import com.google.android.material.appbar.CollapsingToolbarLayout
+import androidx.core.content.ContextCompat
 import com.example.txl.tool.R
 
 class CollapsingToolbarLayoutActivity : AppCompatActivity() {
