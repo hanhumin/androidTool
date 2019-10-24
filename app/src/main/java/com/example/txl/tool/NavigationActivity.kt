@@ -71,7 +71,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         Log.d("NavigationActivity","onConfigurationChanged")
         super.onConfigurationChanged(newConfig)
     }
