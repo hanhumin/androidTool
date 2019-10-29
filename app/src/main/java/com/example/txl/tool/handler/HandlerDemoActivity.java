@@ -120,7 +120,6 @@ public class HandlerDemoActivity extends AppCompatActivity {
         @Override
         public void run() {
             super.run();
-            childHandler.removeCallbacksAndMessages(  );
             Looper.prepare();
             myLooper = Looper.myLooper();
             childHandler = new Handler( myLooper ){
