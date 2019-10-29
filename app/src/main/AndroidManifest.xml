@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.txl.tool">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -17,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".handler.ThreadLocalDemoActivity"></activity>
+        <activity android:name=".handler.HandlerDemoActivity" />
         <activity android:name=".rxjava.RxJavaDemoActivity" />
         <activity android:name=".fragment.FragmentDemoActivity" />
         <activity android:name=".glide.GlideDemoActivity" />
@@ -62,17 +59,6 @@
         <activity
             android:name=".inter.process.communication.IPCActivity"
             android:process=":remote" />
-
-        <service
-            android:name=".inter.process.communication.BookManagerService"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":remote">
-            <intent-filter>
-                <action android:name="com.txl.aidl.demo" />
-            </intent-filter>
-        </service>
-
         <activity android:name=".custom.DragViewActivity" />
         <activity android:name=".custom.BannerActivity" />
         <activity android:name=".constraintLayout.ConstraintLayoutActivity" />
@@ -87,6 +73,21 @@
         <activity android:name=".activity.HecoderActivty" />
         <activity android:name=".activity.NestedScrollingDemoActivity" />
         <activity android:name=".activity.PopWindowAndMenuActivity" />
+
+        <service
+            android:name=".inter.process.communication.BookManagerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.txl.aidl.demo" />
+            </intent-filter>
+        </service>
     </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>
