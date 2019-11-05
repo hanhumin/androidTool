@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".handler.ThreadLocalDemoActivity"></activity>
+        <activity android:name=".inter.process.communication.ComputeActivity"/>
+        <activity android:name=".handler.ThreadLocalDemoActivity" />
         <activity android:name=".handler.HandlerDemoActivity" />
         <activity android:name=".rxjava.RxJavaDemoActivity" />
         <activity android:name=".fragment.FragmentDemoActivity" />
@@ -75,6 +76,11 @@
         <activity android:name=".activity.PopWindowAndMenuActivity" />
 
         <service
+            android:name=".inter.process.communication.ComputeService"
+            android:enabled="true"
+            android:exported="true"
+            android:process="compute" />
+        <service
             android:name=".inter.process.communication.BookManagerService"
             android:enabled="true"
             android:exported="true"
@@ -84,10 +90,10 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
 </manifest>
