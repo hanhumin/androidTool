@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.example.txl.tool.activity.FlexboxLayoutActivity
 import com.example.txl.tool.activity.http.HttpCookieDemoActivity
 import com.example.txl.tool.activity.point9.Point9Activity
 import com.example.txl.tool.activity.slider.SliderActivity
@@ -36,6 +37,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_rxjava_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_handler_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_keyevent_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_flexbox_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -78,6 +80,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_keyevent_demo->{
                 val intent = Intent(this, KeyEventDemoActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_flexbox_demo->{
+                val intent = Intent(this, FlexboxLayoutActivity::class.java)
                 startActivity(intent)
             }
         }

@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".keyevent.KeyEventDemoActivity"></activity>
+        <activity android:name=".activity.FlexboxLayoutActivity"></activity>
+        <activity android:name=".keyevent.KeyEventDemoActivity" />
         <activity android:name=".inter.process.communication.ComputeActivity" />
         <activity android:name=".handler.ThreadLocalDemoActivity" />
         <activity android:name=".handler.HandlerDemoActivity" />
@@ -91,10 +92,10 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>
