@@ -15,6 +15,7 @@ import com.example.txl.tool.glide.GlideDemoActivity
 import com.example.txl.tool.handler.HandlerDemoActivity
 import com.example.txl.tool.inter.process.communication.AidlDemoActivity
 import com.example.txl.tool.keyevent.KeyEventDemoActivity
+import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
 import com.example.txl.tool.rxjava.RxJavaDemoActivity
 import com.example.txl.tool.window.WindowAndWindowManagerActivity
 
@@ -38,6 +39,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_handler_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_keyevent_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_flexbox_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_radio_button_use_gif_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -84,6 +86,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_flexbox_demo->{
                 val intent = Intent(this, FlexboxLayoutActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_radio_button_use_gif_demo->{
+                val intent = Intent(this, RadioButtonGifActivity::class.java)
                 startActivity(intent)
             }
         }

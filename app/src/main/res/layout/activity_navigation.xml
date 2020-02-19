@@ -87,5 +87,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="FlexboxLayout demo"/>
+        <TextView
+            android:id="@+id/tv_jump_radio_button_use_gif_demo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="RadioButtonUseGif"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
