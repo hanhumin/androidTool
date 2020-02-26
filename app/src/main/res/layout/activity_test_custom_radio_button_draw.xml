@@ -10,5 +10,10 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="100dp"
         android:layout_height="200dp"
-        android:button="@null"/>
+        android:button="@drawable/chat"
+        android:background="@color/cardview_dark_background"
+        android:text="我去saddada"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:gravity="center"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

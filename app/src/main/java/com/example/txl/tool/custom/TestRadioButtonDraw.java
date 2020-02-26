@@ -30,7 +30,13 @@ public class TestRadioButtonDraw extends RadioButton {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
+
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
         drawCircleTitleBg(canvas,0);
+        super.onDraw(canvas);
     }
 
     /**
