@@ -1,0 +1,13 @@
+package com.example.txl.tool.custom
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.txl.tool.R
+
+class TestCustomRadioButtonDrawActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_test_custom_radio_button_draw)
+    }
+}

@@ -11,6 +11,7 @@ import com.example.txl.tool.activity.http.HttpCookieDemoActivity
 import com.example.txl.tool.activity.point9.Point9Activity
 import com.example.txl.tool.activity.slider.SliderActivity
 import com.example.txl.tool.coordinatorlayout.CoordinatorLayoutNavigationActivity
+import com.example.txl.tool.custom.TestCustomRadioButtonDrawActivity
 import com.example.txl.tool.glide.GlideDemoActivity
 import com.example.txl.tool.handler.HandlerDemoActivity
 import com.example.txl.tool.inter.process.communication.AidlDemoActivity
@@ -38,6 +39,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_handler_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_keyevent_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_flexbox_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_custom_radio_button_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -84,6 +86,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_flexbox_demo->{
                 val intent = Intent(this, FlexboxLayoutActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_custom_radio_button_demo->{
+                val intent = Intent(this, TestCustomRadioButtonDrawActivity::class.java)
                 startActivity(intent)
             }
         }

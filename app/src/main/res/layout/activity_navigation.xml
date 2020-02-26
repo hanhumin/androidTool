@@ -87,5 +87,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="FlexboxLayout demo"/>
+        <TextView
+            android:id="@+id/tv_jump_custom_radio_button_demo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="测试自定义RadioButton的Draw"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
