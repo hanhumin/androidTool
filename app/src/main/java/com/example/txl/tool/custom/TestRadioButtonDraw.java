@@ -70,7 +70,7 @@ public class TestRadioButtonDraw extends RadioButton {
         int width = getWidth();
 
         float topHeight = getResources().getDimensionPixelSize(R.dimen.dimen24);
-        paint.setStrokeWidth(topHeight);
+        paint.setStrokeWidth(5);
         final int scrollX = getScrollX();
         final int scrollY = getScrollY();
         float r = ((width-15) * (width-15) / (8f * topHeight)) +  (topHeight / 2f);
@@ -80,7 +80,8 @@ public class TestRadioButtonDraw extends RadioButton {
             Drawable wrappedDrawable = DrawableCompat.wrap(circleTitleBgDrawable);
             wrappedDrawable = wrappedDrawable.mutate();
             DrawableCompat.setTint(wrappedDrawable, Color.RED);
-            wrappedDrawable.setBounds(new Rect(0,0,width, (int) topHeight));
+            wrappedDrawable.setBounds(new Rect(0,50,width, (int) circleTitleBgDrawable.getIntrinsicHeight()+50));
+            canvas.drawLine(0,50,getWidth(),50,paint);
             circleTitleBgDrawable.setGravity(Gravity.CENTER_HORIZONTAL + Gravity.TOP);
             circleTitleBgDrawable.draw(canvas);
 //            canvas.drawBitmap(circleTitleBgDrawable.getBitmap(),new Matrix(),paint);
