@@ -4,16 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".custom.TestCustomRadioButtonDrawActivity">
+    tools:context=".custom.TestCustomRadioButtonDrawActivity"
+    android:paddingTop="@dimen/dime_50dp"
+    android:background="#f0f"
+    android:clipChildren="false"
+    android:clipToPadding="false">
     <com.example.txl.tool.custom.TestRadioButtonDraw
+        android:id="@+id/test"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="100dp"
-        android:layout_height="200dp"
-        android:button="@drawable/chat"
-        android:background="@color/cardview_dark_background"
-        android:text="我去saddada"
+        android:layout_width="200dp"
+        android:layout_height="@dimen/dime_50dp"
+        android:button="@null"
+        android:text="我去"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:gravity="center"/>
+        android:background="#000"/>
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="@dimen/dime_50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="改变颜色"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:background="#fff"
+        android:onClick="changeColor"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
