@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".custom.TestCustomRadioButtonDrawActivity"></activity>
+        <activity android:name=".gif.GifActivity"></activity>
+        <activity android:name=".custom.TestCustomRadioButtonDrawActivity" />
         <activity android:name=".activity.FlexboxLayoutActivity" />
         <activity android:name=".keyevent.KeyEventDemoActivity" />
         <activity android:name=".inter.process.communication.ComputeActivity" />
@@ -93,10 +94,10 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
 </manifest>
