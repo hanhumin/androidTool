@@ -1,5 +1,6 @@
 package com.example.txl.tool.recyclerView
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.txl.tool.R
@@ -23,25 +25,26 @@ class FlyActivity : AppCompatActivity() {
         recycler_view.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         val adapter = FlyAdapter()
         recycler_view.adapter = adapter
-        recycler_view.addItemDecoration(TestItemDecoration())
-        recycler_view.addItemDecoration(FlyItemDecoration())
+//        recycler_view.addItemDecoration(TestItemDecoration())
+        recycler_view.addItemDecoration(FlyItemDecoration(this))
     }
 }
 
-class FlyItemDecoration: RecyclerView.ItemDecoration() {
-    var allPath:Path = Path()
-    var itemPath:Path = Path()
-    val mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+class FlyItemDecoration(private val context: Context): RecyclerView.ItemDecoration() {
+    private var allPath:Path = Path()
+    private var itemPath:Path = Path()
+    private val mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val flyDrawable = ContextCompat.getDrawable(context,R.drawable.fly)
 
     /**
      * 将宽度拆分成多少分
      * */
-    val total = 5f
+    private val total = 5f
 
     init {
         mPaint.color = 0x77edcbaa
         mPaint.style = Paint.Style.STROKE
-        mPaint.strokeWidth = 50f
+        mPaint.strokeWidth = 80f
         mPaint.strokeJoin = Paint.Join.ROUND
     }
 
