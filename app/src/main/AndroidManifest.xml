@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".recyclerView.ItemDecorationDemoActivity"></activity>
+        <activity android:name=".recyclerView.FlyActivity"></activity>
+        <activity android:name=".recyclerView.ItemDecorationDemoActivity" />
         <activity android:name=".recyclerView.RecyclerViewDemoActivity" />
         <activity android:name=".gif.GifActivity" />
         <activity android:name=".custom.TestCustomRadioButtonDrawActivity" />

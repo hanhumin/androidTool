@@ -17,12 +17,17 @@ class RecyclerViewDemoActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         tv_jump_item_decoration_demo.setOnClickListener(this)
+        tv_jump_item_decoration_xiaofeiji_demo.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.tv_jump_item_decoration_demo->{
                 val intent = Intent(this,ItemDecorationDemoActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_item_decoration_xiaofeiji_demo->{
+                val intent = Intent(this,FlyActivity::class.java)
                 startActivity(intent)
             }
         }
