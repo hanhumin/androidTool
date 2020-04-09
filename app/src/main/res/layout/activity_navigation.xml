@@ -101,5 +101,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="测试gif图片变化 平移"/>
+        <TextView
+            android:id="@+id/tv_jump_recycler_view_demo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="RecyclerView Demo"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
