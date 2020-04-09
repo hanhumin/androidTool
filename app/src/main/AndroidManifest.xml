@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.txl.tool">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -12,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".recyclerView.FlyActivity"></activity>
+        <activity android:name=".recyclerView.ItemDecorationDemoActivity" />
+        <activity android:name=".recyclerView.RecyclerViewDemoActivity" />
+        <activity android:name=".gif.GifActivity" />
+        <activity android:name=".custom.TestCustomRadioButtonDrawActivity" />
+        <activity android:name=".activity.FlexboxLayoutActivity" />
         <activity android:name=".radiobuttonwithgif.RadioButtonGifActivity"></activity>
         <activity android:name=".activity.FlexboxLayoutActivity" />
         <activity android:name=".keyevent.KeyEventDemoActivity" />
