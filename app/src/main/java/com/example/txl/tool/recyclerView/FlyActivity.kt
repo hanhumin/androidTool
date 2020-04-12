@@ -129,11 +129,11 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
         val totalDistance = (total - 2) / total * attachView.width + attachView.height
         //计算当前小飞机相对当前VIew的滑动完成度,
         //滑动单位像素小飞机移动的距离应该是  ；； 当前View的高度 / 移动总距离
-        val unitPixelDistance = totalDistance / attachView.height
-        leftFirstPoint = attachView.height * (total - 1) / total / totalDistance
-        leftSecondPoint = leftFirstPoint + (attachView.width.toFloat() * (total - 2) / total / totalDistance)
+        unitPixelDistance = totalDistance / attachView.height
+        leftFirstPoint = attachView.height * (total - 1) / total
+        leftSecondPoint = leftFirstPoint + (attachView.width.toFloat() * (total - 2) / total)
         val dy = totalOffsetY - attachViewInfo.top.toFloat()
-        Log.e(TAG,"dy is $dy  top is : ${attachViewInfo.top}  offset = $totalOffsetY")
+        Log.e(TAG, "dy is $dy  top is : ${attachViewInfo.top}  offset = $totalOffsetY  move size ${totalOffsetY * unitPixelDistance}")
         val progress: Float = unitPixelDistance * dy / totalDistance
         if (progress > 1 || progress < 0) {//这个完成度最多是1，如果大于1说明代码 逻辑有问题
             throw RuntimeException("progress is $progress please think more time")
@@ -141,10 +141,10 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
         val pos = parent.getChildAdapterPosition(attachView)
         //这个是否是左侧管道
         val isLeft = pos % 2 == 0
-        val offsetX = getOffsetX(isLeft, progress, attachView)
+        val offsetX = 0
         val offsetY = 0
-        val left = (parent.width / total - strokeWidth / 2).toInt() + offsetX
-        val top = totalOffsetY + offsetY
+        val left = (getOffsetX(isLeft, dy, attachView) - strokeWidth / 2).toInt()
+        val top = getOffsetY(isLeft, dy, attachView) - strokeWidth.toInt()
         Log.e("FlyItemDecoration", "draw fly attachViewInfo.top ${attachViewInfo.top} unitPixelDistance  :: $unitPixelDistance left :: $left  top :: $top  leftFirstPoint :: $leftFirstPoint  leftSecondPoint :: $leftSecondPoint  progress :: $progress  totalDistance :: $totalDistance")
         val right = (left + strokeWidth).toInt()
         val bottom = top + strokeWidth.toInt()
@@ -161,15 +161,19 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
     /**
      * 左管道第一个拐点
      * */
-    private var leftFirstPoint = 0f;
-    private var leftSecondPoint = 0f;
+    private var leftFirstPoint = 0f
+    private var leftSecondPoint = 0f
+    //滑动单位像素小飞机移动的距离应该是  ；；  移动总距离 / 当前View的高度
+    private var unitPixelDistance = 0f
 
-    private fun getOffsetX(left: Boolean, progress: Float, attachView: View): Int {
+    private fun getOffsetX(left: Boolean, dy: Float, attachView: View): Int {
         if (left) {
-            if (progress < leftFirstPoint) {
-                return 0
-            } else if (progress > leftSecondPoint) {
+            if (dy * unitPixelDistance < leftFirstPoint) {
+                return (1 / total * attachView.width).toInt()
+            } else if (dy * unitPixelDistance > leftSecondPoint) {
                 return (attachView.width * (total - 2) / total).toInt()
+            } else {
+                return (unitPixelDistance * dy + attachView.width / total - attachView.height * (total - 1) / total).toInt()
             }
         } else {
             return 0
@@ -177,12 +181,15 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
         return 0
     }
 
-    private fun getOffsetY(left: Boolean,progress: Float,attachView: View):Int{
+    private fun getOffsetY(left: Boolean, dy: Float, attachView: View): Int {
         if (left) {
-            if (progress < leftFirstPoint) {
-                return 0
-            } else if (progress > leftSecondPoint) {
-                return (attachView.height * (total - 1) / total).toInt()
+            if (dy * unitPixelDistance < leftFirstPoint) {
+                return (unitPixelDistance * dy).toInt()
+            } else if (dy * unitPixelDistance > leftSecondPoint) {
+                return (unitPixelDistance * attachView.height / (total * unitPixelDistance * attachView.height - (total - 1) * attachView.height - (total - 2) * attachView.width) * dy
+                        + attachView.height - attachView.height * attachView.height * unitPixelDistance / (total * unitPixelDistance * attachView.height - (total - 1) * attachView.height - (total - 2) * attachView.width)).toInt()
+            } else {
+                return ((total - 1) / total * attachView.height).toInt()
             }
         } else {
             return 0
