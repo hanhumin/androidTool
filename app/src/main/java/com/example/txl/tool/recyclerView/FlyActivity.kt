@@ -146,7 +146,7 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
         val moveSize = dy * unitPixelDistance
         Log.e(TAG,"move size is $moveSize  leftFirstPoint::  $leftFirstPoint  leftSecondPoint :: $leftSecondPoint")
         val left = (getOffsetX(isLeft, dy, attachView) - strokeWidth / 2).toInt()
-        val top = (getOffsetY(isLeft, dy, attachView) - strokeWidth/2 - dy).toInt() + viewInfoSpareArray[2].top.toInt()
+        val top = (getOffsetY(isLeft, dy, attachView) - strokeWidth/2 - dy).toInt()
         Log.e("FlyItemDecoration", "draw fly position:: ${attachViewInfo.position} attachViewInfo.top ${attachViewInfo.top} unitPixelDistance  :: $unitPixelDistance left :: $left  top :: $top  leftFirstPoint :: $leftFirstPoint  leftSecondPoint :: $leftSecondPoint  progress :: $progress  totalDistance :: $totalDistance")
         val right = (left + strokeWidth).toInt()
         val bottom = top + strokeWidth.toInt()
@@ -285,7 +285,7 @@ class FlyAdapter : RecyclerView.Adapter<FlyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return Int.MAX_VALUE
+        return 200
     }
 
     override fun onBindViewHolder(holder: FlyViewHolder, position: Int) {
