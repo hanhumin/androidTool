@@ -143,9 +143,11 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
         val isLeft = pos % 2 == 0
         val offsetX = 0
         val offsetY = 0
+        val moveSize = dy * unitPixelDistance
+        Log.e(TAG,"move size is $moveSize  leftFirstPoint::  $leftFirstPoint  leftSecondPoint :: $leftSecondPoint")
         val left = (getOffsetX(isLeft, dy, attachView) - strokeWidth / 2).toInt()
-        val top = getOffsetY(isLeft, dy, attachView) - strokeWidth.toInt()
-        Log.e("FlyItemDecoration", "draw fly attachViewInfo.top ${attachViewInfo.top} unitPixelDistance  :: $unitPixelDistance left :: $left  top :: $top  leftFirstPoint :: $leftFirstPoint  leftSecondPoint :: $leftSecondPoint  progress :: $progress  totalDistance :: $totalDistance")
+        val top = getOffsetY(isLeft, dy, attachView) - (strokeWidth/2).toInt()
+        Log.e("FlyItemDecoration", "draw fly position:: ${attachViewInfo.position} attachViewInfo.top ${attachViewInfo.top} unitPixelDistance  :: $unitPixelDistance left :: $left  top :: $top  leftFirstPoint :: $leftFirstPoint  leftSecondPoint :: $leftSecondPoint  progress :: $progress  totalDistance :: $totalDistance")
         val right = (left + strokeWidth).toInt()
         val bottom = top + strokeWidth.toInt()
         val desRect = Rect(left, top, right, bottom)
@@ -167,11 +169,13 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
     private var unitPixelDistance = 0f
 
     private fun getOffsetX(left: Boolean, dy: Float, attachView: View): Int {
+        //前进距离
+        val moveSize = dy * unitPixelDistance
         if (left) {
-            if (dy * unitPixelDistance < leftFirstPoint) {
+            if (moveSize < leftFirstPoint) {
                 return (1 / total * attachView.width).toInt()
-            } else if (dy * unitPixelDistance > leftSecondPoint) {
-                return (attachView.width * (total - 2) / total).toInt()
+            } else if (moveSize > leftSecondPoint) {
+                return (attachView.width * (total - 1) / total).toInt()
             } else {
                 return (unitPixelDistance * dy + attachView.width / total - attachView.height * (total - 1) / total).toInt()
             }
@@ -182,12 +186,15 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
     }
 
     private fun getOffsetY(left: Boolean, dy: Float, attachView: View): Int {
+        //前进距离
+        val moveSize = dy * unitPixelDistance
         if (left) {
-            if (dy * unitPixelDistance < leftFirstPoint) {
+            if (moveSize < leftFirstPoint) {
                 return (unitPixelDistance * dy).toInt()
-            } else if (dy * unitPixelDistance > leftSecondPoint) {
-                return (unitPixelDistance * attachView.height / (total * unitPixelDistance * attachView.height - (total - 1) * attachView.height - (total - 2) * attachView.width) * dy
-                        + attachView.height - attachView.height * attachView.height * unitPixelDistance / (total * unitPixelDistance * attachView.height - (total - 1) * attachView.height - (total - 2) * attachView.width)).toInt()
+            } else if (moveSize > leftSecondPoint) {
+//                return (unitPixelDistance * attachView.height / (total * unitPixelDistance * attachView.height - (total - 1) * attachView.height - (total - 2) * attachView.width) * dy
+//                        + attachView.height - attachView.height * attachView.height * unitPixelDistance / (total * unitPixelDistance * attachView.height - (total - 1) * attachView.height - (total - 2) * attachView.width)).toInt()
+                return (unitPixelDistance * dy - (total -2)/total * attachView.width).toInt()
             } else {
                 return ((total - 1) / total * attachView.height).toInt()
             }
