@@ -39,7 +39,6 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
         const val TAG = "FlyItemDecoration"
     }
 
-    private var allPath: Path = Path()
     private var itemPath: Path = Path()
     private val mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val flyDrawable: BitmapDrawable = ContextCompat.getDrawable(context, R.drawable.fly) as BitmapDrawable
@@ -129,7 +128,7 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
         val totalDistance = (total - 2) / total * attachView.width + attachView.height
         //计算当前小飞机相对当前VIew的滑动完成度,
         //滑动单位像素小飞机移动的距离应该是  ；； 当前View的高度 / 移动总距离
-        unitPixelDistance = totalDistance / (attachView.height - strokeWidth)
+        unitPixelDistance = totalDistance / (attachView.height)
         leftFirstPoint = attachView.height * (total - 1) / total
         leftSecondPoint = leftFirstPoint + (attachView.width.toFloat() * (total - 2) / total)
         val dy = totalOffsetY - attachViewInfo.top.toFloat()
@@ -147,7 +146,7 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
         val moveSize = dy * unitPixelDistance
         Log.e(TAG,"move size is $moveSize  leftFirstPoint::  $leftFirstPoint  leftSecondPoint :: $leftSecondPoint")
         val left = (getOffsetX(isLeft, dy, attachView) - strokeWidth / 2).toInt()
-        val top = (getOffsetY(isLeft, dy, attachView) - strokeWidth/2 - dy).toInt()
+        val top = (getOffsetY(isLeft, dy, attachView) - strokeWidth/2 - dy).toInt() + viewInfoSpareArray[2].top.toInt()
         Log.e("FlyItemDecoration", "draw fly position:: ${attachViewInfo.position} attachViewInfo.top ${attachViewInfo.top} unitPixelDistance  :: $unitPixelDistance left :: $left  top :: $top  leftFirstPoint :: $leftFirstPoint  leftSecondPoint :: $leftSecondPoint  progress :: $progress  totalDistance :: $totalDistance")
         val right = (left + strokeWidth).toInt()
         val bottom = top + strokeWidth.toInt()
@@ -286,7 +285,7 @@ class FlyAdapter : RecyclerView.Adapter<FlyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 200
+        return Int.MAX_VALUE
     }
 
     override fun onBindViewHolder(holder: FlyViewHolder, position: Int) {
