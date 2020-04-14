@@ -17,6 +17,7 @@ import com.example.txl.tool.glide.GlideDemoActivity
 import com.example.txl.tool.handler.HandlerDemoActivity
 import com.example.txl.tool.inter.process.communication.AidlDemoActivity
 import com.example.txl.tool.keyevent.KeyEventDemoActivity
+import com.example.txl.tool.okhttp.OkHttpDemoActivity
 import com.example.txl.tool.recyclerView.RecyclerViewDemoActivity
 import com.example.txl.tool.rxjava.RxJavaDemoActivity
 import com.example.txl.tool.window.WindowAndWindowManagerActivity
@@ -44,6 +45,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_custom_radio_button_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_gif_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_recycler_view_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_okhttp_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -102,6 +104,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_recycler_view_demo->{
                 val intent = Intent(this, RecyclerViewDemoActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_okhttp_demo->{
+                val intent = Intent(this, OkHttpDemoActivity::class.java)
                 startActivity(intent)
             }
         }
