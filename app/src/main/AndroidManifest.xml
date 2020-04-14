@@ -18,7 +18,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name=".okhttp.OkHttpDemoActivity"></activity>
+        <activity android:name=".okhttp.OkHttpDemoActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".recyclerView.FlyActivity" />
         <activity android:name=".recyclerView.ItemDecorationDemoActivity" />
         <activity android:name=".recyclerView.RecyclerViewDemoActivity" />
@@ -42,11 +48,7 @@
         <activity
             android:name=".NavigationActivity"
             android:configChanges="orientation|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".coordinatorlayout.TianMaoBehaviorDemoActivity" />
         <activity android:name=".coordinatorlayout.LayoutDodgeInsetEdgesActivity" />

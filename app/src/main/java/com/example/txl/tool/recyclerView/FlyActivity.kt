@@ -64,6 +64,8 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
     private val strokeWidth = 80f
 
     private var maxPosition = 0
+    private val matrix = Matrix()
+    private val pathMeasure = PathMeasure()
 
     init {
         recyclerView.addOnScrollListener(scrollListener)
@@ -82,9 +84,8 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val pos = parent.getChildAdapterPosition(child)
-            saveViewInfo(pos, child)
             maxPosition = max(maxPosition, pos)
-            itemPath.reset()
+            itemPath = Path()
             if (pos % 2 == 0) {//左侧管
                 itemPath.moveTo(child.width / total, child.top.toFloat())
                 itemPath.lineTo(child.width / total, child.top.toFloat() + child.height * (total - 1) / total)
@@ -96,13 +97,30 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
                 itemPath.lineTo(child.width / total, child.top.toFloat() + child.height * (total - 1) / total)
                 itemPath.lineTo(child.width / total, child.top.toFloat() + child.height)
             }
+            saveViewInfo(pos, child,itemPath)
             canvas.drawPath(itemPath, mPaint)
         }
         canvas.restore()
-        drawFly(canvas, parent)
+//        drawFly(canvas, parent)
+        drawFlayV2(canvas, parent)
     }
 
-    private fun saveViewInfo(pos: Int, child: View) {
+    private fun drawFlayV2(canvas: Canvas,parent: RecyclerView){
+        val rdy = (parent.computeVerticalScrollRange() + parent.height) * 1f / parent.computeVerticalScrollRange() * totalOffsetY
+        //计算出小飞机应该移动到那个View上
+        val attachViewInfo =  getAttachViewInfo(parent,rdy.toInt())
+        val attachView = parent.findViewHolderForAdapterPosition(attachViewInfo.position)?.itemView ?: return
+        val progress = (rdy-attachViewInfo.top)/attachView.height
+        pathMeasure.setPath(attachViewInfo.path,false)
+        pathMeasure.getMatrix(progress*pathMeasure.length,matrix,PathMeasure.POSITION_MATRIX_FLAG or PathMeasure.TANGENT_MATRIX_FLAG)
+        matrix.preTranslate(-strokeWidth/2,-strokeWidth/2)
+        matrix.preScale(0.5f,0.5f)
+        canvas.save()
+        canvas.drawBitmap(flyDrawable.bitmap,matrix,mPaint)
+        canvas.restore()
+    }
+
+    private fun saveViewInfo(pos: Int, child: View,path:Path) {
         val viewInfo = ViewInfo()
         viewInfo.position = pos
 
@@ -112,6 +130,7 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
             viewInfo.top = viewInfoSpareArray[pos - 1].bottom
 
         }
+        viewInfo.path = path
         viewInfo.bottom = viewInfo.top + child.height.toLong()
 //        Log.e(TAG,"saveViewInfo  $viewInfo")
         viewInfoSpareArray.put(pos, viewInfo)
@@ -228,6 +247,10 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
     }
 
     private fun getAttachViewInfo(recyclerView: RecyclerView): ViewInfo {
+        return getAttachViewInfo(recyclerView,totalOffsetY)
+    }
+
+    private fun getAttachViewInfo(parent: RecyclerView,dy: Int):ViewInfo{
         if (recyclerView.adapter == null) {
             throw RuntimeException("adapter is null")
         }
@@ -245,7 +268,7 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
                 Log.e("FlyItemDecoration", "why half < 0  half is $half")
                 break
             }
-            if (attachViewInfo.top >= totalOffsetY) {//当前的View在滑动距离下面
+            if (attachViewInfo.top >= dy) {//当前的View在滑动距离下面
                 end = half
                 half = (end - start) / 2 + start
                 attachViewInfo = viewInfoSpareArray.get(half)
@@ -253,6 +276,9 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
                 start = half
                 half = (end - start) / 2 + start
                 attachViewInfo = viewInfoSpareArray.get(half)
+            }
+            if(end - start == 1){
+                break
             }
         }
         return attachViewInfo
@@ -272,9 +298,10 @@ class FlyItemDecoration(private val context: Context, private val recyclerView: 
          * */
         var top = 0L
         var bottom = 0L
+        var path:Path = Path()
 
         override fun toString(): String {
-            return "ViewInfo(position=$position, top=$top, bottom=$bottom)"
+            return "ViewInfo(position=$position, top=$top, bottom=$bottom, path=$path)"
         }
     }
 }
@@ -285,7 +312,7 @@ class FlyAdapter : RecyclerView.Adapter<FlyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 200
+        return 20
     }
 
     override fun onBindViewHolder(holder: FlyViewHolder, position: Int) {
