@@ -20,4 +20,11 @@
         android:gravity="center"
         android:background="@drawable/border"
         android:text="ItemDecoration鸿洋小飞机效果"/>
+    <TextView
+        android:id="@+id/tv_jump_item_custom_layout_manager"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="自定layoutManager画廊效果"/>
 </LinearLayout>
