@@ -48,7 +48,7 @@ class GlideDemoActivity : AppCompatActivity() {
         var options = RequestOptions().transform(CenterCrop(),roundedCorners)
 //        Glide.with(this).load("http://mserver.wjdev.chinamcloud.cn/cms/mrzd/upload/Image/mrtp/2019/12/08/1_25f95541a8a04f7eb549b6cf33de808e.jpg").apply(options).into(image_test_glide_circle_radius)
         Glide.with(this)
-                .load("http://mserver.wjdev.chinamcloud.cn/cms/mrzd/upload/Image/64522/2020/02/28/1_780793f0fb594ce5bf6a99eefd956d32.jpg")
+                .load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588009151719&di=839eb1f4efdcb634e9a349c1cf60a145&imgtype=0&src=http%3A%2F%2Fimg2.imgtn.bdimg.com%2Fit%2Fu%3D1120712552%2C1362700559%26fm%3D214%26gp%3D0.jpg")
                 .apply(options)
                 .into(image_test_glide_circle_radius)
 //        options = RequestOptions.bitmapTransform(roundedCorners)
