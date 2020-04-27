@@ -7,13 +7,16 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.example.txl.tool.R
-
+import com.example.txl.tool.utils.DisplayUtil
+import kotlinx.android.synthetic.main.activity_glide_demo.*
 
 
 class GlideDemoActivity : AppCompatActivity() {
@@ -40,6 +43,28 @@ class GlideDemoActivity : AppCompatActivity() {
                 }
             }).apply(requestOptions).into(image!!)
         },5)
+        val roundedCorners= RoundedCorners(30)
+//        val options = RequestOptions().transform(CenterCrop()).transform(roundedCorners)
+        var options = RequestOptions().transform(CenterCrop(),roundedCorners)
+//        Glide.with(this).load("http://mserver.wjdev.chinamcloud.cn/cms/mrzd/upload/Image/mrtp/2019/12/08/1_25f95541a8a04f7eb549b6cf33de808e.jpg").apply(options).into(image_test_glide_circle_radius)
+        Glide.with(this)
+                .load("http://mserver.wjdev.chinamcloud.cn/cms/mrzd/upload/Image/64522/2020/02/28/1_780793f0fb594ce5bf6a99eefd956d32.jpg")
+                .apply(options)
+                .into(image_test_glide_circle_radius)
+//        options = RequestOptions.bitmapTransform(roundedCorners)
+        Glide.with(this)
+                .load("http://mserver.wjdev.chinamcloud.cn/cms/mrzd/upload/Image/64522/2020/02/28/1_780793f0fb594ce5bf6a99eefd956d32.jpg")
+                .override(DisplayUtil.dip2px(this,60f),DisplayUtil.dip2px(this,60f))//
+                .apply(options)
+                .addListener(object:RequestListener<Drawable>{
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        return false
+                    }
 
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        image_test_glide_circle_radius2.setImageDrawable(resource)
+                        return true
+                    }
+                }).submit()
     }
 }

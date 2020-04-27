@@ -8,6 +8,20 @@
     <ImageView
         android:id="@+id/image_test_glide"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+    <!--圆角-->
+    <ImageView
+        android:id="@+id/image_test_glide_circle_radius"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+       />
+
+    <ImageView
+        android:id="@+id/image_test_glide_circle_radius2"
+        android:layout_marginStart="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"/>
 
 </FrameLayout>
