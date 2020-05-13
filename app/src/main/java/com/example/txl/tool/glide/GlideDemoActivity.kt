@@ -52,19 +52,19 @@ class GlideDemoActivity : AppCompatActivity() {
                 .apply(options)
                 .into(image_test_glide_circle_radius)
 //        options = RequestOptions.bitmapTransform(roundedCorners)
-        Glide.with(this)
-                .load("http://mserver.wjdev.chinamcloud.cn/cms/mrzd/upload/Image/64522/2020/02/28/1_780793f0fb594ce5bf6a99eefd956d32.jpg")
-                .override(DisplayUtil.dip2px(this,60f),DisplayUtil.dip2px(this,60f))//
-                .apply(options)
-                .addListener(object:RequestListener<Drawable>{
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        return false
-                    }
-
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        image_test_glide_circle_radius2.setImageDrawable(resource)
-                        return true
-                    }
-                }).submit()
+//        Glide.with(this)
+//                .load("http://mserver.wjdev.chinamcloud.cn/cms/mrzd/upload/Image/64522/2020/02/28/1_780793f0fb594ce5bf6a99eefd956d32.jpg")
+//                .override(DisplayUtil.dip2px(this,60f),DisplayUtil.dip2px(this,60f))//
+//                .apply(options)
+//                .addListener(object:RequestListener<Drawable>{
+//                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+//                        return false
+//                    }
+//
+//                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+//                        image_test_glide_circle_radius2.setImageDrawable(resource)
+//                        return true
+//                    }
+//                }).submit()
     }
 }

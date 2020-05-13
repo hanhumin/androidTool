@@ -10,6 +10,7 @@ import com.example.txl.tool.activity.FlexboxLayoutActivity
 import com.example.txl.tool.activity.http.HttpCookieDemoActivity
 import com.example.txl.tool.activity.point9.Point9Activity
 import com.example.txl.tool.activity.slider.SliderActivity
+import com.example.txl.tool.contentprovider.DemoContentProviderActivity
 import com.example.txl.tool.coordinatorlayout.CoordinatorLayoutNavigationActivity
 import com.example.txl.tool.custom.TestCustomRadioButtonDrawActivity
 import com.example.txl.tool.gif.GifActivity
@@ -48,6 +49,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_gif_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_recycler_view_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_okhttp_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_content_provider_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -114,6 +116,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_okhttp_demo->{
                 val intent = Intent(this, OkHttpDemoActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_content_provider_demo->{
+                val intent = Intent(this, DemoContentProviderActivity::class.java)
                 startActivity(intent)
             }
         }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".contentprovider.DemoContentProviderActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_same_process"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="同进程查询"/>
+    <TextView
+        android:id="@+id/tv_other_process"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="不同进程查询"/>
+</LinearLayout>
