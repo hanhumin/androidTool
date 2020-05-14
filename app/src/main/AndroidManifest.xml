@@ -22,8 +22,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".contentprovider.DemoContentProviderActivity" android:process=":remote.query" ></activity>
-        <activity android:name=".okhttp.OkHttpDemoActivity"></activity>
+        <activity android:name=".twmediaplayer.TwMediaPlayerTestActivity">
+
+        </activity>
+        <activity
+            android:name=".contentprovider.DemoContentProviderActivity"
+            android:process=":remote.query" />
+        <activity android:name=".okhttp.OkHttpDemoActivity" />
         <activity android:name=".recyclerView.FlyActivity" />
         <activity android:name=".recyclerView.ItemDecorationDemoActivity" />
         <activity android:name=".recyclerView.RecyclerViewDemoActivity" />

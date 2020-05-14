@@ -22,6 +22,7 @@ import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
 import com.example.txl.tool.okhttp.OkHttpDemoActivity
 import com.example.txl.tool.recyclerView.RecyclerViewDemoActivity
 import com.example.txl.tool.rxjava.RxJavaDemoActivity
+import com.example.txl.tool.twmediaplayer.TwMediaPlayerTestActivity
 import com.example.txl.tool.window.WindowAndWindowManagerActivity
 
 class NavigationActivity : AppCompatActivity(), View.OnClickListener {
@@ -50,6 +51,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_recycler_view_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_okhttp_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_content_provider_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_media_player_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -120,6 +122,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_content_provider_demo->{
                 val intent = Intent(this, DemoContentProviderActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_media_player_demo->{
+                val intent = Intent(this, TwMediaPlayerTestActivity::class.java)
                 startActivity(intent)
             }
         }
