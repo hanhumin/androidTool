@@ -37,7 +37,8 @@
             android:id="@+id/image1"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:background="@drawable/ott_place_holder" />
+            android:background="@drawable/ott_place_holder"
+            android:visibility="gone"/>
         <ImageView
             android:layout_marginTop="30dp"
             android:id="@+id/image2"
