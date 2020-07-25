@@ -143,5 +143,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="图片在不同资源路径下占用情况"/>
+        <TextView
+            android:id="@+id/tv_jump_jetpack_lifecycle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="Jetpack Lifecycle"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

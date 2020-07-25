@@ -29,7 +29,7 @@ class TestResImageActivity : AppCompatActivity() {
         loadResImage(image_res_test0_w,R.drawable.test_res_logo_m)
         loadResImage(image_res_test1_w,R.drawable.test_res_logo_xh)
         loadResImage(image_res_test2_w,R.drawable.test_res_logo_xxxh)
-        showW(false)
+        showW(true)
         Log.d("!!!!!!","density :: ${resources.displayMetrics.density}  dpi :: ${resources.displayMetrics.densityDpi}" +
                 "  width :: ${resources.displayMetrics.widthPixels}  height :: ${resources.displayMetrics.heightPixels}")
     }

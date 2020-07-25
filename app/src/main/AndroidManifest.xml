@@ -22,8 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".resimage.TestResImageActivity"></activity>
-        <activity android:name=".twmediaplayer.TwMediaPlayerTestActivity"></activity>
+        <activity android:name=".jetpack.lifecycle.LifecycleActivity"></activity>
+        <activity android:name=".resimage.TestResImageActivity" />
+        <activity android:name=".twmediaplayer.TwMediaPlayerTestActivity" />
         <activity
             android:name=".contentprovider.DemoContentProviderActivity"
             android:process=":remote.query" />
