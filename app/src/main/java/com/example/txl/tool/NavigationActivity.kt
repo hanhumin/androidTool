@@ -18,6 +18,7 @@ import com.example.txl.tool.glide.GlideDemoActivity
 import com.example.txl.tool.handler.HandlerDemoActivity
 import com.example.txl.tool.inter.process.communication.AidlDemoActivity
 import com.example.txl.tool.jetpack.lifecycle.LifecycleActivity
+import com.example.txl.tool.jetpack.livedata.LiveDataActivity
 import com.example.txl.tool.keyevent.KeyEventDemoActivity
 import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
 import com.example.txl.tool.okhttp.OkHttpDemoActivity
@@ -56,6 +57,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_media_player_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_image_in_other_res).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_jetpack_lifecycle).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_jetpack_livedata).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -138,6 +140,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_jetpack_lifecycle->{
                 val intent = Intent(this, LifecycleActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_jetpack_livedata->{
+                val intent = Intent(this, LiveDataActivity::class.java)
                 startActivity(intent)
             }
         }

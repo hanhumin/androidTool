@@ -69,4 +69,5 @@ dependencies {
     implementation 'com.google.android:flexbox:1.1.0'
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 }

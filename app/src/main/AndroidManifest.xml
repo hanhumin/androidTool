@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".jetpack.lifecycle.LifecycleActivity"></activity>
+        <activity android:name=".jetpack.livedata.LiveDataActivity"></activity>
+        <activity android:name=".jetpack.lifecycle.LifecycleActivity" />
         <activity android:name=".resimage.TestResImageActivity" />
         <activity android:name=".twmediaplayer.TwMediaPlayerTestActivity" />
         <activity
