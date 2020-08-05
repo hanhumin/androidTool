@@ -15,7 +15,11 @@ import kotlinx.android.synthetic.main.activity_test_res_image.*
  * 测试图片在不同的资源文件夹下的内存占用情况;将 test_res_logo_xxxh  分别放置在不同的res文件中查看情况
  *
  * 模拟器为  xhdpi  从高的dpi中加载，图片会被缩小，对应的内存占用也会减少图片会失真，变模糊
- *      从低 dpi 中加载，图片会被方法，内存占用会提高;
+ *      从低 dpi 中加载，图片会被放大，内存占用会提高;
+ *      res 下的图片内存计算规则是 ：
+ *      图片宽 X 图片高  X 每个像素点的大小;
+ *      图片的高 = 原图高 X (设备的 dpi / 目录对应的 dpi )
+ *      图片的宽 = 原图宽 X (设备的 dpi / 目录对应的 dpi )
  * */
 class TestResImageActivity : AppCompatActivity() {
 
