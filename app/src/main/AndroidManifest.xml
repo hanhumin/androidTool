@@ -52,15 +52,6 @@
         <activity android:name=".intent.Intent1Activity" />
         <activity android:name=".activity.point9.Point9Activity" />
         <activity android:name=".activity.http.HttpCookieDemoActivity" />
-        <activity
-            android:name=".NavigationActivity"
-            android:configChanges="orientation|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".coordinatorlayout.TianMaoBehaviorDemoActivity" />
         <activity android:name=".coordinatorlayout.LayoutDodgeInsetEdgesActivity" />
         <activity android:name=".coordinatorlayout.LayoutAnchorActivity" />
@@ -101,6 +92,15 @@
         <activity android:name=".activity.HecoderActivty" />
         <activity android:name=".activity.NestedScrollingDemoActivity" />
         <activity android:name=".activity.PopWindowAndMenuActivity" />
+        <activity android:name=".NavigationActivity"
+            android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".inter.process.communication.ComputeService"

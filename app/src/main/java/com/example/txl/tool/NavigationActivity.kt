@@ -13,6 +13,7 @@ import com.example.txl.tool.activity.slider.SliderActivity
 import com.example.txl.tool.contentprovider.DemoContentProviderActivity
 import com.example.txl.tool.coordinatorlayout.CoordinatorLayoutNavigationActivity
 import com.example.txl.tool.custom.TestCustomRadioButtonDrawActivity
+import com.example.txl.tool.draworder.DrawOrderActivity
 import com.example.txl.tool.gif.GifActivity
 import com.example.txl.tool.glide.GlideDemoActivity
 import com.example.txl.tool.handler.HandlerDemoActivity
@@ -144,6 +145,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_jetpack_livedata->{
                 val intent = Intent(this, LiveDataActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_draw_order->{
+                val intent = Intent(this, DrawOrderActivity::class.java)
                 startActivity(intent)
             }
         }

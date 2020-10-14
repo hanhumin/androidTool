@@ -157,5 +157,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="Jetpack LiveData"/>
+        <TextView
+            android:id="@+id/tv_jump_draw_order"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="绘制层级"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
