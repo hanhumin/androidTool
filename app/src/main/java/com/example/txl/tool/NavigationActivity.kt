@@ -59,6 +59,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_image_in_other_res).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_jetpack_lifecycle).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_jetpack_livedata).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_draw_order).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
