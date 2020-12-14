@@ -27,6 +27,15 @@ android {
                exclude 'META-INF/LICENSE.txt'
                exclude 'META-INF/NOTICE.txt'*/
     }
+//    repositories{
+//
+//        flatDir{
+//
+//            dirs 'libs'
+//
+//        }
+//
+//    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -70,4 +79,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation 'com.tencent.map:tencent-map-vector-sdk:4.2.7'
+    implementation 'com.android.support:multidex:1.0.3'
+//    implementation(name: 'app_location', ext: 'aar')
 }
