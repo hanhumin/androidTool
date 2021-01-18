@@ -2,10 +2,11 @@ package com.example.txl.tool
 
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.example.txl.tool.activity.FlexboxLayoutActivity
 import com.example.txl.tool.activity.http.HttpCookieDemoActivity
 import com.example.txl.tool.activity.point9.Point9Activity
@@ -21,8 +22,8 @@ import com.example.txl.tool.inter.process.communication.AidlDemoActivity
 import com.example.txl.tool.jetpack.lifecycle.LifecycleActivity
 import com.example.txl.tool.jetpack.livedata.LiveDataActivity
 import com.example.txl.tool.keyevent.KeyEventDemoActivity
-import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
 import com.example.txl.tool.okhttp.OkHttpDemoActivity
+import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
 import com.example.txl.tool.recyclerView.RecyclerViewDemoActivity
 import com.example.txl.tool.resimage.TestResImageActivity
 import com.example.txl.tool.rxjava.RxJavaDemoActivity
@@ -34,6 +35,9 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
+        var displayMetrics:DisplayMetrics=resources.displayMetrics
+        getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics)
+        Log.d("App", "sh: ${resources.configuration.screenHeightDp}   NavigationActivity density: " + displayMetrics.density + " densityDpi " + displayMetrics.densityDpi + " width " + displayMetrics.widthPixels + "  height " + displayMetrics.heightPixels)
         initView()
     }
 

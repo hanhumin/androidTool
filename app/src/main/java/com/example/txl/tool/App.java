@@ -1,13 +1,11 @@
 package com.example.txl.tool;
 
-import android.app.Application;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
-import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
-import com.tencent.lbssearch.object.param.SearchParam;
 import com.txl.lib.image_load.ImageLoader;
 
 /**
@@ -24,9 +22,8 @@ public class App extends MultiDexApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(this);
-        new SearchParam("北京", new SearchParam.Region("北京"));
-        Log.d("App","create 之地");
+//        MultiDex.install(this);
+//        Log.d("App","create 之地");
     }
 
     @Override
@@ -34,6 +31,8 @@ public class App extends MultiDexApplication {
         super.onCreate();
         mContext = getApplicationContext();
         mImageLoader = ImageLoader.build( this );
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        Log.d("App"," density: "+ displayMetrics.density+" densityDpi "+ displayMetrics.densityDpi+" width "+displayMetrics.widthPixels+"  height "+displayMetrics.heightPixels);
     }
 
     public static Context getContext() {
