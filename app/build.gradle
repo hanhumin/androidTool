@@ -82,6 +82,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 //    implementation(name: 'app_location', ext: 'aar')
 }
+
+adaptionExtension.resPath = "respath"
 println 'This is executed during the configuration phase.'
 
 task configured {

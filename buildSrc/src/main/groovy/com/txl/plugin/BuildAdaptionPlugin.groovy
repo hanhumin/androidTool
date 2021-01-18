@@ -5,10 +5,19 @@ import com.txl.plugin.xmlutils.FileUtil
 import com.txl.plugin.xmlutils.FileX
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import com.txl.plugin.task.ModuleAdaptionTask
 
 class BuildAdaptionPlugin implements Plugin<Project> {
     void apply(Project project) {
         def extension = project.extensions.create('adaptionExtension', BuildAdaptionPluginExtension)
+        def taskModuleAdaption = project.tasks.create("buildAdaptionDemoTask",ModuleAdaptionTask){
+            resPath = extension.resPath
+            println("我的respath::  $resPath   =====  ${extension.resPath}")
+            doFirst {
+                println("我的respath::  $resPath ====  ${extension.resPath}")
+            }
+            //适配task在哪一个阶段处理，配置？执行？  配置阶段如何获取定制属性？执行阶段如何在所有task开始之前执行？
+        }
         // 创建一个任务
         project.tasks.create("buildAdaption") {
             doLast {

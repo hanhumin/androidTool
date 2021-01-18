@@ -18,7 +18,7 @@ class BuildAdaptionPluginExtension {
     /**
      * 需要适配的最小宽度  比如 {400f,411f,480f}单位是dp，这个值不在每个模块单独设置，由总体配置来
      * */
-//    List<Float> needToAdapted = new ArrayList<Float>()
+    List<Float> needToAdapted = new ArrayList<Float>()
     /**
      * 转换因子,默认不进行设置
      * */
