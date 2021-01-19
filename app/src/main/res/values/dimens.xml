@@ -10,4 +10,5 @@
     <dimen name="dimen16">16dp</dimen>
     <dimen name="dimen24">24dp</dimen>
     <dimen name="sp18">18sp</dimen>
+    <dimen name="txlsp18">18sp</dimen>
 </resources>

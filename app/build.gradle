@@ -83,7 +83,9 @@ dependencies {
 //    implementation(name: 'app_location', ext: 'aar')
 }
 
-adaptionExtension.resPath = "respath"
+adaptionExtension{
+    resPath = "respath xxxx "
+}
 println 'This is executed during the configuration phase.'
 
 task configured {
