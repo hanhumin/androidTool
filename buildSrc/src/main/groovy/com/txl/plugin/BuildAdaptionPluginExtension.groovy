@@ -1,7 +1,7 @@
 package com.txl.plugin
 
+import groovy.transform.CompileStatic
 import org.gradle.api.Project
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.SetProperty
 
@@ -14,10 +14,11 @@ import org.gradle.api.provider.SetProperty
  * 4.每个模块可以自由开启或关闭适配，适配插件有总体开关
  * 5.设置res目录的路径
  * */
-class BuildAdaptionPluginExtension {
+@CompileStatic
+public class BuildAdaptionPluginExtension {
     BuildAdaptionPluginExtension(Project project){
         this.needToAdaptedWidth = project.objects.setProperty(Integer)
-        this.conversionMap = project.objects.mapProperty(String, Float)
+        this.conversionMap = project.objects.mapProperty(Integer, Float)
         this.subAdaptionPluginExtensionMapProperty = project.objects.mapProperty(String, BuildAdaptionPluginExtension)
     }
     /**
@@ -32,7 +33,7 @@ class BuildAdaptionPluginExtension {
      * 转换因子,默认不进行设置,针对每一个适配最小宽度进行独立设置，
      * 假设要适配的最小宽度是 400dp  转换因子是 1.5  那么就用400作为key，1.5作为value值
      * */
-    MapProperty<String, Float> conversionMap
+    MapProperty<Integer, Float> conversionMap
 
     /**
      * 是否开启适配
@@ -47,4 +48,11 @@ class BuildAdaptionPluginExtension {
      * 子模块适配配置
      * */
     MapProperty<String, BuildAdaptionPluginExtension> subAdaptionPluginExtensionMapProperty
+
+    @CompileStatic
+    public BuildAdaptionPluginExtension createBuildAdaptionPluginExtension(Project project,BuildAdaptionPluginExtension parent,String name){
+        def ex =  new BuildAdaptionPluginExtension(project)
+        parent.subAdaptionPluginExtensionMapProperty.put(name,ex)
+        return ex
+    }
 }

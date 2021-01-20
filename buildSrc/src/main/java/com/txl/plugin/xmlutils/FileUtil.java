@@ -1,6 +1,5 @@
 package com.txl.plugin.xmlutils;
 
-import org.gradle.internal.impldep.org.apache.http.util.TextUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -60,7 +59,7 @@ public class FileUtil {
 	public static String createFilePath(String dir, String filename, String suf) {
 		String filepath = null;
 		try {
-			if (!TextUtils.isEmpty( filename )) {
+			if (!StringUtils.isEmpty( filename )) {
 				File file = new FileX( dir + filename + suf );
 				File parent = file.getParentFile();
 				if (!parent.exists()) {
@@ -181,7 +180,7 @@ public class FileUtil {
 	 */
 	public static long lastModified(String path) {
 		try {
-			if (!TextUtils.isEmpty( path )) {
+			if (!StringUtils.isEmpty( path )) {
 				File file = new FileX( path );
 				if (file.exists()) {
 					return file.lastModified();
@@ -201,7 +200,7 @@ public class FileUtil {
 	public static boolean hasFile(String path) {
 		boolean value = false;
 		try {
-			if (!TextUtils.isEmpty( path )) {
+			if (!StringUtils.isEmpty( path )) {
 				File file = new FileX( path );
 				if (file.exists() && file.isFile()) {
 					value = true;
@@ -440,7 +439,7 @@ public class FileUtil {
 
 			while((strText = bufferedReader.readLine())!=null)
 			{
-				if(!TextUtils.isEmpty(strText))
+				if(!StringUtils.isEmpty(strText))
 					stringBuffer.append( strText+"\n" );
 			}
 			strText = stringBuffer.toString();
@@ -833,7 +832,7 @@ public class FileUtil {
 				bufferedReader = new BufferedReader( inputStreamReader );
 
 				while ( ( strText = bufferedReader.readLine() ) != null) {
-					if(!TextUtils.isEmpty(strText))
+					if(!StringUtils.isEmpty(strText))
 					{
 						arrayList.add(strText.trim());
 					}

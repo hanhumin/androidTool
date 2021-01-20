@@ -86,7 +86,7 @@ public class AndroidDimenXMLParser {
 				String value=entryA.getValue();
 				String end = value.substring(value.length()-2);
 				String start = value.substring(0,value.length()-2);
-				value = (Integer.parseInt(start) * scale)+end;
+				value = (Float.parseFloat(start) * scale)+end;
 				builder.append("		<dimen name=\""+key+"\">"+value+"</dimen>\r");
 			}
 		}catch (Exception e){

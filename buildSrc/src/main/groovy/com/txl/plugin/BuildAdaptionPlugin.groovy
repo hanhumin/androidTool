@@ -1,9 +1,9 @@
 package com.txl.plugin
 
+import com.txl.plugin.xmlutils.StringUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import com.txl.plugin.task.ModuleAdaptionTask
-import org.gradle.internal.impldep.org.apache.http.util.TextUtils
 
 
 /**
@@ -18,7 +18,7 @@ class BuildAdaptionPlugin implements Plugin<Project> {
         appExtension.needToAdaptedWidth.add(411)
         handleProject(project.rootProject)
 
-
+        appExtension.subAdaptionPluginExtensionMapProperty.put("sa",new BuildAdaptionPluginExtension(project))
     }
 
     private void handleProject(Project project){
@@ -61,9 +61,10 @@ class BuildAdaptionPlugin implements Plugin<Project> {
                 task.defaultDesignWidth = moduleExtension.defaultDesignWidth
             }
             task.enableAdapter = appExtension.enableAdapter && moduleExtension.enableAdapter
-            if(!TextUtils.isEmpty(moduleExtension.resPath)){
+            if(!StringUtils.isEmpty(moduleExtension.resPath)){
                 task.resPath = moduleExtension.resPath
             }
+            println("handleModuleAdaptionTaskProperty ${task.name} ${moduleExtension.conversionMap.orNull}")
             if(moduleExtension.conversionMap.orNull != null && !moduleExtension.conversionMap.orNull.isEmpty()){
                 task.conversionMap = moduleExtension.conversionMap.orNull
             }

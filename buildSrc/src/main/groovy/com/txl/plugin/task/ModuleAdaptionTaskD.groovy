@@ -16,7 +16,7 @@ import org.gradle.api.tasks.TaskAction
  * 4.每个模块可以自由开启或关闭适配，适配插件有总体开关
  * 5.设置res目录的路径
  * */
-public class ModuleAdaptionTask extends DefaultTask{
+public class ModuleAdaptionTaskD extends DefaultTask{
     /**
      * 默认设计及图宽度
      * */
@@ -31,7 +31,7 @@ public class ModuleAdaptionTask extends DefaultTask{
      * 转换因子,默认不进行设置
      * */
     @Input
-    Map<String,Float> conversionMap = new HashMap<>()
+    Map<Integer,Float> conversionMap = new HashMap<>()
 
     /**
      * 是否开启适配
@@ -52,7 +52,7 @@ public class ModuleAdaptionTask extends DefaultTask{
         }
         //强行指定路径来判断对应逻辑
         String originFilePath = project.getProjectDir().path+resPath+"values"+File.separator+"dimens.xml"
-        println("ModuleAdaptionTask name ${project.name}  origin path ${originFilePath}")
+        println("ModuleAdaptionTask name ${project.name}  origin path ${originFilePath}  has sacle ${conversionMap}")
         FileX filex = new FileX(originFilePath)
         if(!filex.exists()){
             return
@@ -68,11 +68,18 @@ public class ModuleAdaptionTask extends DefaultTask{
                     FileUtil.createFile(newFilePath)
                 }
                 float scale = item/defaultDesignWidth
-                if(conversionMap != null && conversionMap.containsKey("${item.toInteger()}")){
-                    scale = conversionMap.get("${item.toInteger()}")
+                if(conversionMap != null && conversionMap.containsKey(item)){
+                    scale = conversionMap.get(item)
+                    println("ModuleAdaptionTask module ${project.name} contain specail  ${item}  sacle ${scale}")
+                }
+                if(project.name == "testAutoBuildDimen"){
+                    for (key in conversionMap.keySet()){
+                        println("key is $key value $item  key  equals ${"$item".equals( key)}  == ${key == "$item"}")
+                    }
+                    println("ModuleAdaptionTask module ${project.name}  $conversionMap my specail ${item} value ${conversionMap.get("${item}")}")
                 }
                 AndroidDimenXMLParser.saveMap2XML(map,newFilePath,defaultDesignWidth,item,scale)
-                println("ModuleAdaptionTask module ${project.name}  adaption success width ${item} newpath  $newFilePath")
+                println("ModuleAdaptionTask module ${project.name}  adaption success width ${item} newpath sacle ${scale}")
             }catch(IOException e1) {
                 e1.printStackTrace()
             }

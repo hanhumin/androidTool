@@ -90,7 +90,16 @@ adaptionAppExtension{
     needToAdaptedWidth.add(400)
     needToAdaptedWidth.add(411)
     needToAdaptedWidth.add(441)
+    needToAdaptedWidth.add(441)
+
+    def ex = createBuildAdaptionPluginExtension(project,adaptionAppExtension,"testAutoBuildDimen")
+    ex.conversionMap.put(400,1.0f)
+    ex.conversionMap.put(411,2.0f)
+    ex.conversionMap.put(441,3.0f)
+//    def testExt = project.extensions.create('moudleExt', BuildAdaptionPluginExtension,project)
 }
+
+
 println 'This is executed during the configuration phase.'
 
 task configured {
