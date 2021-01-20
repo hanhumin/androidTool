@@ -1,5 +1,6 @@
 package com.txl.plugin
 
+import com.txl.plugin.task.ModuleDeleteAdaptionTask
 import com.txl.plugin.xmlutils.StringUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -46,9 +47,51 @@ class BuildAdaptionPlugin implements Plugin<Project> {
                 e.printStackTrace()
             }
         }
+        def taskDeleteModuleAdaption = project.tasks.register("${project.name}DeleteBuildAdaption",ModuleDeleteAdaptionTask)
+        taskDeleteModuleAdaption.configure{
+            doFirst {
+                def moduleExtensionProvider = appExtension.subAdaptionPluginExtensionMapProperty.getting(project.name)
+                BuildAdaptionPluginExtension me = moduleExtensionProvider.orNull
+                handleDeleteModuleAdaptionTaskProperty(taskDeleteModuleAdaption.get(),appExtension,me)
+            }
+        }
+        project.afterEvaluate{
+            try {
+                project.getTasks()
+                def preBuild = project.getTasks().getByName("clean")
+                preBuild.configure {
+                    dependsOn taskDeleteModuleAdaption
+                }
+            }catch(Exception e){
+                e.printStackTrace()
+            }
+        }
     }
 
     static void handleModuleAdaptionTaskProperty(ModuleAdaptionTask task,BuildAdaptionPluginExtension appExtension,BuildAdaptionPluginExtension moduleExtension){
+        task.needToAdaptedWidth.addAll(appExtension.needToAdaptedWidth.get())
+        task.defaultDesignWidth = appExtension.defaultDesignWidth
+        task.enableAdapter = appExtension.enableAdapter
+        task.resPath = appExtension.resPath
+        if(moduleExtension != null){
+            if(moduleExtension.needToAdaptedWidth.orNull != null && !moduleExtension.needToAdaptedWidth.orNull.isEmpty()){
+                task.needToAdaptedWidth = moduleExtension.needToAdaptedWidth.orNull
+            }
+            if(moduleExtension.defaultDesignWidth != 0){
+                task.defaultDesignWidth = moduleExtension.defaultDesignWidth
+            }
+            task.enableAdapter = appExtension.enableAdapter && moduleExtension.enableAdapter
+            if(!StringUtils.isEmpty(moduleExtension.resPath)){
+                task.resPath = moduleExtension.resPath
+            }
+            println("handleModuleAdaptionTaskProperty ${task.name} ${moduleExtension.conversionMap.orNull}")
+            if(moduleExtension.conversionMap.orNull != null && !moduleExtension.conversionMap.orNull.isEmpty()){
+                task.conversionMap = moduleExtension.conversionMap.orNull
+            }
+        }
+    }
+
+    static void handleDeleteModuleAdaptionTaskProperty(ModuleDeleteAdaptionTask task, BuildAdaptionPluginExtension appExtension, BuildAdaptionPluginExtension moduleExtension){
         task.needToAdaptedWidth.addAll(appExtension.needToAdaptedWidth.get())
         task.defaultDesignWidth = appExtension.defaultDesignWidth
         task.enableAdapter = appExtension.enableAdapter

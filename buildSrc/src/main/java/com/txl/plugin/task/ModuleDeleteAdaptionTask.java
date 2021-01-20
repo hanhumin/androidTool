@@ -1,11 +1,10 @@
 package com.txl.plugin.task;
 
-import com.txl.plugin.xmlutils.AndroidDimenXMLParser;
+
 import com.txl.plugin.xmlutils.FileUtil;
 import com.txl.plugin.xmlutils.FileX;
 
 import org.gradle.api.DefaultTask;
-import org.gradle.api.Project;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.TaskAction;
 
@@ -15,8 +14,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static org.codehaus.groovy.runtime.DefaultGroovyMethods.println;
-
 /**
  * 删除 {@link ModuleAdaptionTask} 创建的文件
  * */
@@ -25,60 +22,39 @@ public class ModuleDeleteAdaptionTask extends DefaultTask{
      * 默认设计及图宽度
      * */
     @Input
-    float defaultDesignWidth = 360f;
+    public float defaultDesignWidth = 360f;
     /**
      * 需要适配的最小宽度  比如 {400f,411f,480f}单位是dp，这个值不在每个模块单独设置，由总体配置来
      * */
     @Input
-    Set<Integer> needToAdaptedWidth = new HashSet<Integer>();
+    public Set<Integer> needToAdaptedWidth = new HashSet<Integer>();
     /**
      * 转换因子,默认不进行设置
      * */
     @Input
-    Map<Integer,Float> conversionMap = new HashMap<>();
+    public Map<Integer,Float> conversionMap = new HashMap<>();
 
     /**
      * 是否开启适配
      * */
     @Input
-    boolean enableAdapter = true;
+    public boolean enableAdapter = true;
     /**
      * 资源路径，默认src/main/res
      * */
     @Input
-    String resPath = "";
+    public String resPath = "";
 
     @TaskAction
     void adaption(){
-        Project project = getProject();
-        if(!enableAdapter){
-            println("ModuleAdaptionTask ${project.name}  cancel adaption");
-            return;
-        }
-        //强行指定路径来判断对应逻辑
-        String originFilePath = project.getProjectDir().getPath()+resPath+"values"+ File.separator+"dimens.xml";
-        println("ModuleAdaptionTask name "+project.getName()+"  origin path "+originFilePath+" has sacle "+conversionMap);
-        FileX filex = new FileX(originFilePath);
-        if(!filex.exists()){
-            return;
-        }
-        Map<String,String> map = AndroidDimenXMLParser.readDimensXML(originFilePath);
+        FileX filex = null;
         for (int item : needToAdaptedWidth){
             try{
-                println ("ModuleAdaptionTask "+project.getName()+" start adaption width "+item);
-
                 String newFilePath = getProject().getProjectDir().getPath()+resPath+"values-sw"+item+"dp"+File.separator+"dimens.xml";
                 filex = new FileX(newFilePath);
-                if(!filex.exists()){
-                    FileUtil.createFile(newFilePath);
+                if(filex.exists()){
+                    FileUtil.delFile(newFilePath);
                 }
-                float scale = item/defaultDesignWidth;
-                if(conversionMap != null && conversionMap.containsKey(item)){
-                    scale = conversionMap.get(item);
-                    println("ModuleAdaptionTask module "+project.getName()+" contain specail  "+item+"  sacle "+scale);
-                }
-                AndroidDimenXMLParser.saveMap2XML(map,newFilePath,defaultDesignWidth,item,scale);
-                println("ModuleAdaptionTask module "+getProject().getName()+"  adaption success width "+item+" newpath sacle "+scale);
             }catch(Exception e1) {
                 e1.printStackTrace();
             }
