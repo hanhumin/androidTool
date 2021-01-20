@@ -73,9 +73,8 @@ public class AndroidDimenXMLParser {
 	}
 
 
-	public static void saveMap2XML(Map<String,String> map,String path,float designWidth,float targetWidth)
-	{
-		float scale = targetWidth/designWidth;
+	public static void saveMap2XML(Map<String,String> map,String path,float designWidth,float targetWidth,float scale) {
+//		float scale = targetWidth/designWidth;
 		Iterator<Entry<String, String>> iterator=map.entrySet().iterator();
 		StringBuilder builder=new StringBuilder();
 		builder.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r<resources>\r");

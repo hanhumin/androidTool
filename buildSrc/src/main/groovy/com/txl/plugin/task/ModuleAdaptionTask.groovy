@@ -1,5 +1,8 @@
 package com.txl.plugin.task
 
+import com.txl.plugin.xmlutils.AndroidDimenXMLParser
+import com.txl.plugin.xmlutils.FileUtil
+import com.txl.plugin.xmlutils.FileX
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
@@ -14,7 +17,6 @@ import org.gradle.api.tasks.TaskAction
  * 5.设置res目录的路径
  * */
 public class ModuleAdaptionTask extends DefaultTask{
-    public static int CONVERSION_FACTOR_UN_SET = 0
     /**
      * 默认设计及图宽度
      * */
@@ -24,12 +26,12 @@ public class ModuleAdaptionTask extends DefaultTask{
      * 需要适配的最小宽度  比如 {400f,411f,480f}单位是dp，这个值不在每个模块单独设置，由总体配置来
      * */
     @Input
-    List<Float> needToAdapted = new ArrayList<Float>()
+    Set<Integer> needToAdaptedWidth = new HashSet<Integer>()
     /**
      * 转换因子,默认不进行设置
      * */
     @Input
-    Map<String,Integer> ConversionFactor
+    Map<String,Float> conversionMap = new HashMap<>()
 
     /**
      * 是否开启适配
@@ -44,7 +46,36 @@ public class ModuleAdaptionTask extends DefaultTask{
 
     @TaskAction
     def adaption(){
-        println "start adaption"
-        project
+        if(!enableAdapter){
+            println("ModuleAdaptionTask ${project.name}  cancel adaption")
+            return
+        }
+        //强行指定路径来判断对应逻辑
+        String originFilePath = project.getProjectDir().path+resPath+"values"+File.separator+"dimens.xml"
+        println("ModuleAdaptionTask name ${project.name}  origin path ${originFilePath}")
+        FileX filex = new FileX(originFilePath)
+        if(!filex.exists()){
+            return
+        }
+        Map<String,String> map = AndroidDimenXMLParser.readDimensXML(originFilePath)
+        for (item in needToAdaptedWidth){
+            try{
+                println "ModuleAdaptionTask ${project.name}  start adaption width $item"
+
+                String newFilePath = project.getProjectDir().path+resPath+"values-sw${item.toInteger()}dp"+File.separator+"dimens.xml"
+                filex = new FileX(newFilePath)
+                if(!filex.exists()){
+                    FileUtil.createFile(newFilePath)
+                }
+                float scale = item/defaultDesignWidth
+                if(conversionMap != null && conversionMap.containsKey("${item.toInteger()}")){
+                    scale = conversionMap.get("${item.toInteger()}")
+                }
+                AndroidDimenXMLParser.saveMap2XML(map,newFilePath,defaultDesignWidth,item,scale)
+                println("ModuleAdaptionTask module ${project.name}  adaption success width ${item} newpath  $newFilePath")
+            }catch(IOException e1) {
+                e1.printStackTrace()
+            }
+        }
     }
 }

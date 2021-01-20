@@ -80,11 +80,16 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 //    implementation 'com.tencent.map:tencent-map-vector-sdk:4.2.7'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation project(':testAutoBuildDimen')
 //    implementation(name: 'app_location', ext: 'aar')
 }
 
-adaptionExtension{
-    resPath = "respath xxxx "
+adaptionAppExtension{
+    defaultDesignWidth = 360f
+    enableAdapter = true
+    needToAdaptedWidth.add(400)
+    needToAdaptedWidth.add(411)
+    needToAdaptedWidth.add(441)
 }
 println 'This is executed during the configuration phase.'
 

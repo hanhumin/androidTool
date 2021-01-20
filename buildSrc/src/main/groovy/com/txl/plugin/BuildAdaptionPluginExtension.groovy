@@ -1,5 +1,10 @@
 package com.txl.plugin
 
+import org.gradle.api.Project
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.SetProperty
+
 /**
  * 扩展构建属性
  * 每一个模块应该有下面的属性可以配置
@@ -10,19 +15,24 @@ package com.txl.plugin
  * 5.设置res目录的路径
  * */
 class BuildAdaptionPluginExtension {
-    public static int CONVERSION_FACTOR_UN_SET = 0
+    BuildAdaptionPluginExtension(Project project){
+        this.needToAdaptedWidth = project.objects.setProperty(Integer)
+        this.conversionMap = project.objects.mapProperty(String, Float)
+        this.subAdaptionPluginExtensionMapProperty = project.objects.mapProperty(String, BuildAdaptionPluginExtension)
+    }
     /**
      * 默认设计及图宽度
      * */
-    float defaultDesignWidth = 360f
+    float defaultDesignWidth = 0
     /**
-     * 需要适配的最小宽度  比如 {400f,411f,480f}单位是dp，这个值不在每个模块单独设置，由总体配置来
+     * 需要适配的最小宽度  比如 {400,411,480}单位是dp，这个值不在每个模块单独设置，由总体配置来
      * */
-    List<Float> needToAdapted = new ArrayList<Float>()
+    SetProperty<Integer> needToAdaptedWidth
     /**
-     * 转换因子,默认不进行设置
+     * 转换因子,默认不进行设置,针对每一个适配最小宽度进行独立设置，
+     * 假设要适配的最小宽度是 400dp  转换因子是 1.5  那么就用400作为key，1.5作为value值
      * */
-    float ConversionFactor = CONVERSION_FACTOR_UN_SET
+    MapProperty<String, Float> conversionMap
 
     /**
      * 是否开启适配
@@ -32,4 +42,9 @@ class BuildAdaptionPluginExtension {
      * 资源路径，默认src/main/res
      * */
     String resPath = ""
+
+    /**
+     * 子模块适配配置
+     * */
+    MapProperty<String, BuildAdaptionPluginExtension> subAdaptionPluginExtensionMapProperty
 }
