@@ -1,6 +1,0 @@
-plugins {
-    id 'groovy'
-    id 'java-gradle-plugin'
-    id 'maven'
-//    id 'com.android.library'
-}

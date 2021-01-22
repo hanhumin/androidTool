@@ -1,4 +1,4 @@
 include ':testAutoBuildDimen'
 include ':app', ':exoplayer'
 include ':lib_AnnotationProcessor'
-include ':buildSrc'
+//include ':buildSrc'

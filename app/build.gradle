@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'com.txl.testplugin'
-apply plugin: com.txl.plugin.BuildAdaptionPlugin
+apply plugin: 'BuildAdaptionPlugin'
 android {
     compileSdkVersion 28
     defaultConfig {
