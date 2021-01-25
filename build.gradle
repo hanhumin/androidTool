@@ -5,7 +5,11 @@ buildscript {
 
     
     repositories {
-        maven {url file("D:\\AndroidStudioProjects\\easySmallWidth\\repo")}
+//        maven {url file("D:\\AndroidStudioProjects\\easySmallWidth\\repo")}
+        jcenter()
+//        maven {
+//            url uri('../repo')
+//        }
         mavenCentral()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         google()
@@ -13,7 +17,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
-        classpath 'com.txl.plugin:easySmallWidth:1.0.0'
+//        classpath 'com.txl.plugin:easySmallWidth:1.0.1'
+        classpath 'com.txl.EasySmallWidth:easySmallWidth:1.0.0'
 
 
         // NOTE: Do not place your application dependencies here; they belong

@@ -10,6 +10,5 @@
     <dimen name="dimen16">16dp</dimen>
     <dimen name="dimen24">24dp</dimen>
     <dimen name="sp18">18sp</dimen>
-    <dimen name="txlsp18">18sp</dimen>
-    <dimen name="app_dimens">18sp</dimen>
+    <dimen name="easy_build">36sp</dimen>
 </resources>

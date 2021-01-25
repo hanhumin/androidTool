@@ -10,6 +10,5 @@
     <dimen name="dimen16">16dp</dimen>
     <dimen name="dimen24">24dp</dimen>
     <dimen name="sp18">18sp</dimen>
-    <dimen name="exoplayer_sp18">18sp</dimen>
-    <dimen name="exoplayer_sp188">188sp</dimen>
+    <dimen name="test_auto_build_dimens">18sp</dimen>
 </resources>

@@ -80,6 +80,8 @@ dependencies {
 //    implementation 'com.tencent.map:tencent-map-vector-sdk:4.2.7'
     implementation 'com.android.support:multidex:1.0.3'
     implementation project(':testAutoBuildDimen')
+    implementation project(':aeasybuild')
+//    implementation 'com.txl.EasySmallWidth:easySmallWidth:1.0.0'
 //    implementation(name: 'app_location', ext: 'aar')
 }
 
@@ -90,10 +92,16 @@ adaptionAppExtension{
     needToAdaptedWidth.add(411)
     needToAdaptedWidth.add(441)
     needToAdaptedWidth.add(441)
+ //   res路径，默认不用配置
+//    resPath = "${File.separator}src${File.separator}main${File.separator}res${File.separator}"
 
+    //针对testAutoBuildDimen 模块创建独自的配置
     def ex = createBuildAdaptionPluginExtension(project,adaptionAppExtension,"testAutoBuildDimen")
+    //对模块testAutoBuildDimen sw400与默认值的转换关系为 实际值*1.0
     ex.conversionMap.put(400,1.0f)
+    //对模块testAutoBuildDimen sw400与默认值的转换关系为 实际值*2.0
     ex.conversionMap.put(411,2.0f)
+    //对模块testAutoBuildDimen sw400与默认值的转换关系为 实际值*3.0
     ex.conversionMap.put(441,3.0f)
 //    def testExt = project.extensions.create('moudleExt', BuildAdaptionPluginExtension,project)
 }

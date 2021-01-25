@@ -1,3 +1,4 @@
+include ':aeasybuild'
 include ':testAutoBuildDimen'
 include ':app', ':exoplayer'
 include ':lib_AnnotationProcessor'
