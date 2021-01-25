@@ -103,7 +103,9 @@ adaptionAppExtension{
     ex.conversionMap.put(411,2.0f)
     //对模块testAutoBuildDimen sw400与默认值的转换关系为 实际值*3.0
     ex.conversionMap.put(441,3.0f)
-//    def testExt = project.extensions.create('moudleExt', BuildAdaptionPluginExtension,project)
+    def aeasy = createBuildAdaptionPluginExtension(project,adaptionAppExtension,"aeasybuild")
+    //aeasy  模块的默认宽度是375dp
+    aeasy.defaultDesignWidth = 375f
 }
 
 
