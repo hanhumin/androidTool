@@ -1,5 +1,5 @@
 include ':aeasybuild'
 include ':testAutoBuildDimen'
+include ':leetcode'
 include ':app', ':exoplayer'
 include ':lib_AnnotationProcessor'
-//include ':buildSrc'

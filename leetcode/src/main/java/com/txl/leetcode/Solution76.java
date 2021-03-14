@@ -1,4 +1,4 @@
-package com.txl.aeasybuild;
+package com.txl.leetcode;
 
 /**
  * Copyright (c) 2021 唐小陆 All rights reserved.
@@ -38,7 +38,7 @@ package com.txl.aeasybuild;
 class Solution76 {
 
     public static void main(String[] argus){
-        new Solution76().minWindow("ADOBECODEBANC","ABC");
+        System.out.println( "result :: "+new Solution76().minWindow("ADOBECODEBANC","ABC") );
     }
 
     public String minWindow(String s, String t) {
@@ -78,6 +78,7 @@ class Solution76 {
                     }
                 }
             }
+            end++;
         }
         return "";
     }

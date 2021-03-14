@@ -1,4 +1,4 @@
-package com.txl.aeasybuild;
+package com.txl.leetcode;
 
 import java.util.HashSet;
 import java.util.Set;
