@@ -164,5 +164,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="绘制层级"/>
+        <TextView
+            android:id="@+id/tv_toast_notification"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="android 弹出通知"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

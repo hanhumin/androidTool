@@ -1,12 +1,19 @@
 package com.example.txl.tool
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import com.example.txl.tool.activity.FlexboxLayoutActivity
 import com.example.txl.tool.activity.http.HttpCookieDemoActivity
 import com.example.txl.tool.activity.point9.Point9Activity
@@ -64,6 +71,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_jetpack_lifecycle).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_jetpack_livedata).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_draw_order).setOnClickListener(this)
+        findViewById<View>(R.id.tv_toast_notification).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -155,6 +163,44 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             R.id.tv_jump_draw_order->{
                 val intent = Intent(this, DrawOrderActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.tv_toast_notification->{
+
+//                CrashReport.testJavaCrash();
+                val manager = this@NavigationActivity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                var notify: Notification? = null
+                val code = 5
+                val intent = Intent(this@NavigationActivity, DrawOrderActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                val pendingIntent3 = PendingIntent.getActivity(this@NavigationActivity.getApplicationContext(), code, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+                val builder = NotificationCompat.Builder(this@NavigationActivity.getApplicationContext())
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setContentTitle("tttt")
+                        .setContentText("ssssss")
+                        .setContentIntent(pendingIntent3)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val channel = NotificationChannel("to-do"
+                            , "待办消息",
+                            NotificationManager.IMPORTANCE_HIGH)
+                    channel.enableVibration(true)
+                    channel.vibrationPattern = longArrayOf(500)
+                    manager.createNotificationChannel(channel)
+                    builder.setChannelId("to-do")
+                    notify = builder.build()
+                } else {
+                    notify = builder.build()
+                }
+                //使用默认的声音
+                //使用默认的声音
+                notify.defaults = notify.defaults or Notification.DEFAULT_SOUND
+//                notify.sound = Uri.parse("android.resource://" + HomeActivityBase.this.getPackageName() + "/" + R.raw.doorbell);
+                //                notify.sound = Uri.parse("android.resource://" + HomeActivityBase.this.getPackageName() + "/" + R.raw.doorbell);
+                notify.defaults = notify.defaults or Notification.DEFAULT_VIBRATE
+                notify.flags = notify.flags or Notification.FLAG_AUTO_CANCEL // 但用户点击消息后，消息自动在通知栏自动消失
+
+
+                manager.notify(code, notify) // 步骤4：通过通知管理器来发起通知。如果id不同，则每click，在status哪里增加一个提示
+
             }
         }
     }

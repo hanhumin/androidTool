@@ -1,3 +1,5 @@
 <resources>
     <dimen name="easy_build_36dp">36dp</dimen>
+    <dimen name="easy_build_37dp">37dp</dimen>
+    <dimen name="easy_build_38dp">38dp</dimen>
 </resources>
