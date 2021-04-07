@@ -1,4 +1,4 @@
-package com.txl.leetcode;
+package com.txl.leetcode.linesweep;
 
 import java.util.HashSet;
 import java.util.Iterator;
