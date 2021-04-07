@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".jetpack.livedata.LiveDataActivity"></activity>
+        <activity android:name=".usb.UsbActivity"></activity>
+        <activity android:name=".jetpack.livedata.LiveDataActivity" />
         <activity android:name=".jetpack.lifecycle.LifecycleActivity" />
         <activity android:name=".resimage.TestResImageActivity" />
         <activity android:name=".twmediaplayer.TwMediaPlayerTestActivity" />
@@ -53,11 +54,12 @@
         <activity android:name=".activity.point9.Point9Activity" />
         <activity android:name=".activity.http.HttpCookieDemoActivity" />
         <activity
-            android:name="com.example.txl.tool.NavigationActivity"
+            android:name=".NavigationActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
