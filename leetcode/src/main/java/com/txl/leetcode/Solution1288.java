@@ -1,5 +1,7 @@
 package com.txl.leetcode;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -32,7 +34,7 @@ import java.util.Iterator;
 // 👍 40 👎 0
 public class Solution1288 {
     //自己处理的第一种解法，暴力求解
-    public int removeCoveredIntervals(int[][] intervals) {
+    public int removeCoveredIntervals1(int[][] intervals) {
         int length = intervals.length;
         HashSet<Node> items = new HashSet<>();
         //两种情况，当前数组中的元素大于插入的元素;插入的元素大于数组中的元素。
@@ -69,11 +71,31 @@ public class Solution1288 {
         @Override
         public boolean equals(Object o) {
             if(o instanceof Node){
-                if(this.start == ((Node) o).start && this.end == ((Node) o).end){
-                    return true;
-                }
+                return this.start == ((Node) o).start && this.end == ((Node) o).end;
             }
             return false;
         }
+    }
+
+    //来自官方的算法
+    public int removeCoveredIntervals(int[][] intervals){
+        Arrays.sort( intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] == o2[0] ? o2[1] - o1[1]: o1[0] - o2[0];
+            }
+        } );
+        int count = 0;
+        int end, prev_end = 0;
+        for (int[] curr : intervals) {
+            end = curr[1];
+            // if current interval is not covered
+            // by the previous one
+            if (prev_end < end) {
+                ++count;
+                prev_end = end;
+            }
+        }
+        return count;
     }
 }
