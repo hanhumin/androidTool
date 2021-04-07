@@ -35,6 +35,7 @@ import com.example.txl.tool.recyclerView.RecyclerViewDemoActivity
 import com.example.txl.tool.resimage.TestResImageActivity
 import com.example.txl.tool.rxjava.RxJavaDemoActivity
 import com.example.txl.tool.twmediaplayer.TwMediaPlayerTestActivity
+import com.example.txl.tool.usb.UsbActivity
 import com.example.txl.tool.window.WindowAndWindowManagerActivity
 
 class NavigationActivity : AppCompatActivity(), View.OnClickListener {
@@ -72,6 +73,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_jetpack_livedata).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_draw_order).setOnClickListener(this)
         findViewById<View>(R.id.tv_toast_notification).setOnClickListener(this)
+        findViewById<View>(R.id.tv_get_usb).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -201,6 +203,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
 
                 manager.notify(code, notify) // 步骤4：通过通知管理器来发起通知。如果id不同，则每click，在status哪里增加一个提示
 
+            }
+            R.id.tv_get_usb->{
+                val intent = Intent(this, UsbActivity::class.java)
+                startActivity(intent)
             }
         }
     }
