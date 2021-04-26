@@ -6,6 +6,9 @@ package com.txl.leetcode;
  * date：2021/3/14
  * description： 最小覆盖子串
  */
+
+import com.txl.leetcode.linesweep.Solution850;
+
 /**
  *
  * 给你一个字符串 s 、一个字符串 t 。返回 s 中涵盖 t 所有字符的最小子串。如果 s 中不存在涵盖 t 所有字符的子串，则返回空字符串 "" 。
@@ -39,6 +42,7 @@ class Solution76 {
 
     public static void main(String[] argus){
         System.out.println( "result :: "+new Solution76().minWindow("ADOBECODEBANC","ABC") );
+        new Solution850.Node();
     }
 
     public String minWindow(String s, String t) {

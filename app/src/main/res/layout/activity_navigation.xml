@@ -178,5 +178,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="android 获取usb"/>
+        <TextView
+            android:id="@+id/tv_get_bt"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="android 蓝牙demo"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
