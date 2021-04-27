@@ -53,18 +53,20 @@ class Solution938 {
         if(root == null){
             return 0;
         }
-        TreeNode node = root;
-        int value = 0;
-        while (node != null){//那前序遍历  根左右
-            if(node.val < low){
-                node = node.right;
-            }else if(node.val > high) {
-                node = node.left;
-            }else {
-                value += node.val;
-            }
+       return getValue(root,low,high);
+    }
+
+    private int getValue(TreeNode node,int low, int high){
+        if(node == null){
+            return 0;
         }
-       return value;
+        if(node.val < low){
+            return getValue(node.right,low,high);
+        }else if(node.val > high) {
+            return getValue(node.left,low,high);
+        }else {
+           return node.val+getValue(node.right,low,high)+getValue(node.left,low,high);
+        }
     }
 
 
