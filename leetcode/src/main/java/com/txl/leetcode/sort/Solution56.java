@@ -36,6 +36,11 @@ import java.util.Comparator;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution56 {
+
+    public static void main(String[] args){
+        new Solution56().merge(new int[][]{{1,3},{2,6},{8,10},{15,18}});
+    }
+
     public int[][] merge(int[][] intervals) {
         Arrays.sort(intervals, new Comparator<int[]>() {
             @Override
@@ -45,16 +50,18 @@ class Solution56 {
         });
         int length = intervals.length;
         int size = 0;
-        int lastEnd = intervals[0][1];
         for (int i=1;i<length;i++){
-            if(intervals[i][0]>lastEnd){
-                lastEnd = intervals[i][1];
+            if(intervals[i][0]>intervals[i-1][1]){
                 size++;
                 intervals[size][0] = intervals[i][0];
                 intervals[size][1] = intervals[i][1];
             }else {
-                intervals[size][1] = lastEnd = Math.max(intervals[i][1],lastEnd);
+                intervals[size][1]  = Math.max(intervals[i][1],intervals[size][1]);
+                intervals[i][1] = intervals[size][1];//这个是为了方便后续比较
             }
+        }
+        for (int i=0;i<length;i++){
+            System.out.println("size is "+size+"i = "+i+"  "+intervals[i][0]+"   "+intervals[i][1]);
         }
         int[][] result = new int[size+1][2];
         for (int i=0;i<size;i++){
