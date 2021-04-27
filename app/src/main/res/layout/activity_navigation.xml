@@ -179,7 +179,7 @@
             android:background="@drawable/border"
             android:text="android 获取usb"/>
         <TextView
-            android:id="@+id/tv_get_bt"
+            android:id="@+id/tv_bluetooth_demo"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center"

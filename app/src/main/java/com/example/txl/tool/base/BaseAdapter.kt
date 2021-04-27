@@ -36,6 +36,14 @@ abstract class BaseAdapter<T>(context: Context, list: ArrayList<T>?) : androidx.
         notifyDataSetChanged()
     }
 
+    fun addData(data:T){
+        if(this.listData == null){
+            this.listData = ArrayList()
+        }
+        listData?.add(data)
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         return if (listData != null) {
             listData?.size!!
