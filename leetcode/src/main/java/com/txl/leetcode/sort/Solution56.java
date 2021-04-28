@@ -64,9 +64,12 @@ class Solution56 {
             System.out.println("size is "+size+"i = "+i+"  "+intervals[i][0]+"   "+intervals[i][1]);
         }
         int[][] result = new int[size+1][2];
-        for (int i=0;i<size;i++){
+        for (int i=0;i<result.length;i++){
             result[i][0] = intervals[i][0];
             result[i][1] = intervals[i][1];
+        }
+        for (int i=0;i<size+1;i++){
+            System.out.println("result is "+size+"i = "+i+"  "+result[i][0]+"   "+result[i][1]);
         }
         return result;
     }
