@@ -65,7 +65,10 @@ class Solution57 {
 
 
     public static void main(String[] args){
-        int[][] re = new Solution57().insert(new int[][]{{1,3},{6,9}},new int[]{2,5});
+//        int[][] re = new Solution57().insert(new int[][]{{1,3},{6,9}},new int[]{2,5});
+//        int[][] re = new Solution57().insert(new int[][]{{1,5}},new int[]{2,7});
+//        int[][] re = new Solution57().insert(new int[][]{{1,5}},new int[]{6,8});
+        int[][] re = new Solution57().insert(new int[][]{{0,5},{9,12}},new int[]{7,16});
         for (int i=0;i<re.length;i++){
             System.out.println("item is "+re[i][0]+"  "+re[i][1]);
         }
@@ -78,8 +81,8 @@ class Solution57 {
 
     //思路1  暴力求解
     public int[][] insert(int[][] intervals, int[] newInterval) {
-        if(intervals == null || intervals.length == 0){
-            throw new IllegalArgumentException("intervals is empty or null");
+        if(intervals == null){
+            throw new IllegalArgumentException("intervals null");
         }
         if(newInterval == null){
             throw new IllegalArgumentException("newInterval is null");
@@ -87,27 +90,68 @@ class Solution57 {
         if(newInterval.length == 0){
             return intervals;
         }
+        if(intervals.length == 0){
+            return new  int[][]{{newInterval[0],newInterval[1]}};
+        }
         int length = intervals.length;
-        int resultLength = 0;
+        int [][] temp = new int[length+1][2];
+        boolean isInsert = false;
+        if(intervals[0][0] >= newInterval[0]){
+            temp[0][0] = newInterval[0];
+            temp[0][1] = newInterval[1];
+            isInsert = true;
+        }else {
+            temp[0][0] =  intervals[0][0];
+            temp[0][1] =  intervals[0][1];
+        }
+        int resultLength = 1;
+        int[] merge = null;
         for (int i=0;i<length;i++){
-            if(intervals[i][1]<newInterval[0] || newInterval[1]<intervals[i][0]){//区间外
-                resultLength++;
-            }else if(intervals[i][1]>=newInterval[0] && newInterval[0]>=intervals[i][0]){//区间向后
-                intervals[i][1] = Math.max( intervals[i][1],newInterval[1]);
-                resultLength++;
-            }else {//区间向前,需要考虑区间合并的事情
-                intervals[i][0] = Math.min( intervals[i][0],newInterval[0]);
-                if(intervals[resultLength][1]<=intervals[i][0]){//区间能够合并,考虑一次需要合并多少区间？是否存在向前推导呢？
-                    intervals[resultLength][1] = Math.max( intervals[resultLength][1],intervals[i][1]);
-                }else {
-                    resultLength++;
-                }
+            //1.插入区间
+            //2.合并区间
+
+            //step 1 插入区间
+            if(!isInsert && intervals[i][0]>newInterval[0]){//在这个位置之前插入,说明i-1位置 intervals[i-1][0]<newInterval[0]
+                //插入分情况  与当前位置的关系
+                // 1.与当前位置相交；
+                // 2.与当前位置相离：
+                //与上一个位置元素的关系
+                // 1.相交
+                // 2.相离
+//                intervals[i][0] = Math.min(intervals[i][0],newInterval[0]);
+//                intervals[i][1] = Math.max(intervals[i][1],newInterval[1]);
+                merge = newInterval;
+                i--;//这一次合并的是newInterval  二没有处理 intervals[i] 执行--下一次处理
+                isInsert = true;
+            }else {
+                merge = intervals[i];
             }
+
+            //step2 区间合并
+            if(merge[0]<=temp[resultLength-1][1]){//当前数与前一个有交集
+                temp[resultLength-1][1] =  Math.max(merge[1],temp[resultLength-1][1]);
+            }else {
+                temp[resultLength][0] =  merge[0];
+                temp[resultLength][1] =  merge[1];
+                resultLength++;
+            }
+        }
+        //执行完区间合并后再次排查是不是需要将数据插入到最后一个
+        if(!isInsert && temp[resultLength-1][0] <= newInterval[0]){
+            if(newInterval[0] > temp[resultLength-1][1]){
+                temp[resultLength][0] = newInterval[0];
+                temp[resultLength][1] = newInterval[1];
+                resultLength++;
+            }else {
+                temp[resultLength-1][1] = Math.max(temp[resultLength-1][1],newInterval[1]);
+            }
+
+            isInsert = true;
         }
         int[][] result = new int[resultLength][2];
         for (int i=0;i<resultLength;i++){
-            result[i][0] = intervals[i][0];
-            result[i][1] = intervals[i][1];
+            result[i][0] = temp[i][0];
+            result[i][1] = temp[i][1];
         }
         return result;
     }
