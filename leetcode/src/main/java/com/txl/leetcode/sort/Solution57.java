@@ -131,6 +131,9 @@ class Solution57 {
             if(merge[0]<=temp[resultLength-1][1]){//当前数与前一个有交集
                 temp[resultLength-1][1] =  Math.max(merge[1],temp[resultLength-1][1]);
             }else {
+                if(isInsert){//如果在已经插入数据的情况下，逻辑到这里 说明后面的数据只需要按序摆放到temp数据里面
+
+                }
                 temp[resultLength][0] =  merge[0];
                 temp[resultLength][1] =  merge[1];
                 resultLength++;
@@ -157,5 +160,16 @@ class Solution57 {
     }
 
     //思路2 归并 合成区间返回新生成的数组  分为两种情况，使用递归和不使用递归
+    public int[][] mSort(){
+        return new int[][]{};
+    }
+
+    /**
+     * 合并数组并插入
+     * */
+    public int[][] mergeAndInsert(int[][] left, int[][] right){
+        return new int[][]{};
+    }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
