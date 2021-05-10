@@ -56,6 +56,8 @@ package com.txl.leetcode.sort;
 // 👍 413 👎 0
 
 
+import com.txl.leetcode.Logarithm;
+
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -65,19 +67,64 @@ class Solution57 {
 
 
     public static void main(String[] args){
-//        int[][] re = new Solution57().insert(new int[][]{{1,3},{6,9}},new int[]{2,5});
+        int[][] re = new Solution57().insert(new int[][]{{1,3},{6,9}},new int[]{2,5});
 //        int[][] re = new Solution57().insert(new int[][]{{1,5}},new int[]{2,7});
 //        int[][] re = new Solution57().insert(new int[][]{{1,5}},new int[]{6,8});
-        int[][] re = new Solution57().insert(new int[][]{{0,5},{9,12}},new int[]{7,16});
+//        int[][] re = new Solution57().insert(new int[][]{{0,5},{9,12}},new int[]{7,16});
         for (int i=0;i<re.length;i++){
             System.out.println("item is "+re[i][0]+"  "+re[i][1]);
         }
-        re = new Solution57().insert(new int[][]{{1,2},{3,5},{6,7},{8,10},{12,16}},new int[]{4,8});
-        System.out.println("========================================");
-        for (int i=0;i<re.length;i++){
-            System.out.println("item is "+re[i][0]+"  "+re[i][1]);
+//        re = new Solution57().insert(new int[][]{{1,2},{3,5},{6,7},{8,10},{12,16}},new int[]{4,8});
+//        System.out.println("========================================");
+//        for (int i=0;i<re.length;i++){
+//            System.out.println("item is "+re[i][0]+"  "+re[i][1]);
+//        }
+
+        for (int i=0;i<5000;i++){//使用对数器测试5000次
+            int[][] intervals = Logarithm.generateStartSortArray(10,100);
+            int[] newInterval = Logarithm.generateInterval(100);
+            Solution57 solution57 = new Solution57();
+            int[][] v1 = solution57.insert(intervals,newInterval);
+            int[][] v2 = solution57.insert2(intervals,newInterval);
+            if(v1.length != v2.length){
+                printInfo(intervals,newInterval,v1,v2);
+                throw new RuntimeException("v1 length != v2 length");
+            }
+            for (int j=0;j<v1.length;j++){
+                if(v1[j][0] != v2[j][0] || v1[j][1] != v2[j][1]){
+                    printInfo(intervals,newInterval,v1,v2);
+                    throw new RuntimeException("v1 length != v2 length");
+                }
+            }
         }
     }
+
+
+    private static void printInfo(int[][] origin,int[] insert,int[][] v1, int[][]v2){
+        System.out.println("======================origin============================");
+        for (int[] ints : origin) {
+            System.out.print("{" + ints[0] + "," + ints[1] + "}, ");
+        }
+        System.out.println("");
+        System.out.println("======================insert============================");
+        System.out.print("{" + insert[0] + "," + insert[1] + "}, ");
+        System.out.println("");
+
+        System.out.println("======================v1============================");
+        for (int[] ints : v1) {
+            System.out.print("{" + ints[0] + "," + ints[1] + "}, ");
+        }
+        System.out.println("");
+
+
+        System.out.println("======================v2============================");
+        for (int[] ints : v2) {
+            System.out.print("{" + ints[0] + "," + ints[1] + "}, ");
+        }
+        System.out.println("");
+    }
+
+
 
     //思路1  暴力求解
     public int[][] insert(int[][] intervals, int[] newInterval) {
@@ -159,16 +206,79 @@ class Solution57 {
         return result;
     }
 
+    boolean mSortInsert = false;
     //思路2 归并 合成区间返回新生成的数组  分为两种情况，使用递归和不使用递归
-    public int[][] mSort(){
-        return new int[][]{};
+    public int[][] insert2(int[][] intervals, int[] newInterval){
+        if(intervals == null){
+            throw new IllegalArgumentException("intervals null");
+        }
+        if(newInterval == null){
+            throw new IllegalArgumentException("newInterval is null");
+        }
+        if(newInterval.length == 0){
+            return intervals;
+        }
+        if(intervals.length == 0){
+            return new  int[][]{{newInterval[0],newInterval[1]}};
+        }
+        return mSort(intervals,newInterval,0,intervals.length-1);
+    }
+
+
+    public int[][] mSort(int[][] intervals, int[] newInterval, int left, int right){
+        if(mSortInsert){//插入过后就不需要在进行判别了
+
+        }
+        if(left == right){//相等
+            if(!mSortInsert && intervals[left][0] > newInterval[0]){
+                mSortInsert = true;
+                if(newInterval[1] < intervals[left][0]){//区域不相交
+                    return new int[][]{{newInterval[0],newInterval[1]},{intervals[left][0],intervals[left][1]}};
+                }else {
+                    return new int[][]{{newInterval[0],Math.max(intervals[left][1],newInterval[1])}};
+                }
+            }
+            if(!mSortInsert && intervals.length-1 == right){//如果在最后都没有执行插入，说明新插入的区间在最右侧
+                if(newInterval[0]<=intervals[left][1]){//右侧区域插入后又相交的位置
+                    return new int[][]{{intervals[left][0],Math.max(intervals[left][1],newInterval[1])}};
+                }
+                return new int[][]{{intervals[left][0],intervals[left][1]},{newInterval[0],newInterval[1]}};
+            }
+            return new int[][]{{intervals[left][0],intervals[left][1]}};
+        }
+        int middle = (left+right)/2;
+        int[][] l = mSort(intervals,newInterval,left,middle);
+        int[][] r = mSort(intervals,newInterval,middle+1,right);
+        return merge(l,r);
     }
 
     /**
-     * 合并数组并插入
+     * 合并数组
      * */
-    public int[][] mergeAndInsert(int[][] left, int[][] right){
-        return new int[][]{};
+    public int[][] merge(int[][] left, int[][] right){
+        //传入到这个位置的所有数组都是有序且不重叠
+        //忽略右侧数据的个数
+        int jumpPosition = 0;
+        int rightL = right.length;
+        int leftL = left.length;
+        while (jumpPosition<rightL && left[leftL-1][1]>=right[jumpPosition][0]){
+            jumpPosition++;//有相交区域
+        }
+        int[][] res = new int[leftL+rightL-jumpPosition][2];
+        int i=0;
+        for (;i<leftL;i++){
+            res[i][0] = left[i][0];
+            res[i][1] = left[i][1];
+        }
+        if(jumpPosition!=0){//有合并的话将最后一个区间更改
+            res[i-1][1] = Math.max(res[i-1][1],right[jumpPosition-1][1]);
+        }
+        int rightOffset = leftL-jumpPosition;
+        for (;i<res.length;i++){
+            res[i][0] = right[i-rightOffset][0];
+            res[i][1] = right[i-rightOffset][1];
+        }
+        return res;
     }
 
 }
