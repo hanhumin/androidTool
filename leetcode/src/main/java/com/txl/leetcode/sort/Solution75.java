@@ -72,41 +72,54 @@ class Solution75 {
     }
 
     public static void main(String[] args) {
-        for (int i = 5000; i > 0; i--) {
-            int[] nums = valueGenerate(10);
+//        new Solution75().quickSort(new int[]{0,2,2,2,1});
+//        if(true){
+//            return;
+//        }
+
+        for (int i = 50000; i > 0; i--) {
+            int[] nums = valueGenerate( 10 );
             int[] num2 = nums.clone();
-            new Solution75().solution1(nums);
-            new Solution75().quickSort(nums);
-            if (nums.length != num2.length) {
-                throw new RuntimeException("result length not equals");
+            System.out.println( "======================origin============================" );
+            System.out.print( "{" );
+            for (int n : nums) {
+                System.out.print( n + "," );
             }
+            System.out.print( "}" );
+            System.out.println( "" );
+            if (nums.length != num2.length) {
+                throw new RuntimeException( "result length not equals" );
+            }
+            new Solution75().solution1( nums );
+            new Solution75().quickSort( num2 );
             for (int j = 0; j < nums.length; j++) {
                 if (num2[j] != nums[j]) {
-                    System.out.println("======================nums============================");
-                    for (int n : nums){
-                        System.out.print(" { "+n+",");
+                    System.out.println( "======================nums============================" );
+                    System.out.print( "{" );
+                    for (int n : nums) {
+                        System.out.print( n + "," );
                     }
-                    System.out.print("}");
-                    System.out.println("");
-                    System.out.println("======================num2============================");
-                    for (int n : num2){
-                        System.out.print(" { "+n+",");
+                    System.out.print( "}" );
+                    System.out.println( "" );
+                    System.out.println( "======================num2============================" );
+                    System.out.print( "{" );
+                    for (int n : num2) {
+                        System.out.print( n + "," );
                     }
-                    System.out.print("}");
-                    System.out.println("");
-                    throw new RuntimeException("result not equals");
+                    System.out.print( "}" );
+                    System.out.println( "" );
+                    throw new RuntimeException( "result not equals" );
                 }
             }
         }
     }
 
 
-
     public void sortColors(int[] nums) {
         if (nums == null) {
-            throw new RuntimeException("nums is null");
+            throw new RuntimeException( "nums is null" );
         }
-        solution1(nums);
+        solution1( nums );
     }
 
     //思路一：使用桶排序
@@ -147,26 +160,39 @@ class Solution75 {
     private void quickSort(int[] nums) {
         int start = -1;
         int more = nums.length;
-        for (int i = 0; i < nums.length; i++) {
-            if(start == more){
+        int compare = 1;
+        for (int i = 0; i < more; i++) {
+            if (start == more) {
                 break;
             }
-            if (nums[i] < 1) {
+            if (nums[i] < compare) {
                 start++;
-                swap(nums,start,i);
-                i--;//切换过来的数还没有比较过
-            } else if (nums[i] > 1) {
+                if (i != start) {
+                    swap( nums, start, i );
+                }
+
+            } else if (nums[i] > compare) {
                 more--;
-                swap(nums,start,i);
-                i--;
+                if (i != more) {
+                    swap( nums, more, i );
+                    i--;
+                }
             }
         }
     }
 
-    private void swap(int[] nums,int position1, int position2){
+    private void swap(int[] nums, int position1, int position2) {
         nums[position1] = nums[position1] ^ nums[position2];
         nums[position2] = nums[position1] ^ nums[position2];
         nums[position1] = nums[position1] ^ nums[position2];
+//        try {
+//            int temp = nums[position1];
+//            nums[position1] = nums[position2];
+//            nums[position2] = temp;
+//        } catch (Exception e) {
+//            System.out.println( "position1 = " + position1 + "  position2 = " + position2 );
+//            throw e;
+//        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
