@@ -82,7 +82,6 @@ public class Solution1383 {
             ans = Math.max(ans, sumS * minE);
             queue.offer(engineer);
             sum += engineer.speed;
-            queue.add(engineer);
             if(queue.size() == k){
                 sum -= queue.poll().speed;
             }
