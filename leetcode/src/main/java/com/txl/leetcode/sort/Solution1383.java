@@ -58,6 +58,9 @@ public class Solution1383 {
         if(k == 0 || n == 0){
             return 0;
         }
+        if(speed == null || efficiency == null || speed.length == 0 || efficiency.length == 0){
+            return 0;
+        }
         List<Engineer> engineers = new ArrayList<>();
         for (int i=0;i<speed.length;i++){
             engineers.add(new Engineer(speed[i],efficiency[i]));
