@@ -165,17 +165,21 @@ public class Solution710 {
             if (preCountW >= k+1) {//第k个实际有k+1个数  mid 是包含的
                 h = mid;//因为 此时blacklist[mid]前肯定包含 k+1个白名单，但是不能确定 blacklist[mid-1]的情况，因此h不能减少
             } else {
-                l = mid+1;//在小于的时候向上加 最终k 会落在blacklist[l] 的左边
+                l = mid+1;//mid+1的左边也不能确定能够放置多少个？
             }
         }
-        System.out.println("pick2fen end       l : " + l + " h: " + h);
+
         int preCountW = blacklist[h] - h;
-        if (preCountW >= k && l == h) {
+        System.out.println("pick2fen end       l = " + l + " h= " + h+"  preCountW ="+preCountW +" k = "+k);
+        if (preCountW >= k+1 && l == h) {//preCountW >= k+1 保证落在第h个数的左侧
             //在h之前共有白名单的个数
-            // preCountW -k 为当前位置距离第k个空白元素的间距
-            return blacklist[h] - (preCountW -k)+1;
+            // preCountW -(k+1) 为当前位置距离第k个空白元素的间距  那么第k个的位置在哪里呢？k的坐标从0开始
+            // 第k个到 第preCountW-1个的间距是 preCountW-1 -k ;总间距是 preCountW -k;
+            // blacklist[h] - preCountW +k =h + preCountW - preCountW + k
+            return  h+k;
         } else {
-            return blacklist[h] + (k - preCountW)+1;//为什么要加1？
+            //h + preCountW + (k - preCountW)
+            return h+k+1;
         }
     }
 
