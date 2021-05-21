@@ -108,7 +108,7 @@ public class Solution710 {
      * 使用集合 保存白名单
      */
     List<Integer> w = new ArrayList<>();
-
+    //白名单保存
     public void solutionList() {
         Set<Integer> W = new HashSet<>();
         for (int i = 0; i < n; i++) W.add(i);
@@ -173,7 +173,46 @@ public class Solution710 {
         }
     }
 
+    /**
+     *
+     * k在总名单上落在 h的左侧
+     * */
     private int pick2fen(int k) {
+        System.out.println("pick2fen start   "+k);
+        if (blacklistLength == 0) {
+            return k;
+        }
+        int l = 0, h = blacklist.length - 1;
+        while (l != h) {
+            int mid = (l + h+1) / 2;
+            //blacklist[mid]-mid 的含义是 当前黑名单中的数据 - 黑名单顺序数  = 当前位置之前可以插入的白名单个数
+            int preCountW = blacklist[mid] - mid;
+            if (preCountW > k+1) {//第k个实际有k+1个数  mid 是包含的
+                h = mid;//mid+1的左边也不能确定能够放置多少个？
+            } else {
+                l = mid+1;
+            }
+        }
+
+        int preCountW = blacklist[h] - h;
+        System.out.println("pick2fen end       l = " + l + " h= " + h+"  preCountW ="+preCountW +" k = "+k);
+        if (preCountW < k+1) {//preCountW >= k+1 保证落在第h个数的左侧
+            //在h之前共有白名单的个数
+            // preCountW -(k+1) 为当前位置距离第k个空白元素的间距  那么第k个的位置在哪里呢？k的坐标从0开始
+            // 第k个到 第preCountW-1个的间距是 preCountW-1 -k ;总间距是 preCountW -k;
+            // blacklist[h] - preCountW +k =h + preCountW - preCountW + k
+            return  h+k+1;
+        } else {
+            //h + preCountW + (k - preCountW)
+            return k;
+        }
+    }
+
+    /**
+     *
+     * k在总名单上落在 h的右侧
+     * */
+    private int pick2fenRight(int k) {
         System.out.println("pick2fen start   "+k);
         if (blacklistLength == 0) {
             return k;
@@ -192,7 +231,7 @@ public class Solution710 {
 
         int preCountW = blacklist[h] - h;
         System.out.println("pick2fen end       l = " + l + " h= " + h+"  preCountW ="+preCountW +" k = "+k);
-        if (preCountW >= k+1) {//preCountW >= k+1 保证落在第h个数的左侧
+        if (preCountW >= k+1) {//preCountW >= k+1 保证落在第h个数的右侧
             //在h之前共有白名单的个数
             // preCountW -(k+1) 为当前位置距离第k个空白元素的间距  那么第k个的位置在哪里呢？k的坐标从0开始
             // 第k个到 第preCountW-1个的间距是 preCountW-1 -k ;总间距是 preCountW -k;
@@ -232,8 +271,8 @@ public class Solution710 {
     }
 
     public static void main(String[] args) {
-//        test2fen();
-        testMap();
+        test2fen();
+//        testMap();
     }
 
 
