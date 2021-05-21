@@ -59,8 +59,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -74,9 +77,27 @@ public class Solution710 {
      */
     int blacklistLength = 0;
 
+    /**
+     * 白名单长度
+     * */
+    int wlen = 0;
+    Map<Integer,Integer> m = new HashMap<>();
+
     public Solution710(int n, int[] blacklist) {
         this.n = n;
         this.blacklist = blacklist;
+
+        /*********************************黑名单映射 start********************************************/
+        wlen = n - blacklist.length;
+        Set<Integer> w = new HashSet<>();
+        for (int i = wlen; i < n; i++) w.add(i);//注意下这个位置，白名单只添加了wl之后的数据
+        for (int x : blacklist) w.remove(x);
+        Iterator<Integer> wi = w.iterator();
+        for (int x : blacklist)//如何确保，前序列的黑名单不会映射到 wl之前的白名单呢？
+            if (x < wlen)
+                m.put(x, wi.next());
+        /***********************************黑名单映射 end******************************************/
+
         //升序排序
         Arrays.sort(this.blacklist);
         blacklistLength = blacklist == null ? 0 : blacklist.length;
@@ -158,7 +179,7 @@ public class Solution710 {
             return k;
         }
         int l = 0, h = blacklist.length - 1;
-        while (l < h) {
+        while (l != h) {
             int mid = (l + h) / 2;
             //blacklist[mid]-mid 的含义是 当前黑名单中的数据 - 黑名单顺序数  = 当前位置之前可以插入的白名单个数
             int preCountW = blacklist[mid] - mid;
@@ -171,7 +192,7 @@ public class Solution710 {
 
         int preCountW = blacklist[h] - h;
         System.out.println("pick2fen end       l = " + l + " h= " + h+"  preCountW ="+preCountW +" k = "+k);
-        if (preCountW >= k+1 && l == h) {//preCountW >= k+1 保证落在第h个数的左侧
+        if (preCountW >= k+1) {//preCountW >= k+1 保证落在第h个数的左侧
             //在h之前共有白名单的个数
             // preCountW -(k+1) 为当前位置距离第k个空白元素的间距  那么第k个的位置在哪里呢？k的坐标从0开始
             // 第k个到 第preCountW-1个的间距是 preCountW-1 -k ;总间距是 preCountW -k;
@@ -211,7 +232,21 @@ public class Solution710 {
     }
 
     public static void main(String[] args) {
-        test2fen();
+//        test2fen();
+        testMap();
+    }
+
+
+    /**
+     * 测试黑名单映射
+     * */
+    private static void testMap(){
+        Solution710 solution710 = new Solution710(12,new int[]{0,2,4,5,6,7,8,11});
+        Iterator<Integer> iterator = solution710.m.keySet().iterator();
+        while (iterator.hasNext()){
+            Integer integer = iterator.next();
+            System.out.println("key : "+integer+" --> value "+solution710.m.get(integer));
+        }
     }
 
     /**
