@@ -186,25 +186,30 @@ public class Solution710 {
         while (l != h) {
             int mid = (l + h+1) / 2;
             //blacklist[mid]-mid 的含义是 当前黑名单中的数据 - 黑名单顺序数  = 当前位置之前可以插入的白名单个数
-            int preCountW = blacklist[mid] - mid;
-            if (preCountW > k+1) {//第k个实际有k+1个数  mid 是包含的
-                h = mid;//mid+1的左边也不能确定能够放置多少个？
-            } else {
-                l = mid+1;
+            try {
+                int preCountW = blacklist[mid] - mid;
+                if (preCountW >= k+1) {//第k个实际有k+1个数  mid 是包含的
+                    h = mid-1;//mid-1的左边也不能确定能够放置多少个？
+                } else {
+                    l = mid;
+                }
+            }catch (Exception r){
+                System.out.println("mid is "+mid);
+                throw r;
             }
         }
 
         int preCountW = blacklist[h] - h;
         System.out.println("pick2fen end       l = " + l + " h= " + h+"  preCountW ="+preCountW +" k = "+k);
-        if (preCountW < k+1) {//preCountW >= k+1 保证落在第h个数的左侧
+        if (preCountW >= k+1) {//preCountW >= k+1 保证落在第h个数的左侧
             //在h之前共有白名单的个数
             // preCountW -(k+1) 为当前位置距离第k个空白元素的间距  那么第k个的位置在哪里呢？k的坐标从0开始
             // 第k个到 第preCountW-1个的间距是 preCountW-1 -k ;总间距是 preCountW -k;
             // blacklist[h] - preCountW +k =h + preCountW - preCountW + k
-            return  h+k+1;
+            return  k;
         } else {
             //h + preCountW + (k - preCountW)
-            return k;
+            return h+k+1;
         }
     }
 
