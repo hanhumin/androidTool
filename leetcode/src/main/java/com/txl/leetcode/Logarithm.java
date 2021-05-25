@@ -1,5 +1,7 @@
 package com.txl.leetcode;
 
+import java.util.ArrayList;
+
 /**
  * 对数器
  * */
@@ -48,5 +50,81 @@ public class Logarithm {
             v2 = temp;
         }
         return new int[]{v1,v2};
+    }
+
+
+    /**
+     * @param m 最大参赛人数
+     * @param n 最大投票人数
+     * */
+    public static String[] generate1366(int m, int n){
+        int rm = (int) (Math.random()*m);
+        int rn = (int) (Math.random()*n);
+        String[] strings = new String[rn];
+        String ss = createNoRepetitionString(rm);
+        for (int i=0; i< rn;i++){
+            strings[i] = randomString(ss);
+        }
+        return strings;
+    }
+
+    /**
+     * 创建无重复字符串
+     * */
+    private static String createNoRepetitionString(int l){
+        ArrayList<Character> arrayList = new ArrayList<>();
+        arrayList.add('A');
+        arrayList.add('B');
+        arrayList.add('C');
+        arrayList.add('D');
+        arrayList.add('E');
+        arrayList.add('F');
+        arrayList.add('G');
+        arrayList.add('H');
+        arrayList.add('I');
+        arrayList.add('J');
+        arrayList.add('K');
+        arrayList.add('L');
+        arrayList.add('M');
+        arrayList.add('N');
+        arrayList.add('O');
+        arrayList.add('P');
+        arrayList.add('Q');
+        arrayList.add('R');
+        arrayList.add('S');
+        arrayList.add('T');
+        arrayList.add('U');
+        arrayList.add('V');
+        arrayList.add('W');
+        arrayList.add('X');
+        arrayList.add('Y');
+        arrayList.add('Z');
+
+        StringBuilder sb = new StringBuilder();
+        if(l > 26){
+            l = 26;
+        }
+        for(int i=0; i<l;i++){
+            int m = (int) (Math.random()*arrayList.size());
+            sb.append(arrayList.remove(m));
+        }
+        return new String(sb);
+    }
+
+    private static String randomString(String string){
+        if(string.length() <= 1){
+            return string;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<Integer> integers = new ArrayList<>();
+        for (int i=0;i<string.length();i++){
+            integers.add(i);
+        }
+        while (integers.size() > 0){
+            int index = (int) (Math.random()*integers.size());
+            Integer integer = integers.remove(index);
+            stringBuilder.append(string.charAt(integer));
+        }
+        return new String(stringBuilder);
     }
 }
