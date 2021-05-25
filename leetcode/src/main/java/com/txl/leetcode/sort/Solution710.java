@@ -175,7 +175,7 @@ public class Solution710 {
 
     /**
      *
-     * k在总名单上落在 h的左侧
+     * k在总名单上落在 h的右侧
      * */
     private int pick2fen(int k) {
         System.out.println("pick2fen start   "+k);
@@ -189,7 +189,7 @@ public class Solution710 {
             try {
                 int preCountW = blacklist[mid] - mid;
                 if (preCountW >= k+1) {//第k个实际有k+1个数  mid 是包含的
-                    h = mid-1;
+                    h = mid-1;//向下减放在右侧
                 } else {
                     l = mid;
                 }
@@ -201,20 +201,20 @@ public class Solution710 {
 
         int preCountW = blacklist[h] - h;
         System.out.println("pick2fen end       l = " + l + " h= " + h+"  preCountW ="+preCountW +" k = "+k);
-        if (preCountW >= k+1) {//preCountW >= k+1 保证落在第h个数的左侧
-            // blacklist[h] - (preCountW -k) =h + preCountW - preCountW + k
-            return  k;
-        } else {
-            //h + preCountW + (k - preCountW)
+        if (preCountW >= k+1) {//preCountW >= k+1 保证落在第h个黑名单数的左侧
+            // 黑名单左侧第一个是第 preCountW -1 个白名单  其值 =  blacklist[h]-1
+            // 第k个白名单 = blacklist[h]-1 - （preCountW -1 - k） = h + preCountW - 1 - preCountW + 1 + k = h + k;
+            return   k+h;//此时 h = 0
+        } else {//此时最大的黑名单数也比白名单小。那么第k个白名单 = 黑名单数的总个数+k +1 （因为k和黑名单总数h都是从0开始，所以要加1）
             return h+k+1;
         }
     }
 
     /**
      *
-     * k在总名单上落在 h的右侧
+     * k在总名单上落在 h的左侧
      * */
-    private int pick2fenRight(int k) {
+    private int pick2fenLeft(int k) {
         System.out.println("pick2fen start   "+k);
         if (blacklistLength == 0) {
             return k;
@@ -227,13 +227,13 @@ public class Solution710 {
             if (preCountW >= k+1) {//第k个实际有k+1个数  mid 是包含的
                 h = mid;//因为 此时blacklist[mid]前肯定包含 k+1个白名单，但是不能确定 blacklist[mid-1]的情况，因此h不能减少
             } else {
-                l = mid+1;//mid+1的左边也不能确定能够放置多少个？
+                l = mid+1;//向上抬，放在左侧
             }
         }
 
         int preCountW = blacklist[h] - h;
         System.out.println("pick2fen end       l = " + l + " h= " + h+"  preCountW ="+preCountW +" k = "+k);
-        if (preCountW >= k+1) {//preCountW >= k+1 保证落在第h个数的右侧
+        if (preCountW >= k+1) {//落在左侧
             //在h之前共有白名单的个数
             // preCountW -(k+1) 为当前位置距离第k个空白元素的间距  那么第k个的位置在哪里呢？k的坐标从0开始
             // 第k个到 第preCountW-1个的间距是 preCountW-1 -k ;总间距是 preCountW -k;
@@ -256,7 +256,7 @@ public class Solution710 {
         }
 
         private static Item createItem() {
-            int n = (int) (Math.random() * 10);
+            int n = (int) (Math.random() * 20);
             int bl = (int) (Math.random() * n);
             int[] blacklist = new int[bl];
             Set<Integer> set = new HashSet<>();
@@ -313,6 +313,7 @@ public class Solution710 {
                 int nextK = solution710.nextK();
                 int pickList = solution710.pickList(nextK);
                 int pick2fen = solution710.pick2fen(nextK);
+//                int pick2fen = solution710.pick2fenLeft(nextK);
                 if (pickList != pick2fen) {
 
                     throw new RuntimeException("not equals position " + j + " nextK is : " + nextK + "  " + "pick list is " + pickList + " pick2fen:  " + pick2fen + " n is:  " + solution710.n);
