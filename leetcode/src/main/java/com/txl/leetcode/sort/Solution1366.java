@@ -77,6 +77,7 @@ import com.txl.leetcode.Logarithm;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -88,14 +89,113 @@ class Solution1366 {
 
 
     public static void main(String[] args){
-//        String[] votes = Logarithm.generate1366(15,15);
-//        String[] votes = new String[]{"WXYZ","XYZW"};
-        String[] votes = new String[]{"ABC","ACB","ABC","ACB","ACB"};
-        System.out.println("result is   :: " +new Solution1366().rankTeams(votes));
+        for (int i=1;i>0;i--){
+//            String[] votes = Logarithm.generate1366(5,5);
+//        String[] votes = new String[]{"DXUO","UDXO","UOXD","DOXU"};
+        String[] votes = new String[]{"BCA","CAB","CBA","ABC","ACB","BAC"};
+            System.out.println("============================================start========================================================");
+            for (String s:votes){
+                System.out.println("value : "+s);
+            }
+            System.out.println("=============================================end=======================================================");
+            Solution1366 solution1366 = new Solution1366();
+            String v1 = solution1366.rankTeams(votes);
+            String v2 = solution1366.solution2(votes);
+            if(!v1.equals(v2)){
+                throw new RuntimeException("not equals v1 is "+v1+"   v2 is "+v2);
+            }
+        }
+
     }
 
     public String rankTeams(String[] votes) {
         return solution1(votes);
+    }
+
+
+    private String solution2(String[] votes){
+        if(votes == null || votes.length == 0 || votes[0] == null || votes[0].length() == 0){
+            return "";
+        }
+        ArrayList<OrderNode> orderList = new ArrayList<>();
+        int length = votes[0].length();
+        for (int i=0;i<length;i++){
+            orderList.add(new OrderNode(votes[0].charAt(i),0));
+        }
+        sort2(new int[][]{{0,votes[0].length()-1}},0,votes,orderList);
+        StringBuilder sb = new StringBuilder();
+        for (OrderNode o:orderList){
+            sb.append(o.character);
+        }
+        return new String(sb);
+    }
+
+
+    private void sort2(int[][] area,int position,String[] votes,ArrayList<OrderNode> orderList){
+        if(area == null || area.length == 0 || position >= votes[0].length()){
+            return;
+        }
+        HashMap<Character,OrderNode> orderNodeHashMap = new HashMap<>();
+        for (int i=0;i<votes.length;i++){
+            char c  = votes[i].charAt(position);
+            OrderNode orderNode = orderNodeHashMap.get(c);
+            if(orderNode != null){
+                orderNode.value ++;
+            }else {
+                orderNode = new OrderNode(c, 1);
+            }
+            orderNodeHashMap.put(c,orderNode);
+        }
+
+        for (int i=0;i<area.length;i++){
+            int start = area[i][0];
+            int end = area[i][1];
+            ArrayList<OrderNode> arrayList = new ArrayList<>();
+            int temp = start;
+            while (temp<=end){
+                OrderNode originNode = orderList.get(temp);
+                OrderNode newNode = orderNodeHashMap.get(originNode.character);
+                if(newNode == null){
+                    newNode = new OrderNode(originNode.character,0);
+                }
+                arrayList.add(newNode);
+                temp++;
+            }
+            Collections.sort(arrayList, new Comparator<OrderNode>() {
+                @Override
+                public int compare(OrderNode o1, OrderNode o2) {
+                    return o2.value-o1.value;
+                }
+            });
+            for (int j=0;j<arrayList.size();j++){
+                orderList.set(start+j,arrayList.get(j));
+            }
+            int lastValue = -1;
+            int lastIndex = start;
+            ArrayList<int[]> areaList = new ArrayList<>();
+            for (int j=start;j<=end;j++){
+                OrderNode orderNode = orderList.get(j);
+                if(orderNode.value != lastValue){
+                    if( lastIndex!= -1 && j-1>lastIndex){//至少需要保证两个数
+                        areaList.add(new int[]{lastIndex,j-1});
+                    }
+                    lastValue = orderNode.value;
+                    lastIndex = j;
+                }
+            }
+            if(lastIndex != end){
+                areaList.add(new int[]{lastIndex,end});
+            }
+            if(areaList.size() > 0){
+                int[][] myArea = new int[areaList.size()][2];
+                for (int k=0;k<areaList.size();k++){
+                    myArea[k][0] = areaList.get(k)[0];
+                    myArea[k][1] = areaList.get(k)[1];
+                }
+                sort2(myArea,position+1,votes,orderList);
+            }
+        }
+
     }
 
     /**
