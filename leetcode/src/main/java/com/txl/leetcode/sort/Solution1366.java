@@ -75,6 +75,7 @@ package com.txl.leetcode.sort;
 
 import com.txl.leetcode.Logarithm;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -88,8 +89,9 @@ class Solution1366 {
 
     public static void main(String[] args){
 //        String[] votes = Logarithm.generate1366(15,15);
-        String[] votes = new String[]{"WXYZ","XYZW"};
-        new Solution1366().rankTeams(votes);
+//        String[] votes = new String[]{"WXYZ","XYZW"};
+        String[] votes = new String[]{"ABC","ACB","ABC","ACB","ACB"};
+        System.out.println("result is   :: " +new Solution1366().rankTeams(votes));
     }
 
     public String rankTeams(String[] votes) {
@@ -97,52 +99,95 @@ class Solution1366 {
     }
 
     /**
-     * 暴力求解，时间复杂度 o(n*m)  n是参赛人事 m 是投票人数
      * */
     private String solution1(String[] votes){
         if(votes == null || votes.length == 0 || votes[0] == null || votes[0].length() == 0){
             return "";
         }
-        HashMap<Character,OrderNode> orderMap = new HashMap<>();
-
-        for (String s:votes){
-            int length = s.length();
-            for(int i=0; i<s.length();i++){
-                char c = s.charAt(i);
-                OrderNode orderNode;
-                if(orderMap.containsKey(c)){
-                    orderNode = orderMap.get(c);
-                    orderNode.value += length;
-                }else {
-                    orderNode = new OrderNode();
-                    orderNode.value = length;
-                    orderNode.character = c;
-                }
-                length--;
-                orderMap.put(c,orderNode);
-            }
+        ArrayList<OrderNode> orderList = new ArrayList<>();
+        int length = votes[0].length();
+        for (int i=0;i<length;i++){
+            orderList.add(new OrderNode(votes[0].charAt(i),0));
         }
-        TreeSet<OrderNode> treeSet = new TreeSet<>(new Comparator<OrderNode>() {
-            @Override
-            public int compare(OrderNode o1, OrderNode o2) {//小的数在前
-                if(o2.value==o1.value){
-                    return 1;
-                }
-                return o2.value-o1.value;
-            }
-        });
-        Collection<OrderNode> collection = orderMap.values();
-        treeSet.addAll(collection);
+        sort(0,votes[0].length()-1,orderList,0,votes);
         StringBuilder sb = new StringBuilder();
-        for (OrderNode o:treeSet){
+        for (OrderNode o:orderList){
             sb.append(o.character);
         }
         return new String(sb);
     }
 
+    /**
+     * @param start 需要进行排序处理的列表的开始坐标
+     * @param end 需要进行排序处理的列表的结束坐标
+     * @param orderList 需要进行排序的列表
+     * @param position votes[] 数组字符串第几个位置
+     * @param votes 输入字符串
+     * */
+    private void sort(int start,int end,ArrayList<OrderNode> orderList,int position,String[] votes){
+        if(start >= end){
+            return;
+        }
+        if(position >= votes[0].length()){
+            return;
+        }
+        TreeSet<OrderNode> treeSet = new TreeSet<>(new Comparator<OrderNode>() {
+            @Override
+            public int compare(OrderNode o1, OrderNode o2) {
+                if(o1.value == o2.value){
+                    return 1;
+                }
+                return o2.value-o1.value;
+            }
+        });
+        HashMap<Character,OrderNode> orderNodeHashMap = new HashMap<>();
+        for(int i=start;i<=end;i++){
+            OrderNode orderNode = orderList.get(i);
+            orderNode.value = 0;
+            orderNodeHashMap.put(orderNode.character,orderNode);
+        }
+
+        for (String s:votes){
+            Character character = s.charAt(position);
+            if(orderNodeHashMap.containsKey(character)){
+                OrderNode orderNode = orderNodeHashMap.get(character);
+                orderNode.value++;
+                orderNodeHashMap.put(character,orderNode);
+            }
+        }
+        treeSet.addAll(orderNodeHashMap.values());
+        for (int i=start;i<=end;i++){
+            orderList.set(i, treeSet.pollFirst());
+        }
+        int lastValue = -1;
+        int lastIndex = start;
+        int count = 0;
+        for (int i=start;i<=end;i++){
+            OrderNode orderNode = orderList.get(i);
+            if(orderNode.value != lastValue){
+                sort(lastIndex,i-1,orderList,position+1,votes);//不相等，需要排序
+                lastValue = orderNode.value;
+                lastIndex = i;
+                count = 0;
+            }else {
+                count++;
+            }
+
+        }
+        if(count > 0){
+            sort(lastIndex,end,orderList,position+1,votes);//不相等，需要排序
+        }
+
+    }
+
     private static class OrderNode{
         Character character;
-        int value;
+        int value = 0;
+
+        public OrderNode(Character character, int value) {
+            this.character = character;
+            this.value = value;
+        }
 
         @Override
         public boolean equals(Object obj) {
