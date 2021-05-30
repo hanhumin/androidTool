@@ -66,6 +66,7 @@ import com.txl.leetcode.Logarithm;
 class Solution4 {
     public static void main(String[] args) {
         for (int i = 0; i < 5000; i++) {
+
             int[] nums1 = Logarithm.generate4(10, 100);
             int[] nums2 = Logarithm.generate4(10, 100);
 //            int nums1[] = new int[]{13, 94, 179, 245, 285, 348};
