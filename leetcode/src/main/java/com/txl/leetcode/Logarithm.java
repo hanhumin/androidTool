@@ -62,11 +62,11 @@ public class Logarithm {
     private static int[] generateOrderArray(int size,int value){
         int length = (int) (Math.random() * size);
         int[] res = new int[length];
-        int lastEnd = 0;
+        int lastEnd = -1;
         for(int i=0;i<length;i++){
             int v1 = (int) (Math.random()*value);
-            if(v1 < lastEnd){
-                v1 += lastEnd;
+            while (v1 <= lastEnd){
+                v1 += lastEnd+1;
             }
             res[i] = v1;
             lastEnd = v1;

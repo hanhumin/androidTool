@@ -68,9 +68,24 @@ class Solution4 {
         for (int i = 0; i < 5000; i++) {
             int[] nums1 = Logarithm.generate4(10, 100);
             int[] nums2 = Logarithm.generate4(10, 100);
+//            int nums1[] = new int[]{13, 94, 179, 245, 285, 348};
+//            int nums2[] = new int[]{27, 52};
             double d = new Solution4().findMedianSortedArrays(nums1, nums2);
-            double d2 = new Solution4().solution2(nums1, nums2);
+//            double d2 = new Solution4().solution2(nums1, nums2);
+            double d2 = new Solution4().solution3(nums1, nums2);
             if (d != d2) {
+                System.out.println("++++++++++++++++++++++++++++num1+++++++++++++++++++++++++++++++++++++++++++");
+                for (int num : nums1) {
+                    System.out.print(num + ",  ");
+                }
+                System.out.println("");
+                System.out.println("++++++++++++++++++++++++++++num2+++++++++++++++++++++++++++++++++++++++++++");
+                for (int num : nums2) {
+                    System.out.print(num + ",  ");
+                }
+                System.out.println("");
+                System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                System.out.println("d  " + d + "  d2 " + d2);
                 throw new RuntimeException("not equals");
             }
         }
@@ -90,6 +105,9 @@ class Solution4 {
         int leftStart = 0, leftEnd = nums1.length - 1, rightStart = 0, rightEnd = nums2.length - 1;
         int leftL = leftEnd - leftStart + 1;
         int rightL = rightEnd - rightStart + 1;
+        if (rightL == 0 && leftL == rightL) {
+            return 0;
+        }
         while (leftL + rightL > 2) {
             if (leftStart > leftEnd) {//左侧已经没有可供选择的数
                 rightStart++;
@@ -128,24 +146,81 @@ class Solution4 {
     public double solution2(int[] nums1, int[] nums2) {
         int leftL = nums1 != null ? nums1.length : 0;
         int rightL = nums2 != null ? nums2.length : 0;
-        int k = (leftL + rightL) / 2;
-        if((leftL + rightL)%2 == 1){
-            return getK(nums1,nums2,k);
-        }else {
-            return (getK(nums1,nums2,k)+getK(nums1,nums2,k-1))/2;
+        int k = (leftL + rightL) / 2 + 1;
+        if ((leftL + rightL) % 2 == 1) {
+            return getK(nums1, nums2, k);
+        } else {
+            return (getK(nums1, nums2, k) + getK(nums1, nums2, k - 1)) / 2;
         }
     }
 
     /**
      * 查找第k个元素
-     * */
-    private double getK(int[] nums1, int[] nums2,int k){
+     */
+    private double getK(int[] nums1, int[] nums2, int k) {
         int leftL = nums1 != null ? nums1.length : 0;
         int rightL = nums2 != null ? nums2.length : 0;
         int leftStart = 0;
         int rightStart = 0;
-        while (k > 1) {
-            k -= k/2;
+        while (true) {
+            if (leftStart == leftL) {
+                if (nums2 == null || nums2.length == 0) {
+                    return 0;
+                }
+                return nums2[rightStart + k - 1];
+            }
+            if (rightStart == rightL) {
+                return nums1[leftStart + k - 1];
+            }
+            if (k == 1) {
+                return Math.min(nums1[leftStart], nums2[rightStart]);
+            }
+            int half = k / 2;
+            int newIndex1 = Math.min(leftStart + half, leftL) - 1;
+            int newIndex2 = Math.min(rightStart + half, rightL) - 1;
+            int pivot1 = nums1[newIndex1], pivot2 = nums2[newIndex2];
+            if (pivot1 <= pivot2) {
+                k -= (newIndex1 - leftStart + 1);
+                leftStart = newIndex1 + 1;
+            } else {
+                k -= (newIndex2 - rightStart + 1);
+                rightStart = newIndex2 + 1;
+            }
+        }
+    }
+
+
+    public double solution3(int[] nums1, int[] nums2) {
+
+        if (nums1.length > nums2.length) {
+            return solution3(nums2, nums1);
+        }
+        int m = nums1.length;
+        int n = nums2.length;
+        if (m == 0 && m == n) {
+            return 0;
+        }
+        int start = 0, end = m;
+        int median1 = 0, median2 = 0;
+        while (start <= end) {
+            int i = (start + end) / 2;
+            int j = (m + n + 1) / 2 - i;
+            int nums1LeftMax = i == 0 ? Integer.MIN_VALUE : nums1[i - 1];
+            int nums1RightMin = i == m ? Integer.MAX_VALUE : nums1[i];
+            int nums2LeftMax = j == 0 ? Integer.MIN_VALUE : nums2[j - 1];
+            int nums2RightMin = j == n ? Integer.MAX_VALUE : nums2[j];
+            if (nums1LeftMax <= nums2RightMin) {
+                median1 = Math.max(nums1LeftMax, nums2LeftMax);
+                median2 = Math.min(nums1RightMin, nums2RightMin);
+                start = i + 1;
+            } else {
+                end = i - 1;
+            }
+        }
+        if ((m + n) % 2 == 0) {
+            return (median1 + median2) / 2.0;
+        } else {
+            return median1;
         }
     }
 }
