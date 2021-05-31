@@ -52,6 +52,29 @@ public class Logarithm {
         return new int[]{v1,v2};
     }
 
+    /**
+     * @param size 数组长度区间
+     * */
+    public static int[] generate4(int size,int value){
+        return generateOrderArray(size, value);
+    }
+
+    private static int[] generateOrderArray(int size,int value){
+        int length = (int) (Math.random() * size);
+        int[] res = new int[length];
+        int lastEnd = -1;
+        for(int i=0;i<length;i++){
+            int v1 = (int) (Math.random()*value);
+            while (v1 <= lastEnd){
+                v1 += lastEnd+1;
+            }
+            res[i] = v1;
+            lastEnd = v1;
+        }
+        return res;
+
+    }
+
 
     /**
      * @param m 最大参赛人数
