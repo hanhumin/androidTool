@@ -122,6 +122,7 @@ class Solution10 {
             }
             if(!pc.equals(sc) && !pc.equals('.')){
                 return false;
+
             }
             sStart++;
             pStart++;
