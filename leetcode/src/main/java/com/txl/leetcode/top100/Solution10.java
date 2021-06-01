@@ -99,7 +99,7 @@ class Solution10 {
                 prePc = p.charAt(pStart-1);
             }
             if(pc.equals('*')){
-                if(prePc != null && prePc.equals('.'))
+                if(prePc != null && prePc.equals('.'));
             }
             if(prePc != null && prePc.equals('*')){//*可以匹配无限个
                 if(pc.equals('.')){
