@@ -65,67 +65,129 @@ package com.txl.leetcode.top100;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution10 {
-    public static void main(String[] args){
-        System.out.println(""+new Solution10().isMatch("aa","a"));
-        System.out.println(""+new Solution10().isMatch("aa","a*"));
-        System.out.println(""+new Solution10().isMatch("ab",".*"));
+    public static void main(String[] args) {
+        System.out.println( "test ===== " + "ab0".substring( 0, 0 ) );
+//        System.out.println(""+new Solution10().isMatch("aa","a"));
+//        System.out.println(""+new Solution10().isMatch("aa","a*"));
+//        if (!new Solution10().isMatch( "aa", "a*" )) {
+//            throw new RuntimeException( "aa not match a*" );
+//        }
+//        System.out.println(""+new Solution10().isMatch("ab",".*"));
+//        System.out.println(""+new Solution10().isMatch("ab","a.*"));
+//        if (!new Solution10().isMatch( "ab", "a.*" )) {
+//            throw new RuntimeException( "ab not match a.*" );
+//        }
+//        if (!new Solution10().isMatch( "aaa", "ab*a*c*a" )) {
+//            throw new RuntimeException( "aaa not match ab*a*c*a" );
+//        }
+//        if (!new Solution10().isMatch( "aab", "c*a*b" )) {
+//            throw new RuntimeException( "aab not match c*a*b" );
+//        }
+//        if (!new Solution10().isMatch( "mississippi", "mis*is*ip*." )) {
+//            throw new RuntimeException( "mississippi not match mis*is*ip*." );
+//        }
+//        if (new Solution10().isMatch( "a", ".*..a*" )) {
+//            throw new RuntimeException( "a  match .*..a*" );
+//        }
+//        if (!new Solution10().isMatch( "ab", ".*.." )) {
+//            throw new RuntimeException( "ab  not match .*.." );
+//        }
+//        if (!new Solution10().isMatch( "aaabaaaababcbccbaab", "c*c*.*c*a*..*c*" )) {//c*c*.*c*a* . .* c*
+//            throw new RuntimeException( "aaabaaaababcbccbaab  not match c*c*.*c*a*..*c*" );
+//        }
+        if (!new Solution10().isMatch( "cbbbaccbcacbcca", "b*.*b*a*.a*b*.a*" )) {
+            throw new RuntimeException( "cbbbaccbcacbcca  not match b*.*b*a*.a*b*.a*" );
+        }
+//        System.out.println(""+new Solution10().isMatch("aaa","ab*a*c*a"));
     }
 
     public boolean isMatch(String s, String p) {
-        return solution1(s, p);
+        return solution1( s, p );
     }
 
     /**
      * 循环求解
      * 这样不行  aaa 匹配不上 a*a  需要从后向前
-     * */
-    public boolean solution1(String s, String p){
-        int sStart = s.length()-1;
-        int pStart = p.length()-1;
-        while (true){
-            if(sStart < 0  && pStart >=0){
+     */
+    public boolean solution1(String s, String p) {
+        int sStart = s.length() - 1;
+        int pStart = p.length() - 1;
+        while (true) {
+//            if(sStart < 0  && pStart >=0){//"" 可以和 "a*b*" 匹配
+//                return false;
+//            }
+            if (sStart >= 0 && pStart < 0) {
                 return false;
             }
-            if(sStart  >= 0 && pStart < 0){
-                return false;
-            }
-            if(sStart < 0  && pStart < 0){
+            if (sStart < 0 && pStart < 0) {
                 return true;
             }
-            Character pc = p.charAt(pStart);
-            Character sc = s.charAt(sStart);
+            System.out.println( "  " + s + "         " + p + "        " + sStart + "    " + pStart );
+            Character pc = p.charAt( pStart );
+            Character sc = sStart < 0 ? null : s.charAt( sStart );
             Character prePc = null;
-            if(pStart-1 >= 0){
-                prePc = p.charAt(pStart-1);
+            if (pStart - 1 >= 0) {
+                prePc = p.charAt( pStart - 1 );
             }
-            if(pc.equals('*')){
-                if(prePc != null && prePc.equals('.'));
-            }
-            if(prePc != null && prePc.equals('*')){//*可以匹配无限个
-                if(pc.equals('.')){
-                    //匹配任意多个任意字符
-                    sStart = s.length();
-                    pStart+=2;
+            if (pc.equals( '*' )) {//遇到*就递归
+                if (prePc != null && prePc.equals( '.' )) {
+//                    if(sc == null){
+//                        return false;
+//                    }
+                    if (pStart == 1) {//当匹配字符串的长度
+                        return true;
+                    }
+
+                    String np = p.substring( 0, Math.max( pStart - 1, 0 ) );
+                    if(sc == null){
+                        return solution1( "",np );
+                    }else {
+                        boolean result = false;
+                        while (sStart >= 0) {
+                            result = solution1( s.substring( 0, sStart + 1 ), np );
+                            sStart--;
+                            if (result) {
+                                break;
+                            }
+                        }
+                        return result;
+                    }
+
+
+                } else if (prePc != null && !prePc.equals( sc )) {//前一个与当前值不等，直接跳过当前
+                    pStart -= 2;
                     continue;
-                }else {
-                    while (pc.equals(sc)){
-                        sStart++;
-                        if(sStart >= s.length()){
+                } else {//当前那个数等于*之前的那个数
+                    String np = p.substring( 0, Math.max( pStart - 1, 0 ) );
+                    boolean result = false;
+                    while (true) {
+                        result = solution1( s.substring( 0, sStart + 1 ), np );//第一次一个都不匹配
+                        if (result) {
                             break;
                         }
-                        sc = s.charAt(sStart);
+                        sStart--;
+                        if (sStart < 0) {
+                            result = solution1( "", np );//sStart < 0 时说明主串循环完毕
+                            break;
+                        }
+                        sc = s.charAt( sStart );
+                        if(!sc.equals( prePc )){
+                            result = solution1( s.substring( 0, sStart + 1 ), np );//把相同的全部匹配完成
+                            break;
+                        }
                     }
-                    pStart+=2;//需要跳过当前和下一个* 因此+2
-                    continue;
+                    return result;
                 }
-
             }
-            if(!pc.equals(sc) && !pc.equals('.')){
+
+            if (!pc.equals( sc ) && !pc.equals( '.' )) {
                 return false;
-
             }
-            sStart++;
-            pStart++;
+            if(sc == null && pc == '.'){
+                return false;
+            }
+            sStart--;
+            pStart--;
         }
     }
 }
