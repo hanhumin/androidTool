@@ -65,6 +65,7 @@ package com.txl.leetcode.top100;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution10 {
+    //fixme 后期重点回顾  题目比容易理解与找到状态转移方程
     public static void main(String[] args) {
         System.out.println( "test ===== " + "ab0".substring( 0, 0 ) );
 //        System.out.println(""+new Solution10().isMatch("aa","a"));
