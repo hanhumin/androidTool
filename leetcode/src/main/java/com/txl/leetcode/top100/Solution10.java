@@ -95,6 +95,9 @@ class Solution10 {
 //        if (!new Solution10().isMatch( "aaabaaaababcbccbaab", "c*c*.*c*a*..*c*" )) {//c*c*.*c*a* . .* c*
 //            throw new RuntimeException( "aaabaaaababcbccbaab  not match c*c*.*c*a*..*c*" );
 //        }
+        if (!new Solution10().isMatch( "cbbbaccbcacbc", "b*.*" )) {
+            throw new RuntimeException( "cbbbaccbcacbc  not match b*.*" );
+        }
         if (!new Solution10().isMatch( "cbbbaccbcacbcca", "b*.*b*a*.a*b*.a*" )) {
             throw new RuntimeException( "cbbbaccbcacbcca  not match b*.*b*a*.a*b*.a*" );
         }
@@ -122,7 +125,7 @@ class Solution10 {
             if (sStart < 0 && pStart < 0) {
                 return true;
             }
-            System.out.println( "  " + s + "         " + p + "        " + sStart + "    " + pStart );
+            System.out.println( "输入：  " + s.substring(0,sStart+1) + "         " + p.substring(0,pStart+1) + "        " + sStart + "    " + pStart );
             Character pc = p.charAt( pStart );
             Character sc = sStart < 0 ? null : s.charAt( sStart );
             Character prePc = null;
@@ -131,19 +134,16 @@ class Solution10 {
             }
             if (pc.equals( '*' )) {//遇到*就递归
                 if (prePc != null && prePc.equals( '.' )) {
-//                    if(sc == null){
-//                        return false;
-//                    }
                     if (pStart == 1) {//当匹配字符串的长度
                         return true;
                     }
-
                     String np = p.substring( 0, Math.max( pStart - 1, 0 ) );
                     if(sc == null){
                         return solution1( "",np );
                     }else {
                         boolean result = false;
-                        while (sStart >= 0) {
+                        //编写测试用例的时候需要，尽可能的让测试用例走到每一个分支，并且测试对应的边界条件。
+                        while (sStart >= -1) {//为什么是-1  因为当sStart 是0 的时候，表示匹配第一个字符没有被 .*匹配
                             result = solution1( s.substring( 0, sStart + 1 ), np );
                             sStart--;
                             if (result) {
@@ -152,8 +152,6 @@ class Solution10 {
                         }
                         return result;
                     }
-
-
                 } else if (prePc != null && !prePc.equals( sc )) {//前一个与当前值不等，直接跳过当前
                     pStart -= 2;
                     continue;
@@ -179,11 +177,10 @@ class Solution10 {
                     return result;
                 }
             }
-
             if (!pc.equals( sc ) && !pc.equals( '.' )) {
                 return false;
             }
-            if(sc == null && pc == '.'){
+            if(sc == null){
                 return false;
             }
             sStart--;
