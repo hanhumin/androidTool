@@ -2,6 +2,7 @@ package com.example.txl.tool.bluetooth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
+import android.media.MediaMetadata;
+import android.media.session.MediaSession;
+import android.media.session.PlaybackState;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,7 +61,9 @@ public class BluetoothActivity extends AppCompatActivity {
     private BluetoothA2dp a2dp;
 
     private BluetoothDevice connectDevice;
+    private MediaSession mediaSession;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +75,27 @@ public class BluetoothActivity extends AppCompatActivity {
         }
         initView();
         initBluetooth();
+        AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager.requestAudioFocus(new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                .setOnAudioFocusChangeListener(new AudioManager.OnAudioFocusChangeListener() {
+                    @Override
+                    public void onAudioFocusChange(int focusChange) {
+                        Log.d(TAG,"onAudioFocusChange "+focusChange);
+                    }
+                })
+                .build());
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            mediaSession = new MediaSession(this,"test");
+            mediaSession.setActive(true);
+            mediaSession.setMetadata(new MediaMetadata.Builder()
+                    .putString(MediaMetadata.METADATA_KEY_TITLE,"你是风而我是沙")
+                    .putString(MediaMetadata.METADATA_KEY_TITLE,"你是风而我是沙lalalla")
+                    .build());
+            mediaSession.setPlaybackState(new PlaybackState.Builder()
+                    .setState(PlaybackState.STATE_PLAYING,50,1.0f,3600)
+                    .setBufferedPosition(100)
+                    .build());
+        }
     }
 
     private void initView() {
@@ -99,6 +128,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     /**
@@ -206,12 +236,12 @@ public class BluetoothActivity extends AppCompatActivity {
             return;
         }
         disConnect(connectDevice);
-        if(headset != null){
-            headset.connect(device);
-        }
-        if(a2dp != null){
-            a2dp.connect(device);
-        }
+//        if(headset != null){
+//            headset.connect(device);
+//        }
+//        if(a2dp != null){
+//            a2dp.connect(device);
+//        }
     }
 
     private void disConnect(BluetoothDevice device){
@@ -259,6 +289,12 @@ public class BluetoothActivity extends AppCompatActivity {
         if(a2dp != null){
             bluetoothAdapter.closeProfileProxy(BluetoothProfile.A2DP,a2dp);
             a2dp = null;
+        }
+        if(mediaSession != null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mediaSession.release();
+            }
+            mediaSession = null;
         }
     }
 }
