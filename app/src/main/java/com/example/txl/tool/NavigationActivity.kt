@@ -19,6 +19,7 @@ import com.example.txl.tool.activity.http.HttpCookieDemoActivity
 import com.example.txl.tool.activity.point9.Point9Activity
 import com.example.txl.tool.activity.slider.SliderActivity
 import com.example.txl.tool.bluetooth.BluetoothActivity
+import com.example.txl.tool.bluetooth.BluetoothSocketDemoActivity
 import com.example.txl.tool.contentprovider.DemoContentProviderActivity
 import com.example.txl.tool.coordinatorlayout.CoordinatorLayoutNavigationActivity
 import com.example.txl.tool.custom.TestCustomRadioButtonDrawActivity
@@ -211,7 +212,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(intent)
             }
             R.id.tv_bluetooth_demo->{
-                val intent = Intent(this, BluetoothActivity::class.java)
+                val intent = Intent(this, BluetoothSocketDemoActivity::class.java)
                 startActivity(intent)
             }
         }

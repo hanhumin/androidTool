@@ -33,6 +33,7 @@ import java.util.concurrent.Executors;
 public class AppExecutors {
 
     private static final int THREAD_COUNT = 3;
+    private AppExecutors appExecutors;
 
     private final Executor diskIO;
 
@@ -76,5 +77,13 @@ public class AppExecutors {
             mainThreadHandler.postDelayed( command,ms );
         }
 
+    }
+
+    public static AppExecutors getInstance(){
+        return AppExecutorsHolder.appExecutors;
+    }
+
+    static class AppExecutorsHolder{
+        static AppExecutors appExecutors = new AppExecutors();
     }
 }

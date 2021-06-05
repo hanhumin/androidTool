@@ -42,7 +42,7 @@ public class BoundDeviceAdapter extends BaseAdapter<BluetoothDevice> {
         @Override
         public void onBindViewHolder(int position, BluetoothDevice data, @NotNull BaseAdapter<BluetoothDevice> adapter) {
             super.onBindViewHolder(position, data, adapter);
-            tvName.setText(data.getName());
+            tvName.setText(data.getName()+(data.getBondState()));
         }
     }
 }
