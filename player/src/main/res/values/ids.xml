@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="player_content_frame" type="id"/>
+    <item name="player_place_holder_image" type="id"/>
+    <item name="player_buffering" type="id"/>
+    <item name="player_controller" type="id"/>
+    <item name="player_error_message" type="id"/>
+    <item name="image_toggle_player" type="id"/>
+    <item name="player_seek_bar" type="id"/>
+    <item name="player_video_long_time" type="id"/>
+    <item name="player_play_time" type="id"/>
+</resources>

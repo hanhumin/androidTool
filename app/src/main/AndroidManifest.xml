@@ -29,7 +29,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".bluetooth.BluetoothSocketDemoActivity"></activity>
+        <activity android:name=".bluetooth.BluetoothPlayerActivity"></activity>
+        <activity android:name=".bluetooth.BluetoothSocketDemoActivity" />
         <activity android:name=".bluetooth.BluetoothActivity" />
         <activity android:name=".usb.UsbActivity" />
         <activity android:name=".jetpack.livedata.LiveDataActivity" />

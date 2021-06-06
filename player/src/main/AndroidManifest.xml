@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.huaqiyun.player">
+
+    <application>
+        <activity android:name="com.txl.player.lifecycle.base.demo.SimpleMediaPlayerActivity"></activity>
+        <activity
+            android:name="com.txl.player.demo.RecyclerDemoActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name="com.txl.player.demo.DemoPlayerActivity" />
+    </application>
+
+</manifest>

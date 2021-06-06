@@ -1,9 +1,8 @@
-package com.example.txl.tool.jetpack.lifecycle
+package com.txl.player.lifecycle
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.txl.player.lifecycle.ILifecycleListener
 
 /**
  * Copyright (c) 2020 唐小陆 All rights reserved.

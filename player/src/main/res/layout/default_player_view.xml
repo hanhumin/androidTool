@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--播放器层  最后surfaceView或TextureView也会加在这个frameLayout-->
+    <FrameLayout
+        android:id="@id/player_content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+        <!--播放器占位图-->
+        <ImageView android:id="@id/player_place_holder_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"/>
+        <!--加载圈-->
+        <ProgressBar android:id="@id/player_buffering"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center"/>
+        <TextView android:id="@id/player_error_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="#000"
+            android:padding="@dimen/dp_16"
+            android:textSize="@dimen/sp_24"
+            android:textColor="#fff"
+            android:visibility="gone"/>
+    </FrameLayout>
+<!--    &lt;!&ndash;播放器业务逻辑层&ndash;&gt;-->
+<!--    <FrameLayout-->
+<!--        android:id="@id/player_controller"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_width="match_parent">-->
+<!--        <include layout="@layout/player_controller_view" />-->
+<!--    </FrameLayout>-->
+</merge>

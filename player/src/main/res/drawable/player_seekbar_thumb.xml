@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 有焦点状态-->
+    <item
+        android:state_focused="true"
+        android:drawable="@drawable/line" />
+    <item
+        android:drawable="@drawable/line_transparent" />
+</selector>

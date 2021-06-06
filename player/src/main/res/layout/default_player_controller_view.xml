@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/player_mask">
+    <!--以后播放器ui需要其他的层级与之平行-->
+    <FrameLayout
+        android:id="@id/player_controller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_player_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_150"
+            android:background="@drawable/player_title_bg"
+            android:textColor="#fff"
+            android:textSize="@dimen/sp_57"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:focusable="false"
+            android:paddingStart="@dimen/dp_120"
+            android:paddingEnd="@dimen/dp_120"/>
+        <include layout="@layout/player_controller_view" />
+    </FrameLayout>
+
+</FrameLayout>
