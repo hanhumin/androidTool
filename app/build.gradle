@@ -6,7 +6,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.txl.tool"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -79,11 +79,10 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 //    implementation 'com.tencent.map:tencent-map-vector-sdk:4.2.7'
-    implementation 'com.android.support:multidex:1.0.3'
     implementation project(':testAutoBuildDimen')
     implementation project(':aeasybuild')
-    implementation project(':player')
-    implementation 'com.android.support:multidex:1.0.3'
+//    implementation project(':player')
+    implementation 'com.android.support:multidex:2.0.1'
 //    implementation 'com.txl.EasySmallWidth:easySmallWidth:1.0.0'
 //    implementation(name: 'app_location', ext: 'aar')
 }

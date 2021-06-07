@@ -103,6 +103,14 @@ public class BluetoothSocketDemoActivity extends AppCompatActivity {
                 makeBluetoothVisible();
             }
         });
+        tvFound = findViewById(R.id.tvJumpMusic);
+        tvFound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BluetoothSocketDemoActivity.this,BluetoothPlayerActivity.class);
+                startActivity(intent);
+            }
+        });
         findViewById(R.id.tvAsServer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

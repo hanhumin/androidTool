@@ -4,8 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.txl.tool.R
-import com.txl.player.lifecycle.BasicLifecycleObserver
-import com.txl.player.lifecycle.ILifecycleListener
+
 
 class LifecycleActivity : AppCompatActivity() {
     private val TAG = LifecycleActivity::class.java.simpleName
