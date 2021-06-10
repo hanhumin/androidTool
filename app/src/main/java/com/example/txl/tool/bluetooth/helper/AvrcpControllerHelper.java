@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothProfile;
 import android.os.Build;
 import android.util.Log;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -16,6 +17,8 @@ public class AvrcpControllerHelper {
     public static final String ACTION_TRACK_EVENT = "android.bluetooth.avrcp-controller.profile.action.TRACK_EVENT";
     public static final String EXTRA_METADATA = "android.bluetooth.avrcp-controller.profile.extra.METADATA";
     public static final String EXTRA_PLAYBACK = "android.bluetooth.avrcp-controller.profile.extra.PLAYBACK";
+    public static final String ACTION_FOLDER_LIST = "android.bluetooth.avrcp-controller.profile.action.FOLDER_LIST";
+    public static final String EXTRA_FOLDER_LIST = "android.bluetooth.avrcp-controller.profile.extra.FOLDER_LIST";
 
 
     public static void  sendGroupNavigationCmd(BluetoothProfile bluetoothProfile, BluetoothDevice device, int keyCode, int keyState){
@@ -65,6 +68,18 @@ public class AvrcpControllerHelper {
                     profile.getClass().getName() + ", ignoring request.", e);
             return null;
         }
+    }
+
+    public static Object getBluetoothAvrcpControllerService(BluetoothProfile profile){
+        try {
+//            Field field = profile.getClass().getDeclaredField("mService");
+            Field field = profile.getClass().getDeclaredField("mAdapter");
+            field.setAccessible(true);
+            return field.get(profile);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

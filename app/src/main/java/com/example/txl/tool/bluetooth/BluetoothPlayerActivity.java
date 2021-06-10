@@ -12,8 +12,10 @@ import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.media.MediaMetadata;
 import android.media.MediaPlayer;
+import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ResultReceiver;
@@ -34,6 +36,7 @@ import com.example.txl.tool.utils.AppExecutors;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,6 +62,15 @@ public class BluetoothPlayerActivity extends AppCompatActivity {
             if(profile == AvrcpControllerHelper.AVRCP_CONTROLLER){
                 Log.d(TAG,"connect bluetoothAvrcpController ");
                 bluetoothAvrcpController = proxy;
+                List<BluetoothDevice> devices = bluetoothAvrcpController.getConnectedDevices();
+                if(devices != null && devices.size() != 0){
+                    BluetoothDevice device = devices.get(0);
+                    Log.d(TAG,"connect bluetoothAvrcpController devices "+device.getName()+"  address : "+device.getAddress());
+                }
+                Object avrcpControllerService = AvrcpControllerHelper.getBluetoothAvrcpControllerService(proxy);
+                if(avrcpControllerService != null){
+                    Log.d(TAG,"connect bluetoothAvrcpController devices "+avrcpControllerService.getClass());
+                }
             }else {
                 Log.d(TAG,"connect other ");
             }
@@ -101,6 +113,8 @@ public class BluetoothPlayerActivity extends AppCompatActivity {
                 textView.setText("歌名："+name   +"------------ 作者 ： "+author);
                 textView = findViewById(R.id.tvPlayToggle);
                 textView.setText("远程播放器 "+(play?"正在播放":"未播放"));
+            }else if(intent.getAction().equals(AvrcpControllerHelper.ACTION_FOLDER_LIST ) || intent.getAction().equals(AvrcpControllerHelper.EXTRA_FOLDER_LIST)){
+                Log.d(TAG,"ACTION_FOLDER_LIST");
             }
         }
     };
@@ -141,7 +155,10 @@ public class BluetoothPlayerActivity extends AppCompatActivity {
         }
         initView();
         initPlayer();
-        registerReceiver(avrcpBroadcastReceiver,new IntentFilter(AvrcpControllerHelper.ACTION_TRACK_EVENT));
+        IntentFilter filter = new IntentFilter(AvrcpControllerHelper.ACTION_TRACK_EVENT);
+        filter.addAction(AvrcpControllerHelper.ACTION_FOLDER_LIST);
+        filter.addAction(AvrcpControllerHelper.EXTRA_FOLDER_LIST);
+        registerReceiver(avrcpBroadcastReceiver,filter);
     }
 
     private void initPlayer() {
@@ -198,6 +215,8 @@ public class BluetoothPlayerActivity extends AppCompatActivity {
                         public void run() {
                             int i = 0;
                             while (!destroy){
+                                MediaController controller = mediaSession.getController();
+                                controller.getQueue();
                                 Log.d(TAG,"update PlaybackState  "+mediaPlayer.getCurrentPosition());
                                 mediaSession.setPlaybackState(new PlaybackState.Builder()
                                         .setState(PlaybackState.STATE_PLAYING, mediaPlayer.getCurrentPosition(), 1.0f)
@@ -207,6 +226,17 @@ public class BluetoothPlayerActivity extends AppCompatActivity {
                                         .putString(MediaMetadata.METADATA_KEY_TITLE, "你是风而我是沙"+i)
                                         .putString(MediaMetadata.METADATA_KEY_ARTIST, "我是谁谁谁")
                                         .build());
+
+                                ArrayList<MediaSession.QueueItem> queueItems = new ArrayList<>();
+                                queueItems.add(new MediaSession.QueueItem(new MediaMetadata.Builder()
+                                        .putString(MediaMetadata.METADATA_KEY_TITLE, "你是风而我是沙===="+i)
+                                        .putString(MediaMetadata.METADATA_KEY_ARTIST, "我是谁谁谁====")
+                                        .build().getDescription(),i+1));
+                                queueItems.add(new MediaSession.QueueItem(new MediaMetadata.Builder()
+                                        .putString(MediaMetadata.METADATA_KEY_TITLE, "你是风而我是沙-----"+i)
+                                        .putString(MediaMetadata.METADATA_KEY_ARTIST, "我是谁谁谁----")
+                                        .build().getDescription(),1+2));
+                                mediaSession.setQueue(queueItems);
                                 SystemClock.sleep(500);
                                 i++;
                             }
@@ -299,5 +329,11 @@ public class BluetoothPlayerActivity extends AppCompatActivity {
         destroy = true;
         unRegisterProfile();
         unregisterReceiver(avrcpBroadcastReceiver);
+        if(mediaSession != null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mediaSession.release();
+            }
+            mediaSession = null;
+        }
     }
 }
