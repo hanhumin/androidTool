@@ -46,41 +46,53 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution15 {
-    public static void main(){
-
+    public static void main(String[] args) {
+        for (List<Integer> integers : new Solution15().threeSum(new int[]{1, -1, -1, 0})) {
+//        for (List<Integer> integers : new Solution15().threeSum(new int[]{-1,0,1,2,-1,-4})) {
+//        for (List<Integer> integers : new Solution15().threeSum(new int[]{0,0,0,0})) {
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+            for (Integer i : integers) {
+                System.out.print("  " + i);
+            }
+            System.out.println("");
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+        }
     }
 
     public List<List<Integer>> threeSum(int[] nums) {
-        if(nums == null || nums.length<3){
+        if (nums == null || nums.length < 3) {
             return new ArrayList<>();
         }
-        return solution1(nums);
+        return solution2(nums);
     }
 
     /**
      * 暴力求解
-     * */
-    List<List<Integer>> solution1(int[] nums){
+     */
+    List<List<Integer>> solution1(int[] nums) {
         Arrays.sort(nums);
         int length = nums.length;
-        int lastI = Integer.MAX_VALUE,lastJ = Integer.MAX_VALUE,lastK = Integer.MAX_VALUE;
+        int lastI = Integer.MAX_VALUE, lastJ, lastK;
         List<List<Integer>> arrayList = new ArrayList<>();
-        for (int i=0;i<length;i++){
-            if(lastI == nums[i]){
+        for (int i = 0; i < length; i++) {
+            if (lastI == nums[i]) {
                 continue;
             }
+            //进入下一轮循环的时候
+            lastJ = Integer.MAX_VALUE;
             lastI = nums[i];
-            for (int j=i+1;j<length;j++){
-                if(lastJ == nums[j]){
+            for (int j = i + 1; j < length; j++) {
+                if (lastJ == nums[j]) {
                     continue;
                 }
                 lastJ = nums[j];
-                for (int k=j+1;k<length;k++){
-                    if(lastK == nums[k]){
+                lastK = Integer.MAX_VALUE;
+                for (int k = j + 1; k < length; k++) {
+                    if (lastK == nums[k]) {
                         continue;
                     }
                     lastK = nums[k];
-                    if(lastI + lastJ + lastK == 0){
+                    if (lastI + lastJ + lastK == 0) {
                         ArrayList<Integer> integerArrayList = new ArrayList<>();
                         integerArrayList.add(lastI);
                         integerArrayList.add(lastJ);
@@ -90,28 +102,101 @@ class Solution15 {
                 }
             }
         }
+        System.out.println("solution1  size " + arrayList.size());
         return arrayList;
     }
 
-    class MathNode{
-        int min,max;
-
-
-        @Override
-        public int hashCode() {
-            return this.max+this.min;
-//            return super.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if(obj instanceof MathNode){
-                if(((MathNode) obj).max == this.max && ((MathNode) obj).min == this.min){
-                    return true;
+    /**
+     * 官方题解
+     */
+    List<List<Integer>> solution2(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> arrayList = new ArrayList<>();
+        int lastI = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            if(nums[i] == lastI){
+                continue;
+            }
+            lastI = nums[i];
+            int start=i+1, end = nums.length - 1;
+            int lastStart = Integer.MAX_VALUE;
+            int lastEnd = Integer.MAX_VALUE;
+            boolean changeStart = true;
+            while (start<end){
+                if(lastStart == nums[start] && changeStart){
+                    start++;
+                    continue;
+                }
+                if(lastEnd == nums[end] && !changeStart){
+                    end--;
+                    continue;
+                }
+                lastStart = nums[start];
+                lastEnd = nums[end];
+                int result = nums[i]+nums[start]+nums[end];
+                if(result > 0){
+                    changeStart = false;
+                    end--;
+                }else if(result < 0){
+                    changeStart = true;
+                    start++;
+                }else {
+                    ArrayList<Integer> integerArrayList = new ArrayList<>();
+                    integerArrayList.add(nums[i]);
+                    integerArrayList.add(nums[start]);
+                    integerArrayList.add(nums[end]);
+                    arrayList.add(integerArrayList);
+                    start++;
+                    changeStart = true;
                 }
             }
-            return super.equals(obj);
         }
+        return arrayList;
+    }
+
+    List<List<Integer>> solution3(int[] nums) {
+        Arrays.sort(nums);
+        int start=0, end = nums.length - 1;
+        int lastStart = Integer.MAX_VALUE;
+        int lastEnd = Integer.MAX_VALUE;
+        List<List<Integer>> arrayList = new ArrayList<>();
+        int position = -1;
+        boolean changeStart = true;
+        while (start<end){
+            if(lastStart == nums[start] && changeStart){
+                start++;
+                continue;
+            }
+            if(lastEnd == nums[end] && !changeStart){
+                end--;
+                continue;
+            }
+            lastStart = nums[start];
+            lastEnd = nums[end];
+            position = halfFind(-(lastEnd + lastStart),start,end,nums);
+            if(position != -1){
+                ArrayList<Integer> integerArrayList = new ArrayList<>();
+                integerArrayList.add(nums[start]);
+                integerArrayList.add(nums[position]);
+                integerArrayList.add(nums[end]);
+                arrayList.add(integerArrayList);
+                changeStart = true;
+                start++;
+            }else {
+                if(lastStart+lastEnd>0){
+                    end--;
+                    changeStart = false;
+                }else {
+                    start++;
+                    changeStart = true;
+                }
+            }
+        }
+        return arrayList;
+    }
+
+    int halfFind(int target, int start, int end,int[] nums){
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
