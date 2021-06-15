@@ -47,9 +47,11 @@ import java.util.List;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution15 {
     public static void main(String[] args) {
-        for (List<Integer> integers : new Solution15().threeSum(new int[]{1, -1, -1, 0})) {
-//        for (List<Integer> integers : new Solution15().threeSum(new int[]{-1,0,1,2,-1,-4})) {
+//        for (List<Integer> integers : new Solution15().threeSum(new int[]{1, -1, -1, 0})) {
+//        for (List<Integer> integers : new Solution15().threeSum(new int[]{-1,0,1,2,-1,-4})) {//排序后 -4， -1， -1， 0, 1, 2
 //        for (List<Integer> integers : new Solution15().threeSum(new int[]{0,0,0,0})) {
+//        for (List<Integer> integers : new Solution15().threeSum(new int[]{1,1,-2})) {
+        for (List<Integer> integers : new Solution15().threeSum(new int[]{-1,0,1,2,-1,-4,-2,-3,3,0,4})) {//[[-4,0,4],[-4,1,3],[-3,-1,4],[-3,0,3],[-3,1,2],[-2,-1,3],[-2,0,2],[-1,-1,2],[-1,0,1]]
             System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
             for (Integer i : integers) {
                 System.out.print("  " + i);
@@ -63,7 +65,7 @@ class Solution15 {
         if (nums == null || nums.length < 3) {
             return new ArrayList<>();
         }
-        return solution2(nums);
+        return solution3(nums);
     }
 
     /**
@@ -173,15 +175,22 @@ class Solution15 {
             }
             lastStart = nums[start];
             lastEnd = nums[end];
-            position = halfFind(-(lastEnd + lastStart),start,end,nums);
+            position = halfFind(-(lastEnd + lastStart),start+1,end-1,nums);
             if(position != -1){
                 ArrayList<Integer> integerArrayList = new ArrayList<>();
                 integerArrayList.add(nums[start]);
                 integerArrayList.add(nums[position]);
                 integerArrayList.add(nums[end]);
                 arrayList.add(integerArrayList);
-                changeStart = true;
-                start++;
+
+                if(nums[position] > 0){//相加是lastEnd + lastStart是个负数 此时如果减小end,会得到一个更小的负数
+                    changeStart = true;
+                    start++;
+                }else {
+                    changeStart = false;
+                    end--;
+                }
+
             }else {
                 if(lastStart+lastEnd>0){
                     end--;
@@ -196,7 +205,30 @@ class Solution15 {
     }
 
     int halfFind(int target, int start, int end,int[] nums){
+        if(end<start){
+            return -1;
+        }
 
+        while (start<=end){
+            if(end-start<=1){
+                if(nums[start] == target){
+                    return start;
+                }
+                if(nums[end] == target){
+                    return end;
+                }
+                return -1;
+            }
+            int mid = (start + end)/2;
+            if(nums[mid] > target){
+                end = mid;
+            }else if(nums[mid] < target){
+                start = mid;
+            }else {
+                return mid;
+            }
+        }
+        return -1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
