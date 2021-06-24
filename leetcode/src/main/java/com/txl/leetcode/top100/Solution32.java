@@ -42,6 +42,7 @@ package com.txl.leetcode.top100;
 // 👍 1343 👎 0
 
 
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -112,10 +113,51 @@ class Solution32 {
         }
         int l = s.length();
         int max = 0;
+        int[] dp = new int[s.length()];
         for (int i=1;i<l;i++){
-
+            if (s.charAt(i) == ')') {
+                if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {// i - dp[i - 1] > 0 是为了保证  i - dp[i - 1] - 1 是正常存在的
+                    dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
+                }
+                max = Math.max(max, dp[i]);
+            }
         }
         return max;
     }
+
+    private int solution3(String s){
+        int max = 0;
+        Deque<Integer> stack = new LinkedList<Integer>();
+        stack.push(-1);
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                stack.push(i);
+            } else {
+                stack.pop();
+                if (stack.isEmpty()) {
+                    stack.push(i);
+                } else {
+                    max = Math.max(max, i - stack.peek());
+                }
+            }
+        }
+        return max;
+    }
+
+//    private int solution4(String s){
+//        int max = 0;
+//        Deque<Integer> stack = new LinkedList<Integer>();
+//        for (int i = 0; i < s.length(); i++) {
+//            if (s.charAt(i) == '(') {
+//                stack.push(i);
+//            } else {
+//                if(!stack.isEmpty()){
+//                    Integer integer = stack.pop();
+//                    max = Math.max(max, i - integer+1);
+//                }
+//            }
+//        }
+//        return max;
+//    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
