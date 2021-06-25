@@ -46,23 +46,54 @@ package com.txl.leetcode.top100;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution34 {
-    public int[] searchRange(int[] nums, int target) {
-        int left = halfSearch(nums,target,true);
-        if(left == -1){
-            return new int[]{-1,-1};
-        }
+    public static void main(String[] args) {
+        new Solution34().searchRange(new int[]{5, 7, 7, 8, 8, 10}, 8);
+        new Solution34().searchRange(new int[]{5, 7, 7, 8, 8, 10}, 6);
+        new Solution34().searchRange(new int[]{}, 6);
+        new Solution34().searchRange(new int[]{1}, 1);
+        new Solution34().searchRange(new int[]{0, 1}, 1);
     }
 
-    int halfSearch(int[] nums, int target,boolean left){
-        int start = 0;
-        int end = nums.length;
-        while (start<end){
-            int mid = (start + end)/2;
-            if(nums[mid] < target){
+    public int[] searchRange(int[] nums, int target) {
+        int left = halfSearch(nums, target, true);
 
-            }
+        int right = halfSearch(nums, target, false);
+
+        if(left<nums.length && left <= right && nums[left] == target && nums[right] == target){
+            return new int[]{left,right};
         }
 
+        return new int[]{-1, -1};
+    }
+
+    /**
+     * @param left true 查找第一个比target小的数； false 查找第一个比target大的数
+     */
+    int halfSearch(int[] nums, int target, boolean left) {
+        int start = 0;
+        int end = nums.length - 1;
+        int ans = 0;
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            if(left){
+                if (nums[mid] >= target) { //nums[mid] < target  查找第一个大于等于target的数
+                    end = mid - 1;
+                    ans = mid;
+                } else {
+                    start = mid + 1;
+                }
+            }else {
+                if (nums[mid] <= target) { //nums[mid] < target  查找第一个小于等于target的数
+                    start = mid + 1;
+                    ans = mid;
+                } else {
+                    end = mid - 1;
+                }
+            }
+
+
+        }
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
