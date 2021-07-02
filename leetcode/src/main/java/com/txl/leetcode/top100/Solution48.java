@@ -64,15 +64,15 @@ class Solution48 {
             int step = n - i * 2 -1;//每一层循环，每一步要易懂的位置
             for (int j = 0; j < step; j++) {//此时的step代表需要移动的个数
 
-                //保存第一列的数据
+                //保存最后一列的数据
                 int temp = matrix[i+j][i+step];
                 // 第一行数据给到最后一列
                 matrix[i+j][i+step] = matrix[i][i+j];
 
                 //保存最后一行数据  x 随着step增加而减小
-                int temp2 = matrix[i+step-j][i+step];
+                int temp2 = matrix[i+step][i+step-j];
                 //最后一列数据到最后一行
-                matrix[i+step-j][i+step] = temp;
+                matrix[i+step][i+step-j] = temp;
 
                 //保存第一列的数据
                 temp =  matrix[i+step-j][i];
