@@ -29,7 +29,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".bluetooth.BluetoothPlayerActivity"></activity>
+        <service
+            android:name=".service.DemoService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true"
+            />
+
+        <activity android:name=".service.ServiceDemoActivity" />
+        <activity android:name=".bluetooth.BluetoothPlayerActivity" />
         <activity android:name=".bluetooth.BluetoothSocketDemoActivity" />
         <activity android:name=".bluetooth.BluetoothActivity" />
         <activity android:name=".usb.UsbActivity" />

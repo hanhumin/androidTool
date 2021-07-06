@@ -185,5 +185,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="android 蓝牙demo"/>
+        <TextView
+            android:id="@+id/tv_service_demo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="android Service Demo"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

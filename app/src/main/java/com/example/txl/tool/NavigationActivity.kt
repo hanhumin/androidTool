@@ -36,6 +36,7 @@ import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
 import com.example.txl.tool.recyclerView.RecyclerViewDemoActivity
 import com.example.txl.tool.resimage.TestResImageActivity
 import com.example.txl.tool.rxjava.RxJavaDemoActivity
+import com.example.txl.tool.service.ServiceDemoActivity
 import com.example.txl.tool.twmediaplayer.TwMediaPlayerTestActivity
 import com.example.txl.tool.usb.UsbActivity
 import com.example.txl.tool.window.WindowAndWindowManagerActivity
@@ -77,6 +78,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_toast_notification).setOnClickListener(this)
         findViewById<View>(R.id.tv_get_usb).setOnClickListener(this)
         findViewById<View>(R.id.tv_bluetooth_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_service_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -213,6 +215,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_bluetooth_demo->{
                 val intent = Intent(this, BluetoothSocketDemoActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_service_demo->{
+                val intent = Intent(this, ServiceDemoActivity::class.java)
                 startActivity(intent)
             }
         }

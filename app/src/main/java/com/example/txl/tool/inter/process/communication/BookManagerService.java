@@ -79,6 +79,11 @@ public class BookManagerService extends Service {
     }
 
     @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
 
         return mBinder;
