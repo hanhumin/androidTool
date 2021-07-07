@@ -2,11 +2,17 @@ package com.example.txl.tool.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+
 public class DemoService extends Service {
     private static final String TAG = "DemoService";
+
+
     public DemoService() {
         Log.d(TAG,"structure");
     }
@@ -23,14 +29,16 @@ public class DemoService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    private final Binder binder = new Binder();
+
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG,"onBind");
-        return null;
+        return binder;
     }
 
     @Override
-    public void onRebind(Intent intent) {
+    public void onRebind(Intent intent) {//所有连接对象全部都解绑，且onUnbind返回true
         Log.d(TAG,"onRebind");
         super.onRebind(intent);
     }
@@ -38,14 +46,15 @@ public class DemoService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         Log.d(TAG,"onUnbind");
-        return super.onUnbind(intent);
+//        return super.onUnbind(intent);
+        return true;
     }
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Log.d(TAG,"onTaskRemoved");
-        super.onTaskRemoved(rootIntent);
-    }
+//    @Override
+//    public void onTaskRemoved(Intent rootIntent) {
+//        Log.d(TAG,"onTaskRemoved");
+//        super.onTaskRemoved(rootIntent);
+//    }
 
     @Override
     public void onDestroy() {
@@ -53,5 +62,8 @@ public class DemoService extends Service {
         super.onDestroy();
     }
 
-
+    @Override
+    protected void dump(FileDescriptor fd, PrintWriter writer, String[] args) {
+        super.dump(fd, writer, args);
+    }
 }
