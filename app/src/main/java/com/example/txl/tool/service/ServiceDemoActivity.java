@@ -68,6 +68,28 @@ public class ServiceDemoActivity extends AppCompatActivity {
 
             }
         });
+        findViewById(R.id.tv_bind_service1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction( "com.txl.other.filter" );
+                intent.setPackage( getPackageName() );
+                ServiceConnection connection = new ServiceConnection() {
+                    @Override
+                    public void onServiceConnected(ComponentName name, IBinder service) {
+                        Log.d(TAG,"DemoService onServiceConnected "+service);
+                    }
+
+                    @Override
+                    public void onServiceDisconnected(ComponentName name) {
+
+                    }
+                };
+                connectionList.add(connection);
+                Log.d(TAG,"DemoService bindService1 result "+bindService(intent,connection, Context.BIND_AUTO_CREATE));
+
+            }
+        });
         findViewById(R.id.tv_unbind_service).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
