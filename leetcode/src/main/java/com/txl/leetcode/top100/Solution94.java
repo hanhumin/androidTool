@@ -114,7 +114,7 @@ class Solution94 {
         addNode(list,rootNode.right);
     }
 
-    public static class TreeNode {
+    private static class TreeNode {
         TreeNode left;
         TreeNode right;
         int val;
