@@ -35,19 +35,22 @@ package com.txl.leetcode.top100;
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.HashMap;
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {}
+ * TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) {
+ * this.val = val;
+ * this.left = left;
+ * this.right = right;
+ * }
  * }
  */
 class Solution105 {
@@ -70,13 +73,33 @@ class Solution105 {
         }
     }
 
+    /**
+     * 递归实现
+     */
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        TreeNode head = new TreeNode();
-        TreeNode pre = head;
-        for (int i=0;i<preorder.length;i++){
-            for ()
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int l = inorder.length;
+        for (int i = 0; i < l; i++) {
+            map.put(inorder[i], i);
         }
-        return head.right;
+       return findLeftAndRight(0,l-1,0,l-1,preorder,inorder,map);
     }
+
+
+    private TreeNode findLeftAndRight(int preStart, int preEnd, int inorderStart, int inorderEnd,int[] preorder, int[] inorder,HashMap<Integer, Integer> map) {
+        if(preEnd >= preStart){
+            //前序遍历第一个为根节点
+            TreeNode root = new TreeNode(preorder[preStart]);
+            int index = map.get(root.val);
+            int preCount = index-inorderStart;//左节点数目
+            root.left = findLeftAndRight(preStart+1,preStart+preCount,inorderStart,index-1,preorder,inorder,map);
+            root.right = findLeftAndRight(preStart+1+preCount,preEnd,index+1,inorderEnd,preorder,inorder,map);
+            return root;
+        }
+        return null;
+    }
+
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
