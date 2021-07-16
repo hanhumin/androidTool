@@ -20,6 +20,7 @@ import com.example.txl.tool.activity.point9.Point9Activity
 import com.example.txl.tool.activity.slider.SliderActivity
 import com.example.txl.tool.bluetooth.BluetoothActivity
 import com.example.txl.tool.bluetooth.BluetoothSocketDemoActivity
+import com.example.txl.tool.broadcast.BroadCastReceiverActivity
 import com.example.txl.tool.contentprovider.DemoContentProviderActivity
 import com.example.txl.tool.coordinatorlayout.CoordinatorLayoutNavigationActivity
 import com.example.txl.tool.custom.TestCustomRadioButtonDrawActivity
@@ -79,6 +80,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_get_usb).setOnClickListener(this)
         findViewById<View>(R.id.tv_bluetooth_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_service_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_broad_cast_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -219,6 +221,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_service_demo->{
                 val intent = Intent(this, ServiceDemoActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_broad_cast_demo->{
+                val intent = Intent(this, BroadCastReceiverActivity::class.java)
                 startActivity(intent)
             }
         }

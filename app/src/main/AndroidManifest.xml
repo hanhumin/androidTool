@@ -29,16 +29,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".service.ServiceOnRebindActivity"
-            android:process="com.txl.tool.test.on_rebind"></activity>
+        <activity android:name=".broadcast.BroadCastReceiverActivity"></activity>
+        <activity
+            android:name=".service.ServiceOnRebindActivity"
+            android:process="com.txl.tool.test.on_rebind" />
 
         <service
             android:name=".service.DemoService"
             android:enabled="true"
             android:exported="true"
-            android:stopWithTask="true" >
-            <intent-filter >
-                <action android:name="com.txl.other.filter"/>
+            android:stopWithTask="true">
+            <intent-filter>
+                <action android:name="com.txl.other.filter" />
             </intent-filter>
         </service>
 

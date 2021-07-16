@@ -192,5 +192,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="android Service Demo"/>
+        <TextView
+            android:id="@+id/tv_broad_cast_demo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="android BroadCast Demo"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
