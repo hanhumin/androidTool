@@ -43,7 +43,9 @@ package com.txl.leetcode.top100;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution207 {
@@ -56,8 +58,10 @@ class Solution207 {
         for (int i = 0; i < numCourses; ++i) {
             edges.add(new ArrayList<Integer>());
         }
+        //有三种状态 0 为搜索  1 搜索中 2 完成搜索
         visited = new int[numCourses];
         for (int[] info : prerequisites) {
+            // 课程 info[0] 的完成依赖  info[1] 即 info[1] 有条边指向 info[0]
             edges.get(info[1]).add(info[0]);
         }
         for (int i = 0; i < numCourses && valid; ++i) {
@@ -68,6 +72,12 @@ class Solution207 {
         return valid;
     }
 
+    /**
+     * 拓扑排序的进阶版，比单纯的拓扑排序更复杂。
+     * 这里的深度优先遍历和拓扑排序的不同之处在于 拓扑排序是依次把入度为0的节点入栈，
+     * 而这里是从某个节点开始反向查找它所依赖的某个节点。直到没有依赖。如果某个节点处于搜索中的状态，
+     * 又再次进入搜索中的状态，那么说明有环的存在。
+     * */
     public void dfs(int u) {
         visited[u] = 1;
         for (int v: edges.get(u)) {
@@ -82,6 +92,47 @@ class Solution207 {
             }
         }
         visited[u] = 2;
+    }
+
+
+
+
+    int[] indeg;
+
+    /**
+     * 广度优先遍历
+     * */
+    public boolean canFinish1(int numCourses, int[][] prerequisites) {
+        edges = new ArrayList<List<Integer>>();
+        for (int i = 0; i < numCourses; ++i) {
+            edges.add(new ArrayList<Integer>());
+        }
+        indeg = new int[numCourses];
+        for (int[] info : prerequisites) {
+            edges.get(info[1]).add(info[0]);
+            ++indeg[info[0]];
+        }
+
+        Queue<Integer> queue = new LinkedList<Integer>();
+        for (int i = 0; i < numCourses; ++i) {
+            if (indeg[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        int visited = 0;
+        while (!queue.isEmpty()) {
+            ++visited;
+            int u = queue.poll();
+            for (int v: edges.get(u)) {
+                --indeg[v];
+                if (indeg[v] == 0) {
+                    queue.offer(v);
+                }
+            }
+        }
+
+        return visited == numCourses;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
