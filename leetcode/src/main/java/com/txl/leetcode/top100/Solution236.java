@@ -81,7 +81,8 @@ class Solution236 {
         treeNode2.right = treeNode4;
 
 //        TreeNode treeNode = new Solution236().lowestCommonAncestor(root,new TreeNode(5),new TreeNode(1));
-        TreeNode treeNode = new Solution236().lowestCommonAncestor(root,new TreeNode(6),new TreeNode(0));
+//        TreeNode treeNode = new Solution236().lowestCommonAncestor(root,new TreeNode(6),new TreeNode(0));
+        TreeNode treeNode = new Solution236().lowestCommonAncestor(root,new TreeNode(7),new TreeNode(8));
         System.out.println("ans "+treeNode.val);
 
         treeNode1 = new TreeNode(1);
@@ -93,37 +94,69 @@ class Solution236 {
         treeNode2.right = treeNode4;
          treeNode = new Solution236().lowestCommonAncestor(treeNode1,new TreeNode(4),new TreeNode(3));
         System.out.println("ans2 "+treeNode.val);
-
+        treeNode5 = new TreeNode(5);
+        treeNode2.left = treeNode5;
+        treeNode6 = new TreeNode(6);
+        treeNode5.left = treeNode6;
+        treeNode = new Solution236().lowestCommonAncestor(treeNode1,new TreeNode(6),new TreeNode(3));
+        System.out.println("ans3 "+treeNode.val);
     }
 
-    /**
-     * 对二叉树进行前序遍历
-     * */
+
+    private TreeNode ans = null;
+
+    private boolean dfs(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) return false;
+        boolean lson = dfs(root.left, p, q);
+        boolean rson = dfs(root.right, p, q);
+        if ((lson && rson) || ((root.val == p.val || root.val == q.val) && (lson || rson))) {
+            ans = root;
+        }
+        return lson || rson || (root.val == p.val || root.val == q.val);
+    }
+
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        this.dfs(root, p, q);
+        return this.ans;
+    }
+
+
+
+    /**
+     * 对二叉树进行后序遍历
+     * */
+    public TreeNode lowestCommonAncestor1(TreeNode root, TreeNode p, TreeNode q) {
         if(root == null || root.val == p.val || root.val == q.val){
             return root;
         }
         Stack<TreeNode> stack = new Stack<>();
         TreeNode ans = null;
         while (root != null || !stack.isEmpty()){
+            boolean pop = false;
             if(root == null){
+                pop = true;
                 root = stack.pop();
-                if(ans != null && ((root.left != null && root.left.val == ans.val) || (root.right != null && root.right.val == ans.val))){
+                if(ans != null && (root.left == ans || root.right == ans)){
                     ans = root;
                 }
-                root = root.right;
-            }
-            if(root.val == p.val || root.val == q.val){
-                if(ans == null){
-                    ans = root;
-                }else {
-                    //找到了第二个
-                    break;
+                if(root.val == p.val || root.val == q.val){
+                    if(ans == null){
+                        ans = root;
+                    }else {
+                        return ans;
+                    }
                 }
             }
-            if(root.right != null){
+            if(!pop){
                 stack.add(root);
+                if(root.right != null){
+                    stack.add(root.right);
+                }
+                if(root.left != null){
+                    stack.add(root.left);
+                }
             }
+
             root = root.left;
         }
 
