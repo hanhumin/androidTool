@@ -199,5 +199,12 @@
             android:gravity="center"
             android:background="@drawable/border"
             android:text="android BroadCast Demo"/>
+        <TextView
+            android:id="@+id/tv_jump_recycler_view_demo_demo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="android RecyclerView Demo"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

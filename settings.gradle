@@ -1,3 +1,4 @@
+include ':javalearn'
 include ':player'
 include ':aeasybuild'
 include ':testAutoBuildDimen'

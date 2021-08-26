@@ -34,6 +34,7 @@ import com.example.txl.tool.jetpack.livedata.LiveDataActivity
 import com.example.txl.tool.keyevent.KeyEventDemoActivity
 import com.example.txl.tool.okhttp.OkHttpDemoActivity
 import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
+import com.example.txl.tool.recyclerView.ItemDecorationDemoActivity
 import com.example.txl.tool.recyclerView.RecyclerViewDemoActivity
 import com.example.txl.tool.resimage.TestResImageActivity
 import com.example.txl.tool.rxjava.RxJavaDemoActivity
@@ -81,6 +82,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_bluetooth_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_service_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_broad_cast_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_recycler_view_demo_demo).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -225,6 +227,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_broad_cast_demo->{
                 val intent = Intent(this, BroadCastReceiverActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_recycler_view_demo_demo->{
+                val intent = Intent(this, ItemDecorationDemoActivity::class.java)
                 startActivity(intent)
             }
         }
