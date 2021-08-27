@@ -12,6 +12,7 @@ public class TestThread {
             public void run() {
                 System.out.println("thread print");
                 try {
+
                     Thread.sleep(5000);
                     System.out.println("thread print sleep end");
                 } catch (InterruptedException e) {
