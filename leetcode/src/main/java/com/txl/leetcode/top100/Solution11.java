@@ -63,6 +63,27 @@ class Solution11{
     }
 
     /**
+     * 再次刷这个题目
+     * */
+    public int myMaxArea(int[] height){
+        int max = 0;
+        for (int i=0,j=height.length-1;i<j;){
+            int len = j-i;
+            int h = 0;
+            if(height[i]<height[j]){//谁小，那么高度就以此为准，谁小就动谁，这样才有可能找到一个更大的矩形面积。如果动最大的，就是最小面积
+                h = height[i];
+                i++;
+            }else {
+                h = height[j];
+               j--;
+            }
+            max = Math.max( max,h*len );
+        }
+        return max;
+    }
+
+
+    /**
      * 双指针
      * */
     public int maxArea(int[] height) {
