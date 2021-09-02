@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 
@@ -20,7 +21,12 @@ public class HandlerDemoActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage( msg );
-            Log.d( TAG,"接收到消息，可以更新ui" );
+            if (msg.what == 10086){
+                Log.d( TAG,"接收到异步消息" );
+            }else {
+                Log.d( TAG,"接收到消息，可以更新ui" );
+            }
+
         }
     }
 
@@ -35,6 +41,33 @@ public class HandlerDemoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent( HandlerDemoActivity.this,ThreadLocalDemoActivity.class );
                 startActivity( intent );
+            }
+        } );
+        //测试同步屏障
+        findViewById( R.id.tv_handle_test ).setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               for (int i = 0;i<100;i++){
+                   final int temp = i;
+                   handler.post(new Runnable() {
+                       @Override
+                       public void run() {
+                           SystemClock.sleep(1000);
+                            Log.d(TAG,"我是第"+temp+"个 休眠 1000 ms    " );
+                       }
+                   });
+               }
+                Message message = Message.obtain();
+                message.what = 10086;
+                message.setAsynchronous(true);
+                handler.sendMessage(message);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        findViewById( R.id.tv_handle_test ).requestLayout();
+                    }
+                },500);
+
             }
         } );
         handler = new MyHandler();

@@ -13,5 +13,13 @@
         android:background="@drawable/border"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_handle_test"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="测试同步屏障"
+        android:background="@drawable/border"
+        app:layout_constraintTop_toBottomOf="@+id/tv_open_thread_local"
+        android:gravity="center"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
