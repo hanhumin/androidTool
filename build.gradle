@@ -16,7 +16,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.4'
 //        classpath 'com.txl.plugin:easySmallWidth:1.0.1'
         classpath 'com.txl.EasySmallWidth:easySmallWidth:1.0.3'
 

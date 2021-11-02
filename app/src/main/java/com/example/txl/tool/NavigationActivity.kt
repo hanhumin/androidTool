@@ -29,6 +29,7 @@ import com.example.txl.tool.gif.GifActivity
 import com.example.txl.tool.glide.GlideDemoActivity
 import com.example.txl.tool.handler.HandlerDemoActivity
 import com.example.txl.tool.inter.process.communication.AidlDemoActivity
+import com.example.txl.tool.ipod.IpodActivity
 import com.example.txl.tool.jetpack.lifecycle.LifecycleActivity
 import com.example.txl.tool.jetpack.livedata.LiveDataActivity
 import com.example.txl.tool.keyevent.KeyEventDemoActivity
@@ -83,6 +84,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_service_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_broad_cast_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_recycler_view_demo_demo).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_ipod).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -231,6 +233,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_recycler_view_demo_demo->{
                 val intent = Intent(this, ItemDecorationDemoActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_ipod->{
+                val intent = Intent(this, IpodActivity::class.java)
                 startActivity(intent)
             }
         }

@@ -29,7 +29,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".broadcast.BroadCastReceiverActivity"></activity>
+        <activity
+            android:name=".ipod.IpodActivity"
+            android:exported="true" />
+        <activity android:name=".broadcast.BroadCastReceiverActivity" />
         <activity
             android:name=".service.ServiceOnRebindActivity"
             android:process="com.txl.tool.test.on_rebind" />

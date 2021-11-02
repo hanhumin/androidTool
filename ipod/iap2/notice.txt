@@ -1,0 +1,2 @@
+
+iAP2LinkConfig.h需要定义这个文件
