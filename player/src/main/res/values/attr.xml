@@ -6,7 +6,7 @@
             <enum name="surface_view" value="1"/>
             <enum name="texture_view" value="2"/>
         </attr>
-        <attr name="player_controller_layout_id"/>
+        <attr name="player_controller_layout_id" format="integer"/>
         <attr name="hasFocusBorder" format="boolean"/>
         <attr name="selectBorderWidth" format="dimension"/>
         <attr name="borderColor" format="color"/>

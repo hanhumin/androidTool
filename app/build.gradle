@@ -90,7 +90,7 @@ dependencies {
 //    implementation 'com.tencent.map:tencent-map-vector-sdk:4.2.7'
     implementation project(':testAutoBuildDimen')
     implementation project(':aeasybuild')
-//    implementation project(':player')
+    implementation project(':player')
     implementation 'com.android.support:multidex:2.0.1'
 //    implementation 'com.txl.EasySmallWidth:easySmallWidth:1.0.0'
 //    implementation(name: 'app_location', ext: 'aar')

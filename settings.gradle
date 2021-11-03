@@ -5,6 +5,8 @@ include ':testAutoBuildDimen'
 include ':leetcode'
 include ':app', ':exoplayer'
 include ':lib_AnnotationProcessor'
-include ':ipod'
-include ':libipodservice'
+//C++ 层ipod 代码
+//include ':ipod'
+//java 层ipod代码
+//include ':libipodservice'
 include ':nativelib'

@@ -33,6 +33,7 @@ import com.example.txl.tool.ipod.IpodActivity
 import com.example.txl.tool.jetpack.lifecycle.LifecycleActivity
 import com.example.txl.tool.jetpack.livedata.LiveDataActivity
 import com.example.txl.tool.keyevent.KeyEventDemoActivity
+import com.example.txl.tool.mediasession.MediaSessionVideoPlayActivity
 import com.example.txl.tool.okhttp.OkHttpDemoActivity
 import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
 import com.example.txl.tool.recyclerView.ItemDecorationDemoActivity
@@ -85,6 +86,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_broad_cast_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_recycler_view_demo_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_ipod).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_mediasession).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -237,6 +239,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_ipod->{
                 val intent = Intent(this, IpodActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_mediasession->{
+                val intent = Intent(this, MediaSessionVideoPlayActivity::class.java)
                 startActivity(intent)
             }
         }

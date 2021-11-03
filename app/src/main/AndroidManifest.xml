@@ -30,6 +30,16 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
+            android:name=".mediasession.MediaSessionVideoPlayActivity"
+            android:exported="true" />
+
+        <service
+            android:name=".mediasession.MediaPlayerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process="media.session.service" />
+
+        <activity
             android:name=".ipod.IpodActivity"
             android:exported="true" />
         <activity android:name=".broadcast.BroadCastReceiverActivity" />
