@@ -5,18 +5,16 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.media.session.MediaSession;
+import android.media.session.MediaSession.Token;
 import android.media.session.PlaybackState;
-import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.se.omapi.Session;
 import android.util.Log;
-
-import java.io.IOException;
-import android.media.session.MediaSession.Token;
 import android.view.Surface;
 
 import com.example.txl.tool.IMediaSessionToken;
+
+import java.io.IOException;
 
 /**
  * 通过MediaSession 跨进程来进行 视频播放测试

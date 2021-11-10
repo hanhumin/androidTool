@@ -3,6 +3,7 @@ package com.example.txl.tool.mediasession;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,7 +24,10 @@ import android.widget.Toast;
 import com.example.txl.tool.IMediaSessionToken;
 import com.example.txl.tool.R;
 
+import java.util.List;
+
 public class MediaSessionVideoPlayActivity extends AppCompatActivity {
+    private final String TAG = MediaSessionVideoPlayActivity.class.getSimpleName();
     MediaController controller;
     IMediaSessionToken token;
     MediaController.Callback callback = new MediaController.Callback() {
@@ -63,7 +68,9 @@ public class MediaSessionVideoPlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_session_video_play);
-        Intent intent = new Intent(this,MediaPlayerService.class);
+//        Intent intent = new Intent(this,MediaPlayerService.class);
+        Intent intent = new Intent("com.txl.test.MediaPlayerService");
+        intent.setPackage(getPackageName());
         bindService(intent,connection,Context.BIND_AUTO_CREATE);
         findViewById(R.id.tvPlay).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +106,10 @@ public class MediaSessionVideoPlayActivity extends AppCompatActivity {
 
             }
         });
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//        List<ActivityManager.ProcessErrorStateInfo> processErrorStateInfos =  manager.getProcessesInErrorState();
+//        Log.d(TAG,"info");
+//        Log.d(TAG,processErrorStateInfos.toString());
     }
 
     private void setSurface(){
