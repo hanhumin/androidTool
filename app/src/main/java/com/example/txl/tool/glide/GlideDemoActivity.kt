@@ -1,6 +1,8 @@
 package com.example.txl.tool.glide
 
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -66,5 +68,11 @@ class GlideDemoActivity : AppCompatActivity() {
 //                        return true
 //                    }
 //                }).submit()
+//        Glide.get(this).registry.append()
+        Glide.with(this).load(Uri.parse("file:///android_asset/mygif.gif")).into(image_test_glide_test)
+        Glide.with(this).load(assets.openFd("test_video.mp4")).into(image_test_glide_mp4)
+//        Glide.with(this).load(assets.open("test_video.mp4")).into(image_test_glide_mp4)
+        Glide.with(this).load(Uri.parse("file:///android_asset/test_bluetooth.mp3")).into(image_test_glide_mp3)
+//        Glide.with(this).load(assets.open("test_bluetooth.mp3")).into(image_test_glide_mp3)
     }
 }
