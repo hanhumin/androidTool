@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.model.AssetUriLoader
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -52,10 +53,10 @@ class GlideDemoActivity : AppCompatActivity() {
 //        val options = RequestOptions().transform(CenterCrop()).transform(roundedCorners)
         var options = RequestOptions().transform(CenterCrop(),roundedCorners)
 //        Glide.with(this).load("http://mserver.wjdev.chinamcloud.cn/cms/mrzd/upload/Image/mrtp/2019/12/08/1_25f95541a8a04f7eb549b6cf33de808e.jpg").apply(options).into(image_test_glide_circle_radius)
-        Glide.with(this)
-                .load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588009151719&di=839eb1f4efdcb634e9a349c1cf60a145&imgtype=0&src=http%3A%2F%2Fimg2.imgtn.bdimg.com%2Fit%2Fu%3D1120712552%2C1362700559%26fm%3D214%26gp%3D0.jpg")
-                .apply(options)
-                .into(image_test_glide_circle_radius)
+//        Glide.with(this)
+//                .load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588009151719&di=839eb1f4efdcb634e9a349c1cf60a145&imgtype=0&src=http%3A%2F%2Fimg2.imgtn.bdimg.com%2Fit%2Fu%3D1120712552%2C1362700559%26fm%3D214%26gp%3D0.jpg")
+//                .apply(options)
+//                .into(image_test_glide_circle_radius)
 //        options = RequestOptions.bitmapTransform(roundedCorners)
 //        Glide.with(this)
 //                .load("http://mserver.wjdev.chinamcloud.cn/cms/mrzd/upload/Image/64522/2020/02/28/1_780793f0fb594ce5bf6a99eefd956d32.jpg")
@@ -73,10 +74,11 @@ class GlideDemoActivity : AppCompatActivity() {
 //                }).submit()
 //        Glide.get(this).registry.append(String::class.java, BitmapDrawable::class.java, null)
         AudioAssetUriLoader.init(this)
-        Glide.with(this).asBitmap().load(Uri.parse("file:///android_asset/mygif.gif")).into(image_test_glide_test)
-        Glide.with(this).asBitmap().load(Uri.parse("file:///android_asset/test_video.mp4")).into(image_test_glide_mp4)
+        VideoAssetUriLoader.init(this)
+//        Glide.with(this).asBitmap().load(Uri.parse("file:///android_asset/mygif.gif")).into(image_test_glide_test)
+        Glide.with(this).asBitmap().load(Uri.parse("file:///android_asset/test_video.mp4")).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.RESOURCE)).into(image_test_glide_mp4)
 //        Glide.with(this).load(assets.open("test_video.mp4")).into(image_test_glide_mp4)
-        Glide.with(this).load(Uri.parse("file:///android_asset/test_bluetooth.mp3")).into(image_test_glide_mp3)
+//        Glide.with(this).load(Uri.parse("file:///android_asset/test_bluetooth.mp3")).into(image_test_glide_mp3)
 //        Glide.with(this).load(assets.open("test_bluetooth.mp3")).into(image_test_glide_mp3)
     }
 }
