@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.example.txl.tool.activity.FlexboxLayoutActivity
@@ -33,6 +34,7 @@ import com.example.txl.tool.ipod.IpodActivity
 import com.example.txl.tool.jetpack.lifecycle.LifecycleActivity
 import com.example.txl.tool.jetpack.livedata.LiveDataActivity
 import com.example.txl.tool.keyevent.KeyEventDemoActivity
+import com.example.txl.tool.mediaprovider.MediaProviderActivity
 import com.example.txl.tool.mediasession.MediaSessionVideoPlayActivity
 import com.example.txl.tool.okhttp.OkHttpDemoActivity
 import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
@@ -44,6 +46,9 @@ import com.example.txl.tool.service.ServiceDemoActivity
 import com.example.txl.tool.twmediaplayer.TwMediaPlayerTestActivity
 import com.example.txl.tool.usb.UsbActivity
 import com.example.txl.tool.window.WindowAndWindowManagerActivity
+import com.hjq.permissions.OnPermissionCallback
+import com.hjq.permissions.Permission
+import com.hjq.permissions.XXPermissions
 
 class NavigationActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -54,6 +59,30 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics)
         Log.d("App", "sh: ${resources.configuration.screenHeightDp}   NavigationActivity density: " + displayMetrics.density + " densityDpi " + displayMetrics.densityDpi + " width " + displayMetrics.widthPixels + "  height " + displayMetrics.heightPixels)
         initView()
+        XXPermissions.with(this)
+            .permission(Permission.WRITE_EXTERNAL_STORAGE)
+            .permission(Permission.READ_EXTERNAL_STORAGE)
+            .request(object : OnPermissionCallback {
+                override fun onGranted(permissions: List<String?>?, all: Boolean) {
+                    if (!all) {
+                        Toast.makeText(this@NavigationActivity, "获取部分权限成功，但部分权限未正常授予", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                override fun onDenied(permissions: List<String?>?, never: Boolean) {
+                    if (never) {
+                        Toast.makeText(
+                            this@NavigationActivity,
+                            "被永久拒绝授权，请手动授予文件读写权限权限",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // 如果是被永久拒绝就跳转到应用权限系统设置页
+                    } else {
+                        Toast.makeText(this@NavigationActivity, "获取文件读写权限失败", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
     }
 
     fun initView(){
@@ -87,6 +116,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_recycler_view_demo_demo).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_ipod).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_mediasession).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_mediaProvider).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -243,6 +273,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_mediasession->{
                 val intent = Intent(this, MediaSessionVideoPlayActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_mediaProvider->{
+                val intent = Intent(this, MediaProviderActivity::class.java)
                 startActivity(intent)
             }
         }

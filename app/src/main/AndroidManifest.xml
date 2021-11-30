@@ -30,6 +30,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
+            android:name=".mediaprovider.MediaProviderActivity"
+            android:exported="true" />
+        <activity
             android:name=".mediasession.MyMediaBrowserActivity"
             android:exported="true" />
 
@@ -37,7 +40,7 @@
             android:name=".mediasession.MyMediaBrowserService"
             android:enabled="true"
             android:exported="true"
-            android:process="media.session.browser.service"/>
+            android:process="media.session.browser.service" />
 
         <activity
             android:name=".mediasession.MediaSessionVideoPlayActivity"
@@ -47,9 +50,9 @@
             android:name=".mediasession.MediaPlayerService"
             android:enabled="true"
             android:exported="true"
-            android:process="media.session.service" >
+            android:process="media.session.service">
             <intent-filter>
-                <action android:name="com.txl.test.MediaPlayerService"/>
+                <action android:name="com.txl.test.MediaPlayerService" />
             </intent-filter>
         </service>
 

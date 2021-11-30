@@ -92,6 +92,8 @@ dependencies {
     implementation project(':aeasybuild')
     implementation project(':player')
     implementation 'com.android.support:multidex:2.0.1'
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
+    implementation 'com.github.getActivity:XXPermissions:12.6'
 //    implementation 'com.txl.EasySmallWidth:easySmallWidth:1.0.0'
 //    implementation(name: 'app_location', ext: 'aar')
 }

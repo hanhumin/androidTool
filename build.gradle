@@ -6,6 +6,7 @@ buildscript {
     
     repositories {
 //        maven {url file("D:\\AndroidStudioProjects\\easySmallWidth\\repo")}
+        maven { url 'https://jitpack.io' }
         jcenter()
 //        maven {
 //            url uri('../repo')
@@ -28,6 +29,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://jitpack.io' }
         mavenCentral()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         google()

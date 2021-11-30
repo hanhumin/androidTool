@@ -1,6 +1,7 @@
 package com.example.txl.tool.glide
 
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.model.AssetUriLoader
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
@@ -19,6 +21,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.txl.tool.R
 import com.example.txl.tool.utils.DisplayUtil
 import kotlinx.android.synthetic.main.activity_glide_demo.*
+import java.io.InputStream
 
 
 class GlideDemoActivity : AppCompatActivity() {
@@ -68,9 +71,10 @@ class GlideDemoActivity : AppCompatActivity() {
 //                        return true
 //                    }
 //                }).submit()
-//        Glide.get(this).registry.append()
-        Glide.with(this).load(Uri.parse("file:///android_asset/mygif.gif")).into(image_test_glide_test)
-        Glide.with(this).load(assets.openFd("test_video.mp4")).into(image_test_glide_mp4)
+//        Glide.get(this).registry.append(String::class.java, BitmapDrawable::class.java, null)
+        AudioAssetUriLoader.init(this)
+        Glide.with(this).asBitmap().load(Uri.parse("file:///android_asset/mygif.gif")).into(image_test_glide_test)
+        Glide.with(this).asBitmap().load(Uri.parse("file:///android_asset/test_video.mp4")).into(image_test_glide_mp4)
 //        Glide.with(this).load(assets.open("test_video.mp4")).into(image_test_glide_mp4)
         Glide.with(this).load(Uri.parse("file:///android_asset/test_bluetooth.mp3")).into(image_test_glide_mp3)
 //        Glide.with(this).load(assets.open("test_bluetooth.mp3")).into(image_test_glide_mp3)
