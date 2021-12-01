@@ -76,9 +76,9 @@ class GlideDemoActivity : AppCompatActivity() {
         AudioAssetUriLoader.init(this)
         VideoAssetUriLoader.init(this)
 //        Glide.with(this).asBitmap().load(Uri.parse("file:///android_asset/mygif.gif")).into(image_test_glide_test)
-        Glide.with(this).asBitmap().load(Uri.parse("file:///android_asset/test_video.mp4")).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.RESOURCE)).into(image_test_glide_mp4)
+        Glide.with(this).asBitmap().load(Uri.parse("file:///android_asset/test_video.mp4")).into(image_test_glide_mp4)
 //        Glide.with(this).load(assets.open("test_video.mp4")).into(image_test_glide_mp4)
-//        Glide.with(this).load(Uri.parse("file:///android_asset/test_bluetooth.mp3")).into(image_test_glide_mp3)
+        Glide.with(this).load(Uri.parse("file:///android_asset/test_bluetooth.mp3")).into(image_test_glide_mp3)
 //        Glide.with(this).load(assets.open("test_bluetooth.mp3")).into(image_test_glide_mp3)
     }
 }

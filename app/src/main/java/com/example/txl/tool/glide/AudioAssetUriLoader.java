@@ -23,6 +23,7 @@ import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.signature.ObjectKey;
 import com.example.txl.tool.App;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -101,6 +102,10 @@ public class AudioAssetUriLoader implements ModelLoader<Uri,ByteBuffer> {
                 AssetFileDescriptor fileDescriptor = assetManager.openFd(assetPath);
                 mediaMetadataRetriever.setDataSource(fileDescriptor.getFileDescriptor(),fileDescriptor.getStartOffset(),fileDescriptor.getDeclaredLength());
                 byte[] bytes = mediaMetadataRetriever.getEmbeddedPicture();
+                if(bytes == null){
+                    callback.onLoadFailed(new FileNotFoundException("the file not pic"));
+                    return;
+                }
                 ByteBuffer buf = ByteBuffer.wrap(bytes);
                 callback.onDataReady(buf);
             } catch (IOException e) {

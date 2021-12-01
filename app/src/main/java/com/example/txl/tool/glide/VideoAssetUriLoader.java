@@ -125,7 +125,7 @@ public class VideoAssetUriLoader implements ModelLoader<Uri, AssetFileDescriptor
         @NonNull
         @Override
         public DataSource getDataSource() {
-            return DataSource.REMOTE;
+            return DataSource.LOCAL;
         }
     }
 
