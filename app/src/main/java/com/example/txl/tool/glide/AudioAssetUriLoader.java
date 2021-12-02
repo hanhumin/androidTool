@@ -6,6 +6,7 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -16,12 +17,10 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.data.DataFetcher;
-import com.bumptech.glide.load.model.AssetUriLoader;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.signature.ObjectKey;
-import com.example.txl.tool.App;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,6 +39,7 @@ public class AudioAssetUriLoader implements ModelLoader<Uri,ByteBuffer> {
 
     private final AssetManager assetManager;
 
+    //全局一处调用即可
     public static void init(Context context) {
         Glide.get(context).getRegistry().prepend(Uri.class, ByteBuffer.class, new AudioModelLoaderFactory(context.getAssets()));
     }
@@ -53,15 +53,27 @@ public class AudioAssetUriLoader implements ModelLoader<Uri,ByteBuffer> {
     public LoadData<ByteBuffer> buildLoadData(@NonNull Uri model, int width, int height, @NonNull Options options) {
         String assetPath = model.toString().substring(ASSET_PREFIX_LENGTH);
         Log.d(TAG,"buildLoadData");
-        return new LoadData<ByteBuffer>(new ObjectKey(model), new AudioFetcher(assetManager,assetPath));
+        if(ContentResolver.SCHEME_FILE.equals(model.getScheme()) && !model.getPathSegments()
+                .isEmpty() && ASSET_PATH_SEGMENT.equals(model.getPathSegments().get(0))){
+            return new LoadData<ByteBuffer>(new ObjectKey(model), new AudioFetcher(assetManager,assetPath));
+        }
+
+        return new LoadData<ByteBuffer>(new ObjectKey(model), new FileAudioFetcher( model.getPath()));
     }
 
     @Override
     public boolean handles(@NonNull Uri model) {
         boolean result = ContentResolver.SCHEME_FILE.equals(model.getScheme()) && !model.getPathSegments()
-                .isEmpty() && ASSET_PATH_SEGMENT.equals(model.getPathSegments().get(0)) && model.getPathSegments().get(1).endsWith(".mp3");
+                .isEmpty() && ASSET_PATH_SEGMENT.equals(model.getPathSegments().get(0)) && model.getPathSegments().get(1).endsWith(".mp3") ||  audio(model.toString());
         Log.d(TAG,"handles  result  "+result + "  model "+model.toString());
         return result;
+    }
+
+    private boolean audio(String fileName){
+        return !TextUtils.isEmpty(fileName) && (fileName.endsWith(".m4a")
+                || fileName.endsWith(".mp3")
+                || fileName.endsWith(".ogg")
+                || fileName.endsWith(".wav"));
     }
 
 
@@ -81,6 +93,50 @@ public class AudioAssetUriLoader implements ModelLoader<Uri,ByteBuffer> {
         @Override
         public void teardown() {
 
+        }
+    }
+
+    private static class FileAudioFetcher implements DataFetcher<ByteBuffer>{
+        private final String path;
+
+        private FileAudioFetcher(String path) {
+            this.path = path;
+        }
+
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        @Override
+        public void loadData(@NonNull Priority priority, @NonNull DataCallback<? super ByteBuffer> callback) {
+            Log.d(TAG,"FileAudioFetcher loadData path "+path);
+            mediaMetadataRetriever.setDataSource(path);
+            byte[] bytes = mediaMetadataRetriever.getEmbeddedPicture();
+            if(bytes == null){
+                callback.onLoadFailed(new FileNotFoundException("FileAudioFetcher the file not pic"));
+                return;
+            }
+            ByteBuffer buf = ByteBuffer.wrap(bytes);
+            callback.onDataReady(buf);
+        }
+
+        @Override
+        public void cleanup() {
+
+        }
+
+        @Override
+        public void cancel() {
+
+        }
+
+        @NonNull
+        @Override
+        public Class<ByteBuffer> getDataClass() {
+            return ByteBuffer.class;
+        }
+
+        @NonNull
+        @Override
+        public DataSource getDataSource() {
+            return DataSource.LOCAL;
         }
     }
 

@@ -12,4 +12,5 @@
     <dimen name="sp18">18sp</dimen>
     <dimen name="txlsp18">18sp</dimen>
     <dimen name="app_dimens">18sp</dimen>
+    <dimen name="dp_300">300dp</dimen>
 </resources>

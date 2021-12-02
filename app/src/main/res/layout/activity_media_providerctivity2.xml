@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".mediaprovider.MediaProviderActivity">
     <LinearLayout
+        android:id="@+id/linear_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,4 +42,11 @@
             android:background="#365"
             android:id="@+id/tvPic"/>
     </LinearLayout>
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_300"
+        app:layout_constraintTop_toBottomOf="@+id/linear_title"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="@dimen/dp_30"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
