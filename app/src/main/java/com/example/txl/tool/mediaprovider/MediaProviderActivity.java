@@ -66,6 +66,7 @@ public class MediaProviderActivity extends AppCompatActivity implements View.OnC
         if(mMediaProvider != null){
             mMediaProvider.release();
         }
+        strings.clear();
     }
 
     @Override
