@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".glide.GlideDemoActivity">
+    <TextView
+        android:id="@+id/tvGlideSourceTest"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:background="#535"
+        android:textSize="@dimen/sp18"
+        android:text="Glide 源码测试"
+        android:gravity="center"/>
     <ImageView
         android:id="@+id/image_test_glide"
         android:layout_width="wrap_content"

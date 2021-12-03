@@ -96,6 +96,7 @@ dependencies {
     implementation 'com.github.getActivity:XXPermissions:12.6'
 //    implementation 'com.txl.EasySmallWidth:easySmallWidth:1.0.0'
 //    implementation(name: 'app_location', ext: 'aar')
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }
 
 adaptionAppExtension{

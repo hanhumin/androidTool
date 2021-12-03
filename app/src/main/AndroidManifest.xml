@@ -30,6 +30,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
+            android:name=".glide.glideTest.GlideSourceTestActivity"
+            android:exported="true" />
+        <activity
             android:name=".mediaprovider.MediaProviderActivity"
             android:exported="true" />
         <activity

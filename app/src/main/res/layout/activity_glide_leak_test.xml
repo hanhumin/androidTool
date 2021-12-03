@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".glide.glideTest.GlideSourceTestActivity">
+    <TextView
+        android:id="@+id/tvLoadImage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:background="#656"
+        android:gravity="center"
+        android:textSize="@dimen/sp18"
+        android:text="Glide 图片加载错乱"/>
+    <TextView
+        android:id="@+id/tvActivityLeak"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:background="#656"
+        android:gravity="center"
+        android:textSize="@dimen/sp18"
+        android:text="Glide activity内存泄漏"
+        android:layout_marginTop="@dimen/dp_10"/>
+    <TextView
+        android:id="@+id/tvFragmentLeak"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:background="#656"
+        android:gravity="center"
+        android:textSize="@dimen/sp18"
+        android:text="Glide Fragment 内存泄漏"
+        android:layout_marginTop="@dimen/dp_10"/>
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/dp_120"
+        android:layout_height="@dimen/dp_120"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"/>
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

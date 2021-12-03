@@ -1,5 +1,6 @@
 package com.example.txl.tool.glide
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -20,6 +21,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.example.txl.tool.R
+import com.example.txl.tool.glide.glideTest.GlideSourceTestActivity
 import com.example.txl.tool.utils.DisplayUtil
 import kotlinx.android.synthetic.main.activity_glide_demo.*
 import java.io.InputStream
@@ -31,6 +33,9 @@ class GlideDemoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_glide_demo)
+        tvGlideSourceTest?.setOnClickListener {
+            startActivity(Intent(this@GlideDemoActivity,GlideSourceTestActivity::class.java))
+        }
         image = findViewById(R.id.image_test_glide)
 
         image?.postDelayed({

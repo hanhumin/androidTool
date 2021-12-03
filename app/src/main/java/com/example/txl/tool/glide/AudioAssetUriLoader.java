@@ -6,6 +6,7 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -39,9 +40,12 @@ public class AudioAssetUriLoader implements ModelLoader<Uri,ByteBuffer> {
 
     private final AssetManager assetManager;
 
+    private static boolean isInit = false;
     //全局一处调用即可
     public static void init(Context context) {
+        if(!isInit)
         Glide.get(context).getRegistry().prepend(Uri.class, ByteBuffer.class, new AudioModelLoaderFactory(context.getAssets()));
+        isInit = true;
     }
 
     public AudioAssetUriLoader(AssetManager assetManager) {
@@ -156,6 +160,9 @@ public class AudioAssetUriLoader implements ModelLoader<Uri,ByteBuffer> {
             try {
                 Log.d(TAG,"loadData assetPath "+assetPath);
                 AssetFileDescriptor fileDescriptor = assetManager.openFd(assetPath);
+                if(assetPath.contains("DuiMianDeNvHaiKanGuoLai--RenXianQi.mp3")){
+                    SystemClock.sleep(10*30*1000);//休眠300s
+                }
                 mediaMetadataRetriever.setDataSource(fileDescriptor.getFileDescriptor(),fileDescriptor.getStartOffset(),fileDescriptor.getDeclaredLength());
                 byte[] bytes = mediaMetadataRetriever.getEmbeddedPicture();
                 if(bytes == null){
@@ -163,6 +170,7 @@ public class AudioAssetUriLoader implements ModelLoader<Uri,ByteBuffer> {
                     return;
                 }
                 ByteBuffer buf = ByteBuffer.wrap(bytes);
+                Log.d(TAG,"loadData assetPath "+assetPath +" success");
                 callback.onDataReady(buf);
             } catch (IOException e) {
                 e.printStackTrace();

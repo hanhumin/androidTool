@@ -8,6 +8,8 @@ import androidx.multidex.MultiDexApplication;
 
 import com.txl.lib.image_load.ImageLoader;
 
+import leakcanary.LeakCanary;
+
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
  * author：txl
