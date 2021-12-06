@@ -22,14 +22,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.txl.tool.R;
 import com.example.txl.tool.glide.AudioAssetUriLoader;
 
-import leakcanary.LeakCanary;
-
 
 //测试Glide是否会发生内存泄漏
 /**
  * 1. activity级别泄漏  在生命周期结束后  对应的request  target如何处理相关的引用关系？  会不会有activity view泄漏呢？ view泄漏应该会对应着activity泄漏
  * 2. fragment级别泄漏  如果错用activity作为with对象的参数  此时fragment应该不会泄漏，但是View会不会泄漏呢？
- * 3. Glide 是否会存在图片错乱？
+ * 3. Glide 是否会存在图片错乱？ 不会  ImageViewTarget
  * */
 public class GlideSourceTestActivity extends AppCompatActivity {
     private static final String  TAG = GlideSourceTestActivity.class.getSimpleName();
@@ -84,7 +82,7 @@ public class GlideSourceTestActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 MyTestFragment myTestFragment = new MyTestFragment();
-                fragmentTransaction.replace(R.id.frame,myTestFragment).commitNow();
+                fragmentTransaction.add(R.id.frame,myTestFragment).commit();
             }
         });
     }
@@ -96,6 +94,8 @@ public class GlideSourceTestActivity extends AppCompatActivity {
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View root = inflater.inflate(R.layout.fragment_glide_source_test,container,false);
             imageView = root.findViewById(R.id.imageView);
+            //强制保留引用关系
+            root.setTag(this);
             Log.d(TAG,"onCreateView finish");
             return root;
         }
@@ -110,7 +110,14 @@ public class GlideSourceTestActivity extends AppCompatActivity {
             super.onActivityCreated(savedInstanceState);
             Glide.with(getActivity()).load(Uri.parse("file:///android_asset/DuiMianDeNvHaiKanGuoLai--RenXianQi.mp3")).diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
             Log.d(TAG,"onActivityCreated load ");
-            getActivity().finish();
+            imageView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG,"onActivityCreated remove ");
+                    getActivity().getSupportFragmentManager().beginTransaction().remove(MyTestFragment.this).commit();
+                }
+            },300);
+
         }
 
         @Override
