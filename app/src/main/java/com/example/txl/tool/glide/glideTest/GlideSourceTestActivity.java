@@ -22,7 +22,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.txl.tool.R;
 import com.example.txl.tool.glide.AudioAssetUriLoader;
 
-import leakcanary.LeakCanary;
 
 
 //测试Glide是否会发生内存泄漏
