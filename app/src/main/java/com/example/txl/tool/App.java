@@ -6,9 +6,10 @@ import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
+//import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.RefWatcher;
 import com.txl.lib.image_load.ImageLoader;
 
-import leakcanary.LeakCanary;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -20,6 +21,7 @@ public class App extends MultiDexApplication {
     private  static Context mContext;
 
     private static ImageLoader mImageLoader;
+//    private RefWatcher refWatcher;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -35,6 +37,7 @@ public class App extends MultiDexApplication {
         mImageLoader = ImageLoader.build( this );
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         Log.d("App"," density: "+ displayMetrics.density+" densityDpi "+ displayMetrics.densityDpi+" width "+displayMetrics.widthPixels+"  height "+displayMetrics.heightPixels);
+//        refWatcher = setupRefWatch();
     }
 
     public static Context getContext() {
@@ -44,4 +47,16 @@ public class App extends MultiDexApplication {
     public static ImageLoader getImageLoader(){
         return mImageLoader;
     }
+
+//    private RefWatcher setupRefWatch(){
+//        if(LeakCanary.isInAnalyzerProcess(this)){
+//            return RefWatcher.DISABLED;
+//        }
+//        return LeakCanary.install(this);
+//    }
+//
+//    public static RefWatcher getRefWatch(Context context){
+//        App app = (App) context.getApplicationContext();
+//        return app.refWatcher;
+//    }
 }
