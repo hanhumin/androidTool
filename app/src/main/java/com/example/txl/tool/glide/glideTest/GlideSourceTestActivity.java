@@ -1,24 +1,29 @@
 package com.example.txl.tool.glide.glideTest;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.txl.tool.R;
 import com.example.txl.tool.glide.AudioAssetUriLoader;
 
@@ -41,7 +46,7 @@ public class GlideSourceTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glide_leak_test);
         AudioAssetUriLoader.init(this);
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initView();
         //强制内存内泄漏
 //        mA = this;
@@ -108,7 +113,22 @@ public class GlideSourceTestActivity extends AppCompatActivity {
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-            Glide.with(getActivity()).load(Uri.parse("file:///android_asset/DuiMianDeNvHaiKanGuoLai--RenXianQi.mp3")).diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
+            Glide.with(getActivity())
+                    .load(Uri.parse("file:///android_asset/DuiMianDeNvHaiKanGuoLai--RenXianQi.mp3"))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE).
+                    addListener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    Log.d(TAG,"MyTestFragment onLoadFailed");
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    Log.d(TAG,"MyTestFragment onResourceReady");
+                    return false;
+                }
+            }).into(imageView);
             Log.d(TAG,"onActivityCreated load ");
             imageView.postDelayed(new Runnable() {
                 @Override
