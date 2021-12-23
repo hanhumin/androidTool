@@ -160,9 +160,9 @@ public class AudioAssetUriLoader implements ModelLoader<Uri,ByteBuffer> {
             try {
                 Log.d(TAG,"loadData assetPath "+assetPath);
                 AssetFileDescriptor fileDescriptor = assetManager.openFd(assetPath);
-                if(assetPath.contains("DuiMianDeNvHaiKanGuoLai--RenXianQi.mp3")){
-                    SystemClock.sleep(10*30*1000);//休眠300s
-                }
+//                if(assetPath.contains("DuiMianDeNvHaiKanGuoLai--RenXianQi.mp3")){
+//                    SystemClock.sleep(10*30*1000);//休眠300s
+//                }
                 mediaMetadataRetriever.setDataSource(fileDescriptor.getFileDescriptor(),fileDescriptor.getStartOffset(),fileDescriptor.getDeclaredLength());
                 byte[] bytes = mediaMetadataRetriever.getEmbeddedPicture();
                 if(bytes == null){

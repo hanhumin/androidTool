@@ -14,4 +14,5 @@
     <dimen name="app_dimens">18sp</dimen>
     <dimen name="dp_300">300dp</dimen>
     <dimen name="dp_60">60dp</dimen>
+    <dimen name="dp_64">64dp</dimen>
 </resources>

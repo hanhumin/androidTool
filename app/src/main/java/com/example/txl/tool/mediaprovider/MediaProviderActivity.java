@@ -2,18 +2,16 @@ package com.example.txl.tool.mediaprovider;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentProviderClient;
-import android.content.Intent;
-import android.database.Cursor;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.RemoteException;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,16 +26,23 @@ import com.example.txl.tool.glide.AudioAssetUriLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
+import android.content.Intent;
 
 public class MediaProviderActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = MediaProviderActivity.class.getSimpleName();
 
     private ContentProviderClient mMediaProvider;
-    private TextView tvVideo, tvAudio, tvPic;
+    private TextView tvVideo, tvAudio, tvPic,tvBack;
     private ImageView imageView;
 
     int temp =0 ;
     ArrayList<String> strings = new ArrayList<>();
+    private MediaProviderItemAdapter mediaProviderItemAdapter;
+    private MediaProviderHelper mediaProviderHelper;
+    private Stack<BackInfo> visitStack = new Stack<>();
+    private String currentVisitName;
+    private MediaProviderReceiver2 mediaProviderReceiver2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +51,33 @@ public class MediaProviderActivity extends AppCompatActivity implements View.OnC
         mMediaProvider = getContentResolver()
                 .acquireContentProviderClient(MediaStore.AUTHORITY);
 //                .acquireContentProviderClient("hase_media");
+        mediaProviderHelper = new MediaProviderHelper();
+        mediaProviderHelper.init(this);
         initView();
         AudioAssetUriLoader.init(this);
+        mediaProviderReceiver2 = new MediaProviderReceiver2();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.intent.action.MEDIA_MOUNTED");
+        intentFilter.addDataScheme("file");
+        intentFilter.addAction("android.intent.action.MEDIA_EJECT");
+        intentFilter.addDataScheme("file");
+        intentFilter.addAction("txl.tool.test.mediaprovider");
+
+        /*
+        *  <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <data android:scheme="file" />
+            </intent-filter>
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.MEDIA_EJECT" />
+
+                <data android:scheme="file" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="txl.tool.test.mediaprovider"/>
+            </intent-filter>
+        * */
+        registerReceiver(mediaProviderReceiver2,intentFilter);
     }
 
     private void initView() {
@@ -55,9 +85,59 @@ public class MediaProviderActivity extends AppCompatActivity implements View.OnC
         tvAudio = findViewById(R.id.tvAudio);
         tvPic = findViewById(R.id.tvPic);
         imageView = findViewById(R.id.image);
+        findViewById(R.id.tvFileBrowse).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendBroadcast(new Intent("com.hase.test.lunchself"));
+                Object o  = v.getTag();
+                boolean internal = false;
+                if(o == null){
+                    internal = true;
+                }else {
+                    internal = !(Boolean)o;
+                }
+                v.setTag(internal);
+                StorageVolumeStrategy.updateInternal(internal);
+                visitStack.clear();
+                mediaProviderItemAdapter.setMediaInfos(mediaProviderHelper.queryAllDir());
+            }
+        });
         tvVideo.setOnClickListener(this);
         tvAudio.setOnClickListener(this);
         tvPic.setOnClickListener(this);
+        tvBack = findViewById(R.id.tv_back);
+        tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(visitStack.isEmpty()){
+                    return;
+                }
+                BackInfo backInfo = visitStack.pop();
+                if(backInfo != null){
+                    mediaProviderItemAdapter.setMediaInfos(backInfo.mediaInfos);
+                    tvBack.setText(backInfo.name);
+                    currentVisitName = backInfo.name;
+                }
+            }
+        });
+        mediaProviderItemAdapter = new MediaProviderItemAdapter();
+        mediaProviderItemAdapter.setOnItemClick(new MediaProviderItemViewHolder.OnItemClick() {
+            @Override
+            public void onItemClick(MediaInfo mediaInfo) {
+                if(mediaInfo != null && mediaInfo.isDir()){
+                    //通过栈来保存当前数据，在进入下一级
+                    BackInfo last;
+                    String name = currentVisitName+"/"+mediaInfo.getDisplayName();
+                    last = new BackInfo(currentVisitName,mediaProviderItemAdapter.getMediaInfos());
+                    tvBack.setText(name);
+                    currentVisitName = name;
+                    visitStack.push(last);
+                    mediaProviderItemAdapter.setMediaInfos(mediaProviderHelper.queryAllFileByPid(mediaInfo.getId()));
+                }
+            }
+        });
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setAdapter(mediaProviderItemAdapter);
     }
 
     @Override
@@ -65,6 +145,12 @@ public class MediaProviderActivity extends AppCompatActivity implements View.OnC
         super.onDestroy();
         if(mMediaProvider != null){
             mMediaProvider.release();
+        }
+        if(mediaProviderHelper != null){
+            mediaProviderHelper.release();
+        }
+        if(mediaProviderReceiver2!=null){
+            unregisterReceiver(mediaProviderReceiver2);
         }
         strings.clear();
     }
@@ -83,71 +169,27 @@ public class MediaProviderActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initPic() {
-        Cursor cursor = MediaStore.Video.query(getContentResolver(),MediaStore.Images.Media.INTERNAL_CONTENT_URI,null);
-        Log.d(TAG,"initPic start");
-        while (cursor != null && cursor.moveToNext()){
-            StringBuilder builder = new StringBuilder();
-            builder.append("initPic  ============== ");
-            String name = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-            builder.append("   name = ").append(name);
-            String data = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
-            builder.append("   data = ").append(data);
-            Log.d(TAG,new String(builder));
-            strings.add(data);
-        }
-        loadAudioImg();
-        if(cursor != null){
-            cursor.close();
-        }
-        Log.d(TAG,"initPic end");
+        currentVisitName = "图片";
+        tvBack.setText(currentVisitName);
+        visitStack.clear();
+        mediaProviderHelper.updateQueryType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+        mediaProviderItemAdapter.setMediaInfos(mediaProviderHelper.queryAllDir());
     }
 
     private void initAudio() {
-        Cursor cursor = null;
-        try {
-            if(mMediaProvider == null){
-                mMediaProvider = getContentResolver()
-                        .acquireContentProviderClient(MediaStore.AUTHORITY);
-            }
-            if(mMediaProvider == null){
-                Intent intent = new Intent("com.hase.test.lunchself");
-                sendBroadcast(intent);
-                return;
-            }
-            cursor = mMediaProvider.query(MediaStore.Audio.Media.INTERNAL_CONTENT_URI,null,null,null,"_data asc");//desc降序
-//            cursor = mMediaProvider.query(uri,null,"children_type = ? or children_type = ? or children_type = ?",new String[]{"1","3","7"},"title_key desc");
-//            cursor = mMediaProvider.query(MediaStore.Audio.Media.INTERNAL_CONTENT_URI,null,null,null,"duration desc limit 10 offset 0 ");
-//            cursor = mMediaProvider.query(MediaStore.Audio.Media.INTERNAL_CONTENT_URI,null,"duration > ?  or  duration < ?",new String[]{"20000","3000"},"duration desc  ");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-//        Cursor cursor = MediaStore.Video.query(getContentResolver(),MediaStore.Audio.Media.INTERNAL_CONTENT_URI,null);
-        Log.d(TAG,"initAudio start");
+        currentVisitName = "音频";
+        tvBack.setText(currentVisitName);
+        visitStack.clear();
+        mediaProviderHelper.updateQueryType(MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO);
+        mediaProviderItemAdapter.setMediaInfos(mediaProviderHelper.queryAllDir());
+    }
 
-
-        while (cursor != null && cursor.moveToNext()){
-            StringBuilder builder = new StringBuilder();
-            builder.append("initAudio  ============== ");
-            long duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
-            builder.append("duration = ").append(duration);
-            String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-            builder.append("   name = ").append(name);
-            String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-            builder.append("   data = ").append(data);
-            String mime_type = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE));
-            builder.append("   mime_type = ").append(mime_type);
-            String title_key = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_KEY));
-            builder.append("   title_key = ").append(title_key);
-//            String parent = cursor.getString(cursor.getColumnIndex("parent"));
-//            builder.append("   parent = ").append(parent);
-            strings.add(data);
-            Log.d(TAG,new String(builder));
-        }
-        loadAudioImg();
-        if(cursor != null){
-            cursor.close();
-        }
-        Log.d(TAG,"initAudio end");
+    private void initVideo() {
+        currentVisitName = "视频";
+        tvBack.setText(currentVisitName);
+        visitStack.clear();
+        mediaProviderHelper.updateQueryType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
+        mediaProviderItemAdapter.setMediaInfos(mediaProviderHelper.queryAllDir());
     }
 
     Handler handler = new Handler(Looper.getMainLooper());
@@ -193,26 +235,13 @@ public class MediaProviderActivity extends AppCompatActivity implements View.OnC
     }
 
 
-    private void initVideo() {
-        Cursor cursor = MediaStore.Video.query(getContentResolver(),MediaStore.Video.Media.INTERNAL_CONTENT_URI,null);
-        Log.d(TAG,"initVideo start");
-        int i =0 ;
-        while (cursor != null && cursor.moveToNext()){
-            StringBuilder builder = new StringBuilder();
-            builder.append("initVideo  ============== ");
-            long duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DURATION));
-            builder.append("duration = ").append(duration);
-            String name = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-            builder.append("   name = ").append(name);
-            String data = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
-            builder.append("   data = ").append(data);
-            strings.add(data);
-            Log.d(TAG,new String(builder));
-        }
-        loadAudioImg();
-        if(cursor != null){
-            cursor.close();
-        }
-        Log.d(TAG,"initVideo end");
-    }
+   private static class BackInfo{
+        String name;
+        List<MediaInfo> mediaInfos;
+
+       public BackInfo(String name, List<MediaInfo> mediaInfos) {
+           this.name = name;
+           this.mediaInfos = mediaInfos;
+       }
+   }
 }

@@ -182,6 +182,21 @@
         <provider
             android:name=".contentprovider.DataContentProvider"
             android:authorities="com.txl.demo.content.provider" />
+        <receiver android:name=".mediaprovider.MediaProviderReceiver" >
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <data android:scheme="file" />
+            </intent-filter>
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.MEDIA_EJECT" />
+
+                <data android:scheme="file" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="txl.tool.test.mediaprovider"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".mediaprovider.MediaProviderReceiver2" />
     </application>
 
 </manifest>
