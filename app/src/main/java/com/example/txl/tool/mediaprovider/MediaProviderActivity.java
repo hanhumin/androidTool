@@ -1,11 +1,13 @@
 package com.example.txl.tool.mediaprovider;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentProviderClient;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -133,6 +135,27 @@ public class MediaProviderActivity extends AppCompatActivity implements View.OnC
                     currentVisitName = name;
                     visitStack.push(last);
                     mediaProviderItemAdapter.setMediaInfos(mediaProviderHelper.queryAllFileByPid(mediaInfo.getId()));
+                }else {
+                    Cursor cursor = mediaProviderHelper.queryFileInfo((int) mediaInfo.getId());
+                    if(cursor != null && cursor.moveToNext()){
+                        StringBuilder builder = new StringBuilder();
+                        String mediaType = cursor.getString(0);
+                        builder.append("mediaType").append(mediaType).append("/n");
+                        String mineType = cursor.getString(1);
+                        builder.append("mineType").append(mineType).append("/n");
+                        String title = cursor.getString(2);
+                        builder.append("title").append(title).append("/n");
+                        long duration = cursor.getLong(3);
+                        builder.append("duration").append(duration).append("/n");
+
+                        cursor.close();
+                        AlertDialog dialog = new AlertDialog.Builder(MediaProviderActivity.this)
+                                .setTitle("id3 信息")
+                                .setMessage(new String(builder))
+                                .create();
+                        dialog.show();
+
+                    }
                 }
             }
         });

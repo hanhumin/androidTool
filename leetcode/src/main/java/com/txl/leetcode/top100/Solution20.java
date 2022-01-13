@@ -71,6 +71,52 @@ class Solution20 {
         if(s.length() % 2 == 1){//只能成对出现
             return false;
         }
+        // ( { [  欠考虑  无法处理 "([)]" 的问题
+//        int kCount = 0, mCount = 0,fCount = 0;
+//
+//        for(int i=0; i<s.length(); i++){
+//            char c = s.charAt(i);
+//            switch (c){
+//                case '(':{
+//                    kCount++;
+//                    break;
+//                }
+//                case '{':{
+//                    mCount++;
+//                    break;
+//                }
+//                case '[':{
+//                    fCount++;
+//                    break;
+//                }
+//
+//                case ')':{
+//                    kCount--;
+//                    if(kCount < 0){
+//                        return false;
+//                    }
+//                    break;
+//                }
+//                case '}':{
+//                    mCount--;
+//                    if(mCount < 0){
+//                        return false;
+//                    }
+//                    break;
+//                }
+//                case ']':{
+//                    fCount--;
+//                    if(fCount < 0){
+//                        return false;
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//        if(mCount > 0 || kCount > 0 || fCount > 0){
+//            return false;
+//        }
+
         LinkedList<Character> stack = new LinkedList<>();
         Map<Character, Character> hashMap = new HashMap<Character, Character>() ;
         hashMap.put(')', '(');

@@ -1,7 +1,11 @@
 package com.example.txl.tool.mediaprovider;
 
 import android.content.ContentProviderClient;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.RemoteException;
 import android.provider.MediaStore;
 
 import com.example.txl.tool.mediaprovider.Interactive.DefaultAudioBrowser;
@@ -9,6 +13,44 @@ import com.example.txl.tool.mediaprovider.Interactive.DefaultImageBrowser;
 import com.example.txl.tool.mediaprovider.Interactive.DefaultVideoBrowser;
 import com.example.txl.tool.mediaprovider.Interactive.IQueryStrategy;
 
+import java.util.List;
+
+
+
+import android.annotation.SdkConstant;
+import android.annotation.SdkConstant.SdkConstantType;
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.UriPermission;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+//import android.media.MiniThumbFile;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.os.RemoteException;
+import android.service.media.CameraPrewarmService;
+import android.util.Log;
+
+//import libcore.io.IoUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.List;
 
 public class MediaProviderHelper implements IQueryStrategy{
@@ -67,5 +109,64 @@ public class MediaProviderHelper implements IQueryStrategy{
     @Override
     public List<MediaInfo> queryAllFileByPid(long pid) {
         return queryStrategy.queryAllFileByPid(pid);
+    }
+
+    public Cursor queryFileInfo(int fileId){
+        return this.queryFileInfo(mContentProviderClient,fileId);
+    }
+
+    private void test() {
+        //插入文件的播放状态
+//        Uri uri = android.net.Uri.parse("content://hs_media/external/file");
+//        ContentValues values = new ContentValues();
+//        values.put("play_error_code",1);
+//        try {
+//            //_id 为文件的id
+//            mContentProviderClient.update(uri,values,"where _id = ?",new String[]{"_id"});
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+
+//        //插入视频缩略图
+//        Uri uri = Uri.parse("content://hs_media/external/video/thumbnails");
+//        ContentValues values = new ContentValues();
+//        //path 图片的路径
+//        values.put("_data","path");
+//        //原来的文件id
+//        values.put("video_id","_id");
+//        //图片的宽高
+//        values.put("width",50);
+//        values.put("height",50);
+//        try {
+//            mContentProviderClient.insert(uri,values);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+
+        //播放模式  如果还有其它的字段可以协商增加
+//        Uri uri = android.net.Uri.parse("content://hs_media/external/player");
+//        ContentValues values = new ContentValues();
+//        //播放器类型  音频、视频  需要调用端自己对应音频、视频播放器的类型  比如0代表视频，1代表音频
+//        values.put("player_type",0);
+//        //播放模式 单曲循环  文件夹循环 列表循环等
+//        values.put("play_mode",0);
+//        //播放速度
+//        values.put("play_speed",1.5);
+//        try {
+//            mContentProviderClient.insert(uri,values);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+
+        //查询播放模式
+        Uri uri = android.net.Uri.parse("content://hs_media/external/player");
+        String select = "where player_type = ? ";
+        String[] selectArgs = new String[]{"0"};
+        try {
+            Cursor cursor = mContentProviderClient.query(uri,null,select,selectArgs,null);
+            cursor.getColumnCount();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }

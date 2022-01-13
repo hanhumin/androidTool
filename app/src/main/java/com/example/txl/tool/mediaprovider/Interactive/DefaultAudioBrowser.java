@@ -103,7 +103,11 @@ public class DefaultAudioBrowser implements IQueryStrategy {
     public List<MediaInfo> queryAllDir() {
         ArrayList<MediaInfo> mediaInfos = new ArrayList<>();
         try {
-            Cursor cursor = mMediaProvider.query(MediaStore.Files.getContentUri(StorageVolumeStrategy.getVolume()),new String[]{BaseColumns._ID,MediaStore.MediaColumns.DISPLAY_NAME,MediaStore.MediaColumns.DATA},"children_type NOTNULL AND children_type & 0x04 != 0",new String[]{},"_display_name ASC");
+            Cursor cursor = mMediaProvider.query(MediaStore.Files.getContentUri(StorageVolumeStrategy.getVolume()),new String[]{BaseColumns._ID,MediaStore.MediaColumns.DISPLAY_NAME,MediaStore.MediaColumns.DATA},"children_type NOTNULL AND children_type & 0x01 != 0",new String[]{},"_display_name ASC");
+
+//            Uri uri = android.net.Uri.parse("content://hs_media/external/file");
+//            String selectArgs = "children_type NOTNULL AND children_type & 0x01 != 0";
+//            Cursor cursor = mMediaProvider.query(uri,null,selectArgs,null,null);
             while (cursor != null && cursor.moveToNext()){
                 long id = cursor.getLong(0);
                 String displayName = cursor.getString(1);

@@ -9,4 +9,4 @@ include ':lib_AnnotationProcessor'
 //include ':ipod'
 //java 层ipod代码
 //include ':libipodservice'
-include ':nativelib'
+//include ':nativelib'
