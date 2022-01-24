@@ -28,9 +28,6 @@ public class Solution212 {
     }
 
     private void dfs(char[][] board, WordDictionary wordDictionary, HashSet<String> result, int i0, int j0){
-        if(!"".equals(wordDictionary.word)){//查找到了以此结尾的单词
-            result.add(wordDictionary.word);
-        }
         //i0 j0 是网格中将要处理的位置
         char ch = board[i0][j0];
         if(ch == '#'){//当前位置访问过，退出
@@ -39,6 +36,9 @@ public class Solution212 {
         int index = ch - 'a';
         if(wordDictionary.wordDictionaries[index] == null){//这个字符在当前树中不存在
             return;
+        }
+        if(!"".equals(wordDictionary.wordDictionaries[index].word)){
+            result.add(wordDictionary.wordDictionaries[index].word);
         }
         board[i0][j0] = '#';
         for (int i=0;i<dirs.length;i++){
