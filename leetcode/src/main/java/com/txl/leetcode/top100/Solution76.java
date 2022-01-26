@@ -179,6 +179,14 @@ class Solution76 {
 
 class Solution {
 
+
+    public String minWindow2(String s, String t){
+
+    }
+
+
+
+
     /**
      * 同样的思路，为什么会比官方题解快？
      * n 是 t 的长度
@@ -197,6 +205,7 @@ class Solution {
         char[] chars2 = t.toCharArray();
 
 
+        //频率
         int [] winFren = new int[128];
         int [] tFren = new int[128];
 
@@ -208,7 +217,7 @@ class Solution {
         // 窗口子串包含t字符的频数,超过的部分不计算
         int distance = 0;
         // 子串最小长度
-        int minlen = sLen+1;
+        int minlen = sLen+1;//设置一个不可能的长度作为初始值
         // 子串的起始点
         int start = 0;
         // 左指针
@@ -222,12 +231,14 @@ class Solution {
                 right++;
                 continue;
             }
+            //如果winFren的频率小于tFren 说明最小窗口还不满足，需要继续右移同时查找到的字符数distance 增加一个
             if (winFren[chars1[right]] <tFren[chars1[right]]) {
                 distance++;
             }
             winFren[chars1[right]]++;
             right++;
 
+            //找到了包含目标字符串的子串，此时应该缩小左侧
             while (distance == tLen) {
 
                 if ( right - left < minlen){
@@ -236,13 +247,15 @@ class Solution {
                 }
 
 
-                if (tFren[chars1[left]] == 0) {
+                if (tFren[chars1[left]] == 0) {//如果该字符在t中不存在，那么说明当前的字符可以移除
                     left++;
                     continue;
                 }
+                //如果 在s中和t中出现的频率相同  那么当前的子字符串距离减1
                 if (winFren[chars1[left]] == tFren[chars1[left]]) {
                     distance--;
                 }
+                //将 s 中的频率减1
                 winFren[chars1[left]]--;
                 left++;
             }
