@@ -181,7 +181,7 @@ class Solution {
 
 
     public String minWindow2(String s, String t){
-
+        return "";
     }
 
 
