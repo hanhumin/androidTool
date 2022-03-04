@@ -3,7 +3,7 @@
     package="com.huaqiyun.player">
 
     <application>
-        <activity android:name="com.txl.player.lifecycle.base.demo.SimpleMediaPlayerActivity"></activity>
+        <activity android:name="com.txl.player.demo.SimpleMediaPlayerActivity" />
         <activity
             android:name="com.txl.player.demo.RecyclerDemoActivity"
             android:screenOrientation="landscape" />

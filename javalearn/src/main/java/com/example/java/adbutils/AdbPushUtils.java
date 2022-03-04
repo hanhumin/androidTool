@@ -8,7 +8,10 @@ import java.io.InputStreamReader;
 public class AdbPushUtils {
     public static void main(String[] args) {
         //fixme 当push 路径中包含中文的时候文件的后缀名会丢失
-        pushDirToAndroid("F:\\MediaProvider_test\\", "/system/media/", false);
+//        pushDirToAndroid("F:\\MediaProvider_test\\", "/system/media/", false);
+//        pushDirToAndroid("E:\\lowmediaProvider\\com.android.mediaprovider", "/system/apex/com.android.mediaprovider/", false);
+        pushDirToAndroid("E:\\lowmediaProvider\\com.android(2).mediaprovider", "/system/apex/com.android.mediaprovider/", false);
+//        pushDirToAndroid("E:\\lowmediaProvider\\MediaProvider", "/system/priv-app/MediaProvider/", false);
 //        deletePushFile("F:\\MediaProvider_test\\", "/system/media/", false);
     }
 
