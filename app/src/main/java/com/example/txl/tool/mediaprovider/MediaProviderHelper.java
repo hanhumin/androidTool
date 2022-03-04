@@ -16,43 +16,6 @@ import com.example.txl.tool.mediaprovider.Interactive.IQueryStrategy;
 import java.util.List;
 
 
-
-import android.annotation.SdkConstant;
-import android.annotation.SdkConstant.SdkConstantType;
-import android.content.ContentProviderClient;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.UriPermission;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-//import android.media.MiniThumbFile;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.ParcelFileDescriptor;
-import android.os.RemoteException;
-import android.service.media.CameraPrewarmService;
-import android.util.Log;
-
-//import libcore.io.IoUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.List;
-
 public class MediaProviderHelper implements IQueryStrategy{
     /**
      * 查询类型
