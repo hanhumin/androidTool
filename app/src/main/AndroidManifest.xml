@@ -31,6 +31,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
+            android:name=".inter.process.communication.AidlDemoActivity2"
+            android:exported="false"
+            android:process=":aidl.activity2"/>
+        <activity
             android:name=".glide.glideTest.GlideSourceTestActivity"
             android:exported="true" />
         <activity
@@ -182,9 +186,11 @@
         <provider
             android:name=".contentprovider.DataContentProvider"
             android:authorities="com.txl.demo.content.provider" />
-        <receiver android:name=".mediaprovider.MediaProviderReceiver" >
+
+        <receiver android:name=".mediaprovider.MediaProviderReceiver">
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.MEDIA_MOUNTED" />
+
                 <data android:scheme="file" />
             </intent-filter>
             <intent-filter android:priority="1000">
@@ -193,7 +199,7 @@
                 <data android:scheme="file" />
             </intent-filter>
             <intent-filter>
-                <action android:name="txl.tool.test.mediaprovider"/>
+                <action android:name="txl.tool.test.mediaprovider" />
             </intent-filter>
         </receiver>
         <receiver android:name=".mediaprovider.MediaProviderReceiver2" />

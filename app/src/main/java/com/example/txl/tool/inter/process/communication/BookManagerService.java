@@ -6,6 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.util.List;
@@ -25,6 +26,12 @@ public class BookManagerService extends Service {
         @Override
         public List<Book> getBookList() throws RemoteException {
             Log.d( TAG,"getBookList thread :"+Thread.currentThread().getName() );
+            //验证binder服务端是 并行还是串行  fixme 实验结论是并行的,可能是使用了类似ThreadLocal的技术。
+            Log.d(TAG,"  uid "+Binder.getCallingUid()+" pid : "+Binder.getCallingPid()+"  ");
+            if(AidlConfig.TEST_BINDER_SERVICE){
+                SystemClock.sleep(1000*30);//休眠30s
+            }
+            Log.d(TAG,"sleep end  uid "+Binder.getCallingUid()+" pid : "+Binder.getCallingPid()+"  ");
             return mBookList;
         }
 
@@ -75,7 +82,7 @@ public class BookManagerService extends Service {
         Log.d( TAG,"onCreate" );
         mBookList.add( new Book( 1,"Android","小王" ) );
         mBookList.add( new Book( 2,"IOS" ,"小张") );
-        new Thread( new ServiceWorker() ).start();
+//        new Thread( new ServiceWorker() ).start();
     }
 
     @Override

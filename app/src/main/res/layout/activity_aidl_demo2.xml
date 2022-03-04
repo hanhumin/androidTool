@@ -33,5 +33,6 @@
         android:text="跳转到另一个进程activity验证服务端是不是串行"
         android:gravity="center"
         android:textSize="18sp"
-        android:background="#7f7"/>
+        android:background="#7f7"
+        android:visibility="gone"/>
 </LinearLayout>

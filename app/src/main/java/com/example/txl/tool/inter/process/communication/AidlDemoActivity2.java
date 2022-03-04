@@ -1,12 +1,13 @@
 package com.example.txl.tool.inter.process.communication;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -16,8 +17,8 @@ import com.example.txl.tool.utils.AppExecutors;
 
 import java.util.List;
 
-public class AidlDemoActivity extends AppCompatActivity {
-    private final String TAG = "AidlDemoActivity";
+public class AidlDemoActivity2 extends AppCompatActivity {
+    private final String TAG = "AidlDemoActivity2";
     private TextView tvGetBookList, tvAddBook;
     IBookManager bookManager;
     IOnBookArrivedListener onBookArrivedListener =  new IOnBookArrivedListener.Stub(){
@@ -46,7 +47,7 @@ public class AidlDemoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_aidl_demo );
+        setContentView( R.layout.activity_aidl_demo2 );
         initView();
         bindAidlService();
         AidlConfig.config();
@@ -73,7 +74,6 @@ public class AidlDemoActivity extends AppCompatActivity {
                             }
                         }
                     });
-
                 }
             }
         } );
@@ -93,13 +93,6 @@ public class AidlDemoActivity extends AppCompatActivity {
                 }
             }
         } );
-        findViewById( R.id.tv_jump_other_process ).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AidlDemoActivity.this,AidlDemoActivity2.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void bindAidlService(){
