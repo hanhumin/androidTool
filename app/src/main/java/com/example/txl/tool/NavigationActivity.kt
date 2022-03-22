@@ -49,6 +49,7 @@ import com.example.txl.tool.window.WindowAndWindowManagerActivity
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
+import com.kotlinlearn.demo.xiecheng.CoroutineDemoActivity
 
 class NavigationActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -117,6 +118,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_ipod).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_mediasession).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_mediaProvider).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_coroutine).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -277,6 +279,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_mediaProvider->{
                 val intent = Intent(this, MediaProviderActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_coroutine->{
+                val intent = Intent(this, CoroutineDemoActivity::class.java)
                 startActivity(intent)
             }
         }
