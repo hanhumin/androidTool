@@ -37,6 +37,7 @@ import com.example.txl.tool.keyevent.KeyEventDemoActivity
 import com.example.txl.tool.mediaprovider.MediaProviderActivity
 import com.example.txl.tool.mediasession.MediaSessionVideoPlayActivity
 import com.example.txl.tool.okhttp.OkHttpDemoActivity
+import com.example.txl.tool.partition.storage.StorageDemoActivity
 import com.example.txl.tool.radiobuttonwithgif.RadioButtonGifActivity
 import com.example.txl.tool.recyclerView.ItemDecorationDemoActivity
 import com.example.txl.tool.recyclerView.RecyclerViewDemoActivity
@@ -118,6 +119,7 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.tv_jump_ipod).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_mediasession).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_mediaProvider).setOnClickListener(this)
+        findViewById<View>(R.id.tv_jump_storage).setOnClickListener(this)
         findViewById<View>(R.id.tv_jump_coroutine).setOnClickListener(this)
     }
 
@@ -279,6 +281,10 @@ class NavigationActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_jump_mediaProvider->{
                 val intent = Intent(this, MediaProviderActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.tv_jump_storage->{
+                val intent = Intent(this, StorageDemoActivity::class.java)
                 startActivity(intent)
             }
             R.id.tv_jump_coroutine->{

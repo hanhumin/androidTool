@@ -228,6 +228,13 @@
             android:background="@drawable/border"
             android:text="MediaProvider"/>
         <TextView
+            android:id="@+id/tv_jump_storage"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:text="分区存储路径打印"/>
+        <TextView
             android:id="@+id/tv_jump_coroutine"
             android:layout_width="match_parent"
             android:layout_height="60dp"

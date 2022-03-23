@@ -22,5 +22,37 @@
         android:background="@drawable/border"
         android:text="主线程中协程进行网络操作"
         app:layout_constraintTop_toBottomOf="@+id/tvTest1"/>
+    <TextView
+        android:id="@+id/tvTest3"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="主线程中协程进行网络操作默认调度器"
+        app:layout_constraintTop_toBottomOf="@+id/tvTest2"/>
+    <TextView
+        android:id="@+id/tvTest4"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="主线程中协程进行网络操作Main调度器"
+        app:layout_constraintTop_toBottomOf="@+id/tvTest3"/>
+    <TextView
+        android:id="@+id/tvTest5"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="主线程中协程进行网络操作IO调度器"
+        app:layout_constraintTop_toBottomOf="@+id/tvTest4"/>
+    <TextView
+        android:id="@+id/tvTest6"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:text="主线程中协程进行网络操作Unconfined调度器"
+        app:layout_constraintTop_toBottomOf="@+id/tvTest5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

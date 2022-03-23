@@ -34,6 +34,9 @@
             android:name="com.kotlinlearn.demo.xiecheng.CoroutineDemoActivity"
             android:exported="false" />
         <activity
+            android:name=".partition.storage.StorageDemoActivity"
+            android:exported="false" />
+        <activity
             android:name=".inter.process.communication.AidlDemoActivity2"
             android:exported="false"
             android:process=":aidl.activity2" />
